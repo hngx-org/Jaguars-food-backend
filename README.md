@@ -9,7 +9,7 @@ Free Lunch App
 ### NOTE
 - Only The team lead is allowed to push commits directly to the `master` branch.
 
-- Branch off  `master` branch using the below naming convention naming:
+- [HNG-Inters] To contribute to this repo, Branch off  `master` branch using the below naming convention:
 
     * [slack-username]-[feature]: 
     
