@@ -12,10 +12,9 @@ dotenv.config();
 
 app.use(cors());
 app.use(router);
-app.use(joi);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 
 app.use('/api/lunch', lunchRouter);
 app.use('/api/withdrawal', withdrawalRouter);
