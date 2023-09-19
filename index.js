@@ -1,5 +1,5 @@
-import app, { PORT } from "./config/config.js";
+import app, { PORT } from './config/config.js';
 
 app.listen(PORT, () => {
-  console.log(`Server started at port ${PORT}`);
+  console.log(`Server running ...\n\n👉  http://localhost:${PORT}/`);
 });
