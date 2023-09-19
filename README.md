@@ -6,6 +6,16 @@ Free Lunch App
 
 
 ## Collaborators
+
+### File Structure
+
+- **Route**:  Where path of API endpoints are declared and assigned to controllers. 
+
+- **Controllers**: Controllers will be responsible to handle all the incoming requests to your application which will either render a page in response, may send a JSON payload or will handle other critical API related actions like POST, PUT, DELETE. 
+
+- **Config**: Keeps all the configs needed for the application. For example, if the app connects to a database, the config for the database can be put in a file like `db.config.js`
+
+- **Index File**: This is the root file
 ### NOTE
 - Only The team lead is allowed to push commits directly to the `master` branch.
 
