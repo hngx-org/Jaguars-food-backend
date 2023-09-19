@@ -5,12 +5,25 @@
 Free Lunch App
 
 
-- NOTE : No one is allowed to push commits directly to the `master`
-- Create a branch off the `master` branch using the naming
+## Collaborators
+### NOTE
+- The team lead is allowed to push commits directly to the `master` branch.
+
+- Branch off  `master` branch using the below naming convention naming:
+
+    * [slack-username]-[feature]: 
+    
+    For example:
+    Tayo Akosile working on the sign-up feature:
+
+
+    ```bash
+    git checkout -b tayoakosile-signup
+    ```
 
 ## Pre-requisites
-
 - Install [Node.js](https://nodejs.org/en/) v18.14.0
+
 ## Environment Variables  
 
 To run this project, you will need to:
@@ -54,9 +67,9 @@ npm run dev
 | ---------- | -------------------- | -------------------------------------- |
 Upcoming -->
 
-### Technologies Used
+### Tech Stack
 
-<!-- Naming Convention ~ Slack-name-[task] -->
+
 
 - [NodeJS](https://nodejs.org/) This is a cross-platform runtime environment built on Chrome's V8 JavaScript engine used in running JavaScript codes on the server. It allows for installation and managing of dependencies and communication with databases.
 - [ExpressJS](https://www.expresjs.org/) This is a NodeJS web application framework.
