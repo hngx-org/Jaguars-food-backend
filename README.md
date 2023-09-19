@@ -83,5 +83,4 @@ Upcoming -->
 
 - [NodeJS](https://nodejs.org/) This is a cross-platform runtime environment built on Chrome's V8 JavaScript engine used in running JavaScript codes on the server. It allows for installation and managing of dependencies and communication with databases.
 - [ExpressJS](https://www.expresjs.org/) This is a NodeJS web application framework.
-- [Sequelite ORM](https://sequelize.org) This is a free open source NOSQL document database with scalability and flexibility. Data are stored in flexible JSON-like documents.
-
+- [Sequelite ORM](https://sequelize.org) This is a promise-based Node.js ORM tool for Postgres,  
