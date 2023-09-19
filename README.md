@@ -7,7 +7,7 @@ Free Lunch App
 
 ## Collaborators
 ### NOTE
-- The team lead is allowed to push commits directly to the `master` branch.
+- Only The team lead is allowed to push commits directly to the `master` branch.
 
 - Branch off  `master` branch using the below naming convention naming:
 
