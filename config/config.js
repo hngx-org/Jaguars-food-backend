@@ -4,6 +4,10 @@ import joi from "joi";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import router from "../routes/router.js";
+import lunchRouter from "../routes/lunchRoute.js";
+import withdrawalRouter from "../routes/withdrawalRoute.js";
+
+
 
 const app = express();
 dotenv.config();
@@ -14,6 +18,9 @@ app.use(joi);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
+
+app.use('/api/lunch', lunchRouter);
+app.use('/api/withdrawal', withdrawalRouter);
 
 export const PORT = process.env.PORT || 4000;
 
