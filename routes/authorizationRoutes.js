@@ -9,8 +9,8 @@ const router = express.Router();
 // } from "./yourControllerModule"; // Replace "yourControllerModule" with the actual path to your controller module
 
 // Define routes for login and signup
-router.post('/login', handleOganization_User_Login);
-router.post('/user/signup', handleOganizationSignUp);
+router.post('/login', handleOrganization_User_Login);
+router.post('/user/signup', handleOrganizationSignUp);
 
 // Define a route for staff signup with a query parameter
 router.post('/signup', handleStaffSignUp);
