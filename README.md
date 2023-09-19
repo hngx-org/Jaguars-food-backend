@@ -15,7 +15,7 @@ Free Lunch App
 
 - **Config**: Keeps all the configs needed for the application. For example, if the app connects to a database, the config for the database can be put in a file like `db.config.js`
 
-- **Index**: 
+- **Index File**: This contains the root index.js file
 ### NOTE
 - The team lead is allowed to push commits directly to the `master` branch.
 
