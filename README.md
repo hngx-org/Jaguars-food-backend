@@ -37,7 +37,7 @@ Free Lunch App
 ## Environment Variables  
 
 To run this project, you will need to:
-- Create a `.env` file
+- Create a `.env` file in the root directory
 
 - Add the following environment variables to your .env file  
 
