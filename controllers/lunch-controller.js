@@ -1,6 +1,5 @@
-import express from "express";
 import asyncHandler from "express-async-handler";
-import app from "../config/config.js"
+
 
 //SEND A LUNCH
 const createLunch = asyncHandler(async(req,res) =>
@@ -21,11 +20,15 @@ const getAllLunches = asyncHandler(async(req,res) =>
 })
 
 //REDEEM A LUNCH
-const redeemLunch = asyncHandler(async(req,res) =>
+const redeemUserLunch = asyncHandler(async(req,res) =>
 {
 
 })
 
 export{
+    createLunch,
+    getLunch,
+    getAllLunches,
+    redeemUserLunch,
 
 }

@@ -1,10 +1,14 @@
-import express from "express";
 import asyncHandler from "express-async-handler";
-import app from "../config/config.js"
 
 //user is employee
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async(req,res) =>
+{
+
+})
+
+//EDIT USER PROFILE
+const editUserProfile = asyncHandler(async(req,res) =>
 {
 
 })
@@ -21,17 +25,23 @@ const getAllUsers = asyncHandler(async(req,res) =>
 
 })
 
-//GET(SEARCH) USER BY NAME OR MAIL OR ID
+//GET(SEARCH) USER BY NAME OR MAIL
 const searchUser = asyncHandler(async(req,res) =>
 {
 
 })
 
 //CREATE WITHDRAWAL REQUEST
-const payWithdrawal= asyncHandler(async(req,res) =>
+const createWithdrawal= asyncHandler(async(req,res) =>
 {
 
 })
-export{
 
+export{
+    getUserProfile,
+    editUserProfile,
+    getAllUsers,
+    addUserBank,
+    searchUser,
+    createWithdrawal,
 }

@@ -1,8 +1,13 @@
-import express from "express";
 import asyncHandler from "express-async-handler";
-import app from "../config/config.js"
 
+//Admin or organization
+
+const createInvite = asyncHandler(async(req,res) =>
+{
+
+})
 
 export{
+    createInvite,
 
 }
