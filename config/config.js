@@ -14,7 +14,7 @@ dotenv.config();
 
 app.use(cors());
 app.use(router);
-app.use(joi);
+// app.use(joi);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
