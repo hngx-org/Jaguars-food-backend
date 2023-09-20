@@ -11,6 +11,7 @@ import userRoute from "../routes/userRoute.js";
 
 
 
+
 const app = express();
 dotenv.config();
 
@@ -21,10 +22,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+
 app.use('/api/lunch', lunchRoute);
 app.use('/api/withdrawal', withdrawalRoute);
 app.use('/api', userRoute);
 app.use('/api/auth', authenticationRoute)
+
+
 export const PORT = process.env.PORT || 4000;
 
 export default app;
