@@ -15,3 +15,4 @@ To get started, follow these steps:
 
 ## Names of contibutors 
 1.Oni Oluwatomiwa : [26thavenue](https://github.com/26thavenue)
+2. Ejiofor Emmanuel Whyte : [kalwhyte](https://github.com/kalwhyte)
