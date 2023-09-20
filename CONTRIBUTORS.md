@@ -17,3 +17,4 @@ To get started, follow these steps:
 
 1.Oni Oluwatomiwa : [26thavenue](https://github.com/26thavenue) Slack Name: Oluwatomiwa Oni
 2. Ejiofor Emmanuel Whyte : [kalwhyte](https://github.com/kalwhyte) Slack name: Ejiofor Emmanuel Whyte
+3. Samuel Ademujimi : [sam-shot](https://github.com/sam-shot) Slack name: samshot_01
