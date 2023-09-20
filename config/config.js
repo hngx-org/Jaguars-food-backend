@@ -6,7 +6,8 @@ import dotenv from "dotenv";
 import router from "../routes/router.js";
 import lunchRouter from "../routes/lunchRoute.js";
 import withdrawalRouter from "../routes/withdrawalRoute.js";
-
+import errHandler from "../middlewares/errHandler.js";
+import notFound from "../middlewares/notFound.js"
 
 
 const app = express();
@@ -21,6 +22,9 @@ app.use(morgan("dev"));
 
 app.use('/api/lunch', lunchRouter);
 app.use('/api/withdrawal', withdrawalRouter);
+
+app.use(notFound)
+app.use(errHandler)
 
 export const PORT = process.env.PORT || 4000;
 
