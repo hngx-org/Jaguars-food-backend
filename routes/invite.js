@@ -1,8 +1,10 @@
 import express from "express";
 import crypto from "crypto";
 import dotenv from "dotenv";
+
 const router = express.Router();
 dotenv.config();
+
 
 // Authentication middleware to ensure only admin users can access the endpoint
 function adminAuthMiddleware(req, res, next) {
@@ -16,10 +18,10 @@ function adminAuthMiddleware(req, res, next) {
 router.post(`/organizations/invite`, adminAuthMiddleware, (req, res) => {
   // Parse request body and extract necessary details
   const { email } = req.body;
-  const secretKey = process.env.SECRET_KEY;
 
+  const secretKey = process.env.SECRET_KEY
   // Generate a unique invitation token
-  const invitationToken = generateInvitationToken();
+  const invitationToken = generateInvitationToken(email, secretKey);
 
   // Saving invitation details to a database 
   saveInvitationToDatabase(email, invitationToken);
@@ -42,7 +44,6 @@ function generateInvitationToken(email, secretKey) {
   const token = crypto.createHmac('sha256', secretKey).update(hashedData).digest('hex');
   return token;
 }
-
 
 // Helper function to save invitation details to a database
 function saveInvitationToDatabase(email, invitationToken) {
