@@ -6,9 +6,9 @@ import dotenv from "dotenv";
 import router from "../routes/router.js";
 import lunchRouter from "../routes/lunchRoute.js";
 import withdrawalRouter from "../routes/withdrawalRoute.js";
-import organizationRouter from "../routes/organizationRoutes.js";
-import authorizationRouterouter from "../routes/authorizationRoutes.js";
-import organizationRouter from "..routes/userRoutes.js";
+import organizationRouter from "../routes/organizationRoute.js";
+import authorizationRouter from "../routes/authorizationRoute.js";
+import organizationRouter from "..routes/userRoute.js";
 
 
 
