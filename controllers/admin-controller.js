@@ -16,5 +16,6 @@ const createInvite = asyncHandler(async(req,res) =>
 
 export{
     createInvite,
+    createAdmin,
 
 }
