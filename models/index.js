@@ -1,5 +1,6 @@
-import { dev_dbconfig } from "../config/dbconfig.js";
+import mysql2 from "mysql2";
 
+import { dev_dbconfig } from "../config/dbconfig.js";
 import { Sequelize, DataTypes } from "sequelize";
 
 const sequelize = new Sequelize(
@@ -9,6 +10,7 @@ const sequelize = new Sequelize(
   {
     host: dev_dbconfig.HOST,
     dialect: dev_dbconfig.dialect,
+    dialectModule: mysql2,
     pool: {
       max: dev_dbconfig.pool.max,
       min: dev_dbconfig.pool.min,
