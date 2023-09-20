@@ -8,7 +8,7 @@ import lunchRouter from "../routes/lunchRoute.js";
 import withdrawalRouter from "../routes/withdrawalRoute.js";
 import organizationRouter from "../routes/organizationRoute.js";
 import authorizationRouter from "../routes/authorizationRoute.js";
-import userRoute from "..routes/userRoute.js";
+import userRouter from "../routes/userRoute.js";
 
 
 
