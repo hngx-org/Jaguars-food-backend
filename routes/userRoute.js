@@ -9,8 +9,8 @@ const router = express.Router();
 // } from "./yourControllerModule"; // Replace "yourControllerModule" with the actual path to your controller module
 
 // Define routes and associate them with controller functions
-router.get('/profile', getOrganizationProfile);
-router.post('/bank', addBankAccount);
+router.get('/user/profile', getOrganizationProfile);
+router.post('user/bank', addBankAccount);
 router.get('/users', getAllUsers);
 
 export default router;

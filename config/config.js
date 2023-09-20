@@ -22,11 +22,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+
+app.use('/api', userRouter);
 app.use('/api/lunch', lunchRouter);
 app.use('/api/withdrawal', withdrawalRouter);
 app.use('/api/organization', organizationRouter);
 app.use('/api/auth', authorizationRouter);
-app.use('/api/user', userRouter);
+
 
 export const PORT = process.env.PORT || 4000;
 
