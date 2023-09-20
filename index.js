@@ -1,9 +1,11 @@
 import app, { PORT } from "./config/config.js";
 
-const startApp = async () => {
-  app.listen(PORT, () => {
-    console.log(`Server started at port ${PORT}`);
-  });
-};
+import { sequelize, connectToDatabase } from "./models/index.js";
 
-startApp();
+connectToDatabase().then(() => {
+  console.log("Database connection successful.");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server started at port ${PORT}`);
+});
