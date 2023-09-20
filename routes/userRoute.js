@@ -1,16 +1,20 @@
-import express from "express";
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
+import {
+  getUserProfile,
+  getAllUsers,
+  addUserBank,
+  searchUser,
+} from "../controllers/users-controller.js";
 
-// Import your controller functions for handling the routes
-// import {
-//   getOrganizationProfile,
-//   addBankAccount,
-//   getAllUsers
-// } from "./yourControllerModule"; // Replace "yourControllerModule" with the actual path to your controller module
 
-// Define routes and associate them with controller functions
-router.get('/user/profile', getOrganizationProfile);
-router.post('user/bank', addBankAccount);
+// Get the user profile
+router.get("/user/profile", getUserProfile)
+// Add bank account
+router.post('/user/bank', addUserBank);
+// Get all users
 router.get('/users', getAllUsers);
+
+router.get('/search/:nameoremail', searchUser);
 
 export default router;
