@@ -2,11 +2,9 @@ import { Router } from "express";
 const router = Router();
 import {
   getUserProfile,
-  editUserProfile,
   getAllUsers,
   addUserBank,
   searchUser,
-  createWithdrawal,
 } from "../controllers/users-controller.js";
 
 
@@ -20,4 +18,6 @@ router.route("/user")
 router.get('/users', getAllUsers);
 
 router.get('/api/search/:nameoremail', searchUser);
+
+module.exports = router;
 
