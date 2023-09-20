@@ -71,11 +71,20 @@ npm run dev
 
 
 
-<!-- ### API Endpoints
+ ### API Endpoints
 
-| HTTP Verbs | Endpoints            | Action                                 |
-| ---------- | -------------------- | -------------------------------------- |
-Upcoming -->
+| HTTP Verbs | Endpoints | Action                                  |
+| ---------- | --------- | --------------------------------------- |
+| POST       | /api/auth/user/signup      | To add a new organization|
+| POST        | /api/organization/create        | To get list of users                    |
+| GET        | /api/:id  | To retrieve details of a single user    |
+| GET        | /api     | To retrieve details of a single user using params attached to request body    |
+| PATCH      | /api/:id  | To edit the details of a single user    |
+| DELETE     | /api/:id  | To delete a single user                 |
+| PATCH      | /api/:id  | To edit the details of a single user    |
+| PUT        | /api/:id  | To replace the details of a single user |
+
+
 
 ### Tech Stack
 
