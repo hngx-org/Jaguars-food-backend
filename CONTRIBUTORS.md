@@ -14,4 +14,6 @@ To get started, follow these steps:
    git clone https://github.com/<your-username>/<repository-name>.git
 
 ## Names of contibutors 
-1.Oni Oluwatomiwa : [26thavenue](https://github.com/26thavenue)
+
+1.Oni Oluwatomiwa : [26thavenue](https://github.com/26thavenue) Slack Name: Oluwatomiwa Oni
+2. Ejiofor Emmanuel Whyte : [kalwhyte](https://github.com/kalwhyte) Slack name: Ejiofor Emmanuel Whyte
