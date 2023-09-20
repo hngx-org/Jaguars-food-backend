@@ -2,6 +2,7 @@ import mysql2 from "mysql2";
 
 import { dev_dbconfig } from "../config/dbconfig.js";
 import { Sequelize, DataTypes } from "sequelize";
+import { OrganizationModel } from "./organization/organizationModel.js";
 
 const sequelize = new Sequelize(
   dev_dbconfig.DB,
@@ -24,4 +25,10 @@ const connectToDatabase = () => {
   return sequelize.authenticate();
 };
 
-export { sequelize, connectToDatabase };
+const syncDB = () => {
+  return OrganizationModel.sync();
+};
+
+
+
+export { sequelize, connectToDatabase, syncDB };

@@ -17,6 +17,10 @@ import authenticationRoute from "../routes/authenticationRoute.js";
 import userRoute from "../routes/userRoute.js";
 import errHandler from "../middlewares/errHandler.js";
 import notFound from "../middlewares/notFound.js"
+import organizationRoute from "../routes/organizationRoute.js";
+
+
+
 
 const app = express();
 dotenv.config();
@@ -37,6 +41,7 @@ app.use('/api/', inviteRouter);
 app.use('/api/lunch', lunchRoute);
 app.use('/api/withdrawal', withdrawalRoute);
 app.use('/api', userRoute);
+app.use('/api/organization', organizationRoute);
 app.use('/api/auth', authenticationRoute)
 
 

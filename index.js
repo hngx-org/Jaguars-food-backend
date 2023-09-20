@@ -1,8 +1,9 @@
 import app, { PORT } from "./config/config.js";
 
-import { sequelize, connectToDatabase } from "./models/index.js";
+import { sequelize, connectToDatabase, syncDB } from "./models/index.js";
 
 connectToDatabase().then(() => {
+  syncDB();
   console.log("Database connection successful.");
 });
 
