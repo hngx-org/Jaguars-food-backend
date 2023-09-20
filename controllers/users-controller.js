@@ -34,6 +34,7 @@ const searchUser = asyncHandler(async(req,res) =>
 //CREATE WITHDRAWAL REQUEST
 const createWithdrawal= asyncHandler(async(req,res) =>
 {
+    const userId = req.user.id;
     try {
         const lunchId = req.body.id; // Assume that the lunch's id is being passed in the body
         const lunch = await Lunch.findOne({where: { id: lunchId, userId: userId }});
