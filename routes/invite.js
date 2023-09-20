@@ -44,6 +44,7 @@ function generateInvitationToken(email, secretKey) {
   const token = crypto.createHmac('sha256', secretKey).update(hashedData).digest('hex');
   return token;
 }
+// const secretKey = crypto.randomBytes(32).toString('hex');// generate secret key. Save secret key in .env file and delete this line of code. 
 
 // Helper function to save invitation details to a database
 function saveInvitationToDatabase(email, invitationToken) {
