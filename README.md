@@ -31,8 +31,6 @@ Free Lunch App
     git checkout -b tayoakosile-signup
     ```
 
-## Pre-requisites
-- Install [Node.js](https://nodejs.org/en/) v18.14.0
 
 ## Environment Variables  
 
@@ -42,6 +40,45 @@ To run this project, you will need to:
 - Add the following environment variables to your .env file  
 
     * -`PORT`   
+
+
+
+### Setting Up Sequelize and MySQL Locally
+This guide provides step-by-step instructions to set up Sequelize, a Node.js ORM, and MySQL on your local machine (Windows/Mac). These steps will allow you to connect to a MySQL database and run provided code seamlessly.
+
+## Prerequisites
+- Node.js and npm installed on your machine. [Install Node.js and npm](https://nodejs.org/)
+## 1. Installing MySQL Server
+### Windows
+1. Download the MySQL Installer for Windows from the official MySQL website.
+2. Run the downloaded installer and follow the on-screen instructions to install MySQL.
+3. During installation, you will be prompted to set a root password. Make sure to remember this password, as you will need it later.
+### Mac
+1. Download the MySQL Community Server DMG for macOS from the official MySQL website.
+2. Run the downloaded DMG file and follow the on-screen instructions to install MySQL.
+3. During installation, you will be prompted to set a root password. Make sure to remember this password, as you will need it later.
+## 2. Starting the MySQL Server
+### Windows
+- Open MySQL Workbench or use the MySQL command-line client to start the server.
+### Mac
+- Open a terminal and start the MySQL server using the following command:
+  ```bash
+  sudo mysql.server start
+  ```
+## 3. Setting Up Sequelize
+1. Create a new Node.js project or navigate to an existing one.
+2. Install Sequelize and MySQL2 package using npm (Node Package Manager):
+   ```bash
+   npm install sequelize mysql2
+   ```
+## 3. Running the Code
+- Use the provided code to interact with the MySQL database using Sequelize.
+## Troubleshooting
+- If you encounter any issues during setup or code execution, refer to the MySQL and Sequelize documentation or seek assistance from the team.
+---
+Feel free to customize this documentation based on your specific project requirements and provide additional details or instructions as needed
+    
+    
 ## Run Locally
 
 Clone the project
@@ -71,18 +108,12 @@ npm run dev
 
 
 
- ### API Endpoints
+<!-- ### API Endpoints
 
-| HTTP Verbs | Endpoints | Action                                  |
-| ---------- | --------- | --------------------------------------- |
-| POST       | /api/auth/user/signup      | To add a new organization|
-| POST        | /api/organization/create        | To get list of users                    |
-| GET        | /api/:id  | To retrieve details of a single user    |
-| GET        | /api     | To retrieve details of a single user using params attached to request body    |
-| PATCH      | /api/:id  | To edit the details of a single user    |
-| DELETE     | /api/:id  | To delete a single user                 |
-| PATCH      | /api/:id  | To edit the details of a single user    |
-| PUT        | /api/:id  | To replace the details of a single user |
+| HTTP Verbs | Endpoints            | Action                                 |
+| ---------- | -------------------- | -------------------------------------- |
+Upcoming -->
+
 
 
 
