@@ -1,5 +1,9 @@
 import app, { PORT } from "./config/config.js";
 
-app.listen(PORT, () => {
-  console.log(`Server started at port ${PORT}`);
-});
+const startApp = async () => {
+  app.listen(PORT, () => {
+    console.log(`Server started at port ${PORT}`);
+  });
+};
+
+startApp();
