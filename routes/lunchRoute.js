@@ -19,6 +19,7 @@ router.get('/:id', getLunch);
 router.get('/all', getAllLunches);
 
 // Redeem a lunch
-router.put('/redeem/:id', redeemUserLunch);
+//no need for this endpoint again
+//router.put('/redeem/:id', redeemUserLunch);
 
 export default router;
