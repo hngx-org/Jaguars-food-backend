@@ -1,7 +1,11 @@
 import express from "express";
 import crypto from "crypto";
-import { configDotenv } from "dotenv";
+// import { OrganizationInvites } from "../models/Organization-invite-model";
+import dotenv from "dotenv";
+dotenv.config();
+
 const router = express.Router();
+router.use(express.json())
 
 // Authentication middleware to ensure only admin users can access the endpoint
 function adminAuthMiddleware(req, res, next) {
@@ -28,21 +32,25 @@ router.post(`/organizations/invite`, adminAuthMiddleware, (req, res) => {
   // Returning  a success response
   res.json({ message: 'Invitation sent successfully' });
 });
-
+// router.post('/token', (req,res)=>{
+//   const body=req.body
+//   const email= OrganizationInvites.create(body)
+//   res.status(200).json({data:email})
+//  })
 
 // Helper function to generate a unique invitation token
-function generateInvitationToken() {
+function generateInvitationToken(email, secretKey) {
   // Implement logic to generate a unique invitation token
   // This token can be used to identify and verify the invitation when accepting it
-  const secretKey = configDotenv(process.env.TOKEN_SECRET_KEY)
-  const dataToHash = `${user.email}${Date.now()}`;
+  const timestamp = Date.now();
+  const dataToHash = `${email}${timestamp}`;
   const token = crypto.createHmac('sha256', secretKey).update(dataToHash).digest('hex');
-  console.log(secretKey)
-  console.log(token)
   return token;
-  
 }
-generateInvitationToken()
+
+
+
+console.log(generateInvitationToken(email, secretKey))
 
 // Helper function to save invitation details to a database
 function saveInvitationToDatabase(email, invitationToken) {
