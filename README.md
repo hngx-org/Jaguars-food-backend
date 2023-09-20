@@ -43,7 +43,7 @@ To run this project, you will need to:
 
 
 
-### Setting Up Sequelize and MySQL Locally
+## Setting Up Sequelize and MySQL Locally
 This guide provides step-by-step instructions to set up Sequelize, a Node.js ORM, and MySQL on your local machine (Windows/Mac). These steps will allow you to connect to a MySQL database and run provided code seamlessly.
 
 ## Prerequisites
@@ -64,23 +64,8 @@ This guide provides step-by-step instructions to set up Sequelize, a Node.js ORM
 - Open a terminal and start the MySQL server using the following command:
   ```bash
   sudo mysql.server start
-  ```
-## 3. Setting Up Sequelize
-1. Create a new Node.js project or navigate to an existing one.
-2. Install Sequelize and MySQL2 package using npm (Node Package Manager):
-   ```bash
-   npm install sequelize mysql2
-   ```
-## 3. Running the Code
-- Use the provided code to interact with the MySQL database using Sequelize.
-## Troubleshooting
-- If you encounter any issues during setup or code execution, refer to the MySQL and Sequelize documentation or seek assistance from the team.
----
-Feel free to customize this documentation based on your specific project requirements and provide additional details or instructions as needed
-    
-    
+  ```    
 ## Run Locally
-
 Clone the project
 
 ```bash
@@ -104,6 +89,8 @@ Start the dev server
 ```bash
 npm run dev
 ```
+## Troubleshooting
+- If you encounter any issues during setup or code execution, refer to the MySQL and Sequelize documentation or seek assistance from the team.    
 
 
 
@@ -119,8 +106,8 @@ Upcoming -->
 
 ### Tech Stack
 
-
-
 - [NodeJS](https://nodejs.org/) This is a cross-platform runtime environment built on Chrome's V8 JavaScript engine used in running JavaScript codes on the server. It allows for installation and managing of dependencies and communication with databases.
 - [ExpressJS](https://www.expresjs.org/) This is a NodeJS web application framework.
 - [Sequelite ORM](https://sequelize.org) This is a promise-based Node.js ORM tool for Postgres.
+- [joi](https://joi.dev)  Schema description language and data validator 
+- [mysql2](https://mysql.com)  MySQL2 is the MySQL connector library used by Sequelize to connect to the MySQL db server.
