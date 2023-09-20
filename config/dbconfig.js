@@ -1,4 +1,4 @@
-module.exports = {
+export const dev_dbconfig = {
   HOST: "localhost",
   USER: "root",
   PASSWORD: "",
