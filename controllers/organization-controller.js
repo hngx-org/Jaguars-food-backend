@@ -5,15 +5,13 @@ import { OrganizationModel as orgModel } from "../models/organization/organizati
 /// THIS IS TO CREATE AN ORGANIZATION
 const createOrganization = asyncHandler(async (req, res) => {
     const { organization_name, lunch_price, currency_code } = req.body;
-    try {
-        orgModel.findOne({
-            where: { organization_name }
-        }).then(async (result) => {
-            if (result) return res.status(400).send({
-                message: "Organization Exists",
-                errorMessage: `${organization_name} exists try using another name`
-            });
-
+    const isTokenValid = true;
+    if (!isTokenValid) 
+    /// Izuagie
+    /// Get token from header and make use of the jwt middleware
+    /// to verify if token is valid
+    
+        try {
             await orgModel.create({
                 organization_name: organization_name,
                 currency_code: currency_code ?? "NGN",
@@ -28,22 +26,17 @@ const createOrganization = asyncHandler(async (req, res) => {
             }).catch((error) => {
                 return res.status(504).send({
                     message: "An Error Occured",
-                    errorMessage: error.message
+                    errorMessage: `${organization_name} exists try using another name`
                 });
             });
-        }).catch((error) => {
+    
+        } catch (error) {
             return res.status(504).send({
                 message: "An Error Occured",
                 errorMessage: error.message
             });
-        })
-
-    } catch (error) {
-        return res.status(504).send({
-            message: "An Error Occured",
-            errorMessage: error.message
-        });
-    }
+        }
+    
 })
 
 export {
