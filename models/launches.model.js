@@ -2,8 +2,8 @@ import { sequelize } from "./index.js";
 
 import { DataTypes } from "sequelize";
 
-const Withdrawals = sequelize.define(
-  "withdrawals",
+const Launches = sequelize.define(
+  "launches",
   {
     id: {
       allowNull: false,
@@ -12,16 +12,30 @@ const Withdrawals = sequelize.define(
       type: DataTypes.INTEGER,
     },
 
-    user_id: {
+    org_id: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    status: {
+    senderId: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    amount: {
+    receiverId: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+
+    quantity: {
       type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
+    redeemed: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    note: {
+      type: DataTypes.TEXT,
       allowNull: false,
     },
   },
