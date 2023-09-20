@@ -2,6 +2,9 @@ import { sequelize } from "./index.js";
 
 import { DataTypes } from "sequelize";
 
+import { User } from "./user.model.js";
+import { Organizations } from "./organization.model.js";
+
 const Launches = sequelize.define(
   "launches",
   {
@@ -13,15 +16,15 @@ const Launches = sequelize.define(
     },
 
     org_id: {
-      type: DataTypes.TEXT,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     senderId: {
-      type: DataTypes.TEXT,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     receiverId: {
-      type: DataTypes.TEXT,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
 
@@ -45,4 +48,10 @@ const Launches = sequelize.define(
   }
 );
 
-export { Withdrawals };
+Launches.belongsTo(User, { foreignKey: "receiverId" });
+
+Launches.belongsTo(User, { foreignKey: "senderId" });
+
+Launches.belongsTo(Organizations, { foreignKey: "org_id" });
+
+export { Launches };

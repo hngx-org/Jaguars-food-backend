@@ -15,6 +15,12 @@ import authenticationRoute from "../routes/authenticationRoute.js";
 import userRoute from "../routes/userRoute.js";
 import errHandler from "../middlewares/errHandler.js";
 import notFound from "../middlewares/notFound.js";
+import { OrganizationInvites } from "../models/organization_invites.model.js";
+import { User } from "../models/user.model.js";
+import { Organizations } from "../models/organization.model.js";
+import { Withdrawals } from "../models/withdrawals.model.js";
+import { OrganizationLunchWallet } from "../models/organization_launch_wallet.model.js";
+import { Launches } from "../models/launches.model.js";
 
 const app = express();
 dotenv.config();
@@ -39,5 +45,19 @@ app.use(notFound);
 app.use(errHandler);
 
 export const PORT = process.env.PORT || 4000;
+
+export async function syncDB() {
+  try {
+    await Organizations.sync({ alter: true });
+    await User.sync({ alter: true });
+    await OrganizationInvites.sync({ alter: true });
+    await Withdrawals.sync({ alter: true });
+    await OrganizationLunchWallet.sync({ alter: true });
+    await Launches.sync({ alter: true });
+    console.log("Tables Synced sucessfully");
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export default app;

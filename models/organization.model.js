@@ -2,10 +2,8 @@ import { sequelize } from "./index.js";
 
 import { DataTypes } from "sequelize";
 
-import { User } from "./user.model.js";
-
-const Withdrawals = sequelize.define(
-  "withdrawals",
+const Organizations = sequelize.define(
+  "organizations",
   {
     id: {
       allowNull: false,
@@ -14,15 +12,16 @@ const Withdrawals = sequelize.define(
       type: DataTypes.INTEGER,
     },
 
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    status: {
+    name: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    amount: {
+    lauch_price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
+    currency: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -33,6 +32,4 @@ const Withdrawals = sequelize.define(
   }
 );
 
-Withdrawals.belongsTo(User, { foreignKey: "user_id" });
-
-export { Withdrawals };
+export { Organizations };

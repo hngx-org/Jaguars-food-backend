@@ -3,9 +3,10 @@ import { sequelize } from "./index.js";
 import { DataTypes } from "sequelize";
 
 import { User } from "./user.model.js";
+import { Organizations } from "./organization.model.js";
 
-const Withdrawals = sequelize.define(
-  "withdrawals",
+const OrganizationInvites = sequelize.define(
+  "organization_invites",
   {
     id: {
       allowNull: false,
@@ -14,16 +15,25 @@ const Withdrawals = sequelize.define(
       type: DataTypes.INTEGER,
     },
 
-    user_id: {
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isEmail: true,
+      },
+      unique: true,
+    },
+    org_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    status: {
-      type: DataTypes.TEXT,
+
+    token: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    amount: {
-      type: DataTypes.INTEGER,
+    TTL: {
+      type: DataTypes.DATE,
       allowNull: false,
     },
   },
@@ -33,6 +43,9 @@ const Withdrawals = sequelize.define(
   }
 );
 
-Withdrawals.belongsTo(User, { foreignKey: "user_id" });
+OrganizationInvites.belongsTo(Organizations, {
+  foreignKey: "org_id",
+  as: "organization",
+});
 
-export { Withdrawals };
+export { OrganizationInvites };

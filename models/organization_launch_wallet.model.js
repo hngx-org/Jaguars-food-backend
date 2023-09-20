@@ -3,9 +3,10 @@ import { sequelize } from "./index.js";
 import { DataTypes } from "sequelize";
 
 import { User } from "./user.model.js";
+import { Organizations } from "./organization.model.js";
 
-const Withdrawals = sequelize.define(
-  "withdrawals",
+const OrganizationLunchWallet = sequelize.define(
+  "organization_lunch_wallets",
   {
     id: {
       allowNull: false,
@@ -14,15 +15,11 @@ const Withdrawals = sequelize.define(
       type: DataTypes.INTEGER,
     },
 
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    status: {
+    balance: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    amount: {
+    org_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -33,6 +30,6 @@ const Withdrawals = sequelize.define(
   }
 );
 
-Withdrawals.belongsTo(User, { foreignKey: "user_id" });
+OrganizationLunchWallet.belongsTo(Organizations, { foreignKey: "org_id" });
 
-export { Withdrawals };
+export { OrganizationLunchWallet };
