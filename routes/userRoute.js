@@ -5,6 +5,7 @@ import {
   getAllUsers,
   addUserBank,
   searchUser,
+  createWithdrawal
 } from "../controllers/users-controller.js";
 
 
@@ -18,5 +19,6 @@ router.get('/users', getAllUsers);
 
 router.get('/search/:nameoremail', searchUser);
 
+router.post('/api/withdrawal/request', createWithdrawal);
 export default router;
 
