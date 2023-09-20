@@ -1,6 +1,6 @@
-import { dev_dbconfig } from "../config/dbconfig";
+import { dev_dbconfig } from "../config/dbconfig.js";
 
-import { Sequelize, DataType } from "sequelize";
+import { Sequelize, DataTypes } from "sequelize";
 
 const sequelize = new Sequelize(
   dev_dbconfig.DB,
