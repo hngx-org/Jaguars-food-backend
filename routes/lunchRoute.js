@@ -3,7 +3,6 @@ import {
   createLunch,
   getLunch,
   getAllLunches,
-  redeemUserLunch,
 } from "../controllers/lunch-controller.js";
 
 const router = Router();
