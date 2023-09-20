@@ -6,6 +6,10 @@ connectToDatabase().then(() => {
   console.log("Database connection successful.");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server started at port ${PORT}`);
-});
+const startApp = async () => {
+  app.listen(PORT, () => {
+    console.log(`Server started at port ${PORT}`);
+  });
+};
+
+startApp();

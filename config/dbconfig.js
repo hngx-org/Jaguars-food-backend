@@ -1,8 +1,8 @@
 export const dev_dbconfig = {
-  HOST: "127.0.0.1",
-  USER: "root",
-  PASSWORD: "",
-  DB: "jaguar_food_app",
+  HOST: process.env.MYSQL_ADDON_HOST || "127.0.0.1",
+  USER: process.env.MYSQL_ADDON_USER || "root",
+  PASSWORD: process.env.MYSQL_ADDON_PASSWORD || "",
+  DB: process.env.MYSQL_ADDON_DB || "jaguar_food_app",
   dialect: "mysql",
 
   pool: {
