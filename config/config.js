@@ -6,9 +6,6 @@ import dotenv from "dotenv";
 import router from "../routes/router.js";
 import lunchRouter from "../routes/lunchRoute.js";
 import withdrawalRouter from "../routes/withdrawalRoute.js";
-import organizationRouter from "../routes/organizationRoutes.js";
-import authorizationRouterouter from "../routes/authorizationRoutes.js";
-import organizationRouter from "..routes/userRoutes.js";
 
 
 
@@ -24,9 +21,6 @@ app.use(morgan("dev"));
 
 app.use('/api/lunch', lunchRouter);
 app.use('/api/withdrawal', withdrawalRouter);
-app.use('/api/organization', organizationRouter);
-app.use('/api/auth', authorizationRouter);
-app.use('/api/user', userRouter);
 
 export const PORT = process.env.PORT || 4000;
 
