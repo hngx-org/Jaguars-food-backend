@@ -1,5 +1,5 @@
 import {Router} from "express";
-import { createWithdrawal } from "../controllers/users-controller";
+import { createWithdrawal } from "../controllers/users-controller.js";
 
 const router = Router();
 
@@ -7,4 +7,4 @@ const router = Router();
 router.post('/request', createWithdrawal)
 
 
-module.exports = router;
+export default router;

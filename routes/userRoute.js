@@ -8,16 +8,15 @@ import {
 } from "../controllers/users-controller.js";
 
 
-router.route("/user")
 // Get the user profile
-.get("/profile", getUserProfile)
+router.get("/user/profile", getUserProfile)
 // Add bank account
-.post('/bank', addUserBank);
+router.post('/user/bank', addUserBank);
 
 // Get all users
 router.get('/users', getAllUsers);
 
-router.get('/api/search/:nameoremail', searchUser);
+router.get('/search/:nameoremail', searchUser);
 
-module.exports = router;
+export default router;
 

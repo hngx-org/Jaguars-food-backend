@@ -4,7 +4,7 @@ import {
   getLunch,
   getAllLunches,
   redeemUserLunch,
-} from "../controllers/lunch-controller";
+} from "../controllers/lunch-controller.js";
 
 const router = Router();
 
@@ -21,4 +21,4 @@ router.get('/all', getAllLunches);
 // Redeem a lunch
 router.put('/redeem/:id', redeemUserLunch);
 
-module.exports = router;
+export default router;
