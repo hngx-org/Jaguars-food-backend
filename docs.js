@@ -148,12 +148,116 @@ const options = {
         },
         security: [
           {
-            BasicAuth: [], 
+            BasicAuth: [],
           },
           {
             BearerAuth: [],
           },
         ],
+      },
+    },
+    "/api/auth/user/signup": {
+      post: {
+        summary: "User Signup",
+        description: "Register a new user.",
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  email: {
+                    type: "string",
+                    format: "email",
+                    example: "user@example.com",
+                  },
+                  password: {
+                    type: "string",
+                    example: "password123",
+                  },
+                  first_name: {
+                    type: "string",
+                    example: "John",
+                  },
+                  last_name: {
+                    type: "string",
+                    example: "Doe",
+                  },
+                  phone_number: {
+                    type: "string",
+                    example: "123-456-7890",
+                  },
+                },
+                required: ["email", "password"],
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "User successfully registered",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "User registered successfully",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 200,
+                    },
+                    data: {
+                      type: "object",
+                      properties: {
+                        user_id: {
+                          type: "string",
+                          example: "123456789",
+                        },
+                      },
+                    },
+                  },
+                  required: ["message", "statusCode", "data"],
+                },
+                example: {
+                  message: "User registered successfully",
+                  statusCode: 200,
+                  data: {
+                    user_id: "123456789",
+                  },
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad Request: Invalid input data",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Bad Request: Invalid input data",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 400,
+                    },
+                  },
+                },
+                example: {
+                  message: "Bad Request: Invalid input data",
+                  statusCode: 400,
+                },
+              },
+            },
+          },
+          //  add more response codes and descriptions as needed
+        },
       },
     },
     // Add more API paths here
