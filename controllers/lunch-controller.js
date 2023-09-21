@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import { Lunches } from "../models/lunches.model";
+import { Lunches } from "../models/lunches.model.js";
 
 
 //SEND A LUNCH
@@ -36,11 +36,19 @@ const getLunch = asyncHandler(async(req,res) =>
 })
 
 //GET ALL LUNCHES
-const getAllLunches = asyncHandler(async(req,res) =>
-{
+const getAllLunches = asyncHandler(async(req,res) =>{
+  try {
+        
+        const allLunch = await Lunches.findAll();
+        if (!allLunch) {
+          return res.status(400).json({ error: 'Error getting lunches' });
+        }
+        res.status(200).json({ allLunch });
+      } catch (error) {throw new Error('Internal Server Error');
+      }
+
 
 })
-
 
 
 export{
