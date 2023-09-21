@@ -1,14 +1,14 @@
-const express = require ("express");
+import express from 'express';
+// import {
+// 	createAdmin,
+// 	logInAdmin,
+// } from '../controllers/auth/userSignUpController.js';
+
 const router = express.Router();
-const {
-  createAdmin,
-  logInAdmin
-} = require("../controllers/auth/userSignUpController");
 //ADMIN SIGN UP ROUTE
-router.route('/user/signup').post(createAdmin)
-   
+// router.route('/user/signup').post(createAdmin);
 
 // ADMIN LOGIN ROUTE
-router.route('/login').post(logInAdmin);
+// router.route('/login').post(logInAdmin);
 
 export default router;
