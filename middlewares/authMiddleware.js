@@ -8,8 +8,8 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
 
       if (!token) throw new Error("Unauthorized");
 
-      const id = await verifyToken(token);
-      req.user = { id };
+      const data = await verifyToken(token);
+      req.user = data;
       next();
     } else {
       throw new Error("Unauthorized! no token in header");

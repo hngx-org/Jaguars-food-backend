@@ -1,10 +1,14 @@
-import {Router} from 'express';
-const router = Router();
+import express from 'express';
+// import {
+// 	createAdmin,
+// 	logInAdmin,
+// } from '../controllers/auth/userSignUpController.js';
 
-// SIGN UP ROUTE
-router.post('/user/signup');
+const router = express.Router();
+//ADMIN SIGN UP ROUTE
+// router.route('/user/signup').post(createAdmin);
 
-// LOGIN ROUTE
-router.post('/login');
+// ADMIN LOGIN ROUTE
+// router.route('/login').post(logInAdmin);
 
 export default router;
