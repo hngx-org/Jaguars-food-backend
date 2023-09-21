@@ -1,6 +1,7 @@
-import { Router } from "express";
+import { Router } from 'express';
+import { createAdmin, createInvite } from '../controllers/admin-controller.js';
+import isAdmin from '../middlewares/isAdmin.js';
 const router = Router();
-import { createAdmin,createInvite } from "../controllers/admin-controller";
 
 router.post('/organization/create', createAdmin);
 router.post('/organization/invite', createInvite);

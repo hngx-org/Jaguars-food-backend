@@ -1,107 +1,63 @@
 //Admin or organization
-import asyncHandler from "express-async-handler";
-import express from "express";
-import crypto from "crypto";
-import dotenv from "dotenv";
-import nodemailer from 'nodemailer';
-
+import asyncHandler from 'express-async-handler';
+import express from 'express';
+import crypto from 'crypto';
+import dotenv from 'dotenv';
+import { getToken } from '../utils/tokens.js';
+import transporter from '../config/mailconfig.js';
+import { OrganizationInvites } from '../models/Organization-invite-model.js';
 const router = express.Router();
 dotenv.config();
 
-//importing isAdmin to check if organization is an Admin 
-import isAdmin from "../middlewares/isAdmin"
-import {getToken ,verifyToken} from "../utils/tokens"
-
-
-
-const createAdmin = asyncHandler(async(req,res) =>
-{
-
-})
-
-const createInvite = asyncHandler(async(req,res) =>
-{
-
-})
-
-// API endpoint for sending an invitation
-router.post(`/api/organizations/invite`, isAdmin, (req, res) => { 
-  const { email } = req.body;
-
-  
-  const secretKey = process.env.JWT_SECRET;
-  // Generate a unique invitation token
-  generateInvitationToken(email, secretKey)
-    .then((invitationToken) => {
-      // Verify the invitation token
-      verifyToken(invitationToken, secretKey)
-        .then(() => {
-          // Sending invitation email
-          sendInvitationEmail(email, invitationToken);
-
-          // Returning a success response
-          res.json('Invitation sent successfully');
-        })
-        .catch((error) => {
-          console.error('Error verifying invitation token:', error);
-          res.status(500).json('Failed to generate invitation token. Please try again.');
-        });
-    })
-    .catch((error) => {
-      console.error('Error generating invitation token:', error);
-      res.status(500).json('Failed to generate invitation token. Please try again.');
-    });
+const createAdmin = asyncHandler(async (req, res) => {
+    //
 });
 
-  
+const createInvite = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    // Generate a unique invitation token
+    const invitationToken = await generateInvitationToken(email);
 
-// Helper function to generate a unique invitation token
-//function generateInvitationToken(email, secretKey) {
+    // Send the invitation email
+    sendInvitationEmail(email, invitationToken);
+    res.json({ message: 'Invitation sent successfully' });
+});
 
-//  const dateStamp = Date.now();
-//  const hashedData = `${email}${dateStamp}`;
-//  const token = crypto.createHmac('sha256', secretKey).update(hashedData).digest('hex');
-//  return token;
-//}
-// const secretKey = crypto.randomBytes(32).toString('hex');// generate secret key. Save secret key in .env file and delete this line of code. 
+async function generateInvitationToken(email) {
+    // Generate a random 6-digit number
+    const generatedToken = crypto.randomInt(100000, 1000000);
+    const jwt_token = await getToken(generatedToken);
 
-// Helper function to save invitation details to a database
-//function saveInvitationToDatabase(email, invitationToken) {
-// Implement  logic to save the invitation details to a database
-//}
+    // Save the generated token to the database
+    const token = await OrganizationInvites.findOne({ where: { email: email } });
+    if (token) {
+        await OrganizationInvites.update({ email: email, token: jwt_token });
+    } else {
+        await OrganizationInvites.create({ email: email, token: jwt_token });
+    }
 
-//function to send the invitation email
-function sendInvitationEmail(email, generateInvitationToken) {
-// Implement y logic to send the invitation email using a library like Nodemailer or 
-//third-party service
+    return generatedToken;
 }
 
+// function to send the invitation email
+function sendInvitationEmail(email, invitationToken) {
+    console.log('Token:', invitationToken);
+    const mailOptions = {
+        from: process.env.MAIL_FROM_ADDRESS,
+        to: email,
+        subject: 'Invitation to join Jaguar Food App',
+        html: `<p>You have been invited to join Jaguar Food App. Use the token below to create your account.</p>
+				<p>Token: ${invitationToken}</p>
+				`,
+    };
 
-function generateInvitationToken(email, secretKey) {
-  const userData = {
-    email: email,
-  };
-
-  return new Promise((resolve, reject) => {
-    getToken(userData)
-      .then((token) => {
-        
-        resolve(token);
-      })
-      .catch((error) => {
-        console.error("Error generating token:", error);
-        reject(error);
-      });
-  });
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log('Error sending email:', error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
 }
-function sendInvitationEmail(email, generateInvitationToken) {
-    
-   
-  }
 
-
-export{
-    createInvite,
-    createAdmin,
-
-}
+export { createInvite, createAdmin };
