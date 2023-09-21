@@ -52,7 +52,7 @@ function saveInvitationToDatabase(email, invitationToken) {
 }
 
 // Helper function to send the invitation email
-//FAVOUR CODES HERE 
+
 function sendInvitationEmail(email, invitationToken) {
   // Implement y logic to send the invitation email using a library like Nodemailer or 
   //third-party service
