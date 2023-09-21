@@ -42,7 +42,7 @@ const redeemUserLunch = asyncHandler(async (req, res) => {
       throw new Error('Insufficient balance');
     }
 
-    // update user balance
+    // update user balance for current user
     await User.update({ lunch_credit_balance: curBal - amount }, { where: { id: id } });
 
     // create a withdrawal table for the current user
