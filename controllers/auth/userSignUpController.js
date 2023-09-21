@@ -41,6 +41,18 @@ const userSignUp = asyncHandler(async(req,res) =>{
     }
   });
 
+  
+const adminSignUp =  asyncHandler(async(req,res) =>
+{
+
+})
+
+const userLogin =  asyncHandler(async(req,res) =>
+{
+
+})
+
+
 // Function to generate a hashed password
 async function generateHashedPassword(userPassword, saltRounds) {
   try {
@@ -61,5 +73,8 @@ async function generateHashedPassword(userPassword, saltRounds) {
 // }
 
 module.exports = {
-  userSignUp
+  userSignUp,
+  adminSignUp,
+  userLogin,
+  generateHashedPassword,
 };
