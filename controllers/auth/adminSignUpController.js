@@ -48,7 +48,7 @@ const createAdminSignUp = asyncHandler(async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500);
-    throw new Error("There is a problem with the server");
+    throw new Error("There is a problem with the server xxx");
   }
 });
 
