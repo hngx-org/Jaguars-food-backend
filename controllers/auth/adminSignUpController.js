@@ -33,7 +33,7 @@ const createAdminSignUp = asyncHandler(async (req, res) => {
     // Create a new user
     const newUser = await User.create({
       email,
-      password: hashedPassword,
+      password_hash: hashedPassword,
       first_name,
       last_name,
       phone_number,
@@ -52,4 +52,4 @@ const createAdminSignUp = asyncHandler(async (req, res) => {
   }
 });
 
-export default createAdminSignUp;
+export { createAdminSignUp };
