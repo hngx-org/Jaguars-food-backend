@@ -1,23 +1,27 @@
 module.exports = (sequelize, DataTypes) => {
-	const organization = sequelize.define('organization', {
+	const Invites = sequelize.define('organization_invites', {
 		id: {
 			allowNull: false,
 			autoIncrement: true,
 			primaryKey: true,
 			type: DataTypes.INTEGER,
 		},
-		name: {
+		email: {
 			allowNull: false,
 			type: DataTypes.STRING,
 		},
-		lunch_price: {
+		token: {
 			allowNull: false,
 			type: DataTypes.STRING,
 		},
-		currency: {
+		ttl: {
 			allowNull: false,
-			type: DataTypes.STRING,
+			type: DataTypes.DATE,
+		},
+		org_id: {
+			allowNull: false,
+			type: DataTypes.INTEGER,
 		},
 	});
-	return organization;
+	return Invites;
 };

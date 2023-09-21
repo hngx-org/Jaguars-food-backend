@@ -1,8 +1,7 @@
-import { userSignUp, adminSignUp, userLogin } from "./userSignUpController"
+const {
+	userSignUp,
+	adminSignUp,
+	userLogin,
+} = require('./userSignUpController');
 
-
-export {
-    userSignUp,
-    adminSignUp,
-    userLogin,
-}
+module.exports = { userSignUp, adminSignUp, userLogin };
