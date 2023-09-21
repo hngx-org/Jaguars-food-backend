@@ -1,3 +1,4 @@
-import { userSignUp, adminSignUp, userLogin } from "./userSignUpController";
+import { userSignUp } from "./userSignUpController.js";
+import { createAdminSignUp } from "./adminSignUpController.js";
 
-export { userSignUp, adminSignUp, userLogin };
+export { userSignUp, createAdminSignUp };

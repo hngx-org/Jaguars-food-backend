@@ -1,8 +1,6 @@
-import asyncHandler from 'express-async-handler';
-
+import asyncHandler from "express-async-handler";
 import { Lunches } from "../models/lunches.model.js";
 import { User } from "../models/user.model.js";
-
 
 //user is employee
 //GET USER PROFILE
@@ -17,7 +15,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -39,7 +37,7 @@ const editUserProfile = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -62,7 +60,7 @@ const addUserBank = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -77,8 +75,8 @@ const searchUser = asyncHandler(async (req, res) => {
   const nameOrEmail = req.params.nameoremail;
   const users = await User.find({
     $or: [
-      { name: { $regex: nameOrEmail, $options: 'i' } },
-      { email: { $regex: nameOrEmail, $options: 'i' } },
+      { name: { $regex: nameOrEmail, $options: "i" } },
+      { email: { $regex: nameOrEmail, $options: "i" } },
     ],
   });
   res.json(users);
@@ -95,10 +93,13 @@ const createWithdrawal = asyncHandler(async (req, res) => {
       accountNumber: req.body.accountNumber,
       accountName: req.body.accountName,
     };
-    const lunchId = req.body.lunchId; 
-     if (lunchId) {
+    const lunchId = req.body.lunchId;
+    if (lunchId) {
       // Update the status of the lunch from 'redeemed: false' to 'redeemed: true'
-      await Lunches.update({ redeemed: true }, { where: { id: lunchId, redeemed: false } });
+      await Lunches.update(
+        { redeemed: true },
+        { where: { id: lunchId, redeemed: false } }
+      );
     }
     user.withdrawals.push(withdrawal);
     const updatedUser = await user.save();
@@ -113,10 +114,9 @@ const createWithdrawal = asyncHandler(async (req, res) => {
   } else {
     // If user is not found (unauthenticated), return a 404 response with an error message
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
-
 
 export {
   getUserProfile,
