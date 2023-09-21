@@ -5,8 +5,21 @@ import { Lunches } from "../models/lunches.model";
 //SEND A LUNCH
 const createLunch = asyncHandler(async(req,res) =>
 {
-
-})
+  
+  try {
+    const userId = req.user.id;
+    const { receivers, quantity, note } = req.body;
+    const lunch = await Lunches.create({
+      senderId: userId, 
+      quantity,
+      note,
+    });
+    await lunch.setReceivers(receivers); 
+    return res.status(201).json({ message: 'Lunch created successfully.' });
+  } catch (error) {
+    throw new Error('Internal Server Error');
+  }
+  })
 
 //GET A LUNCH
 const getLunch = asyncHandler(async(req,res) =>
@@ -18,9 +31,7 @@ const getLunch = asyncHandler(async(req,res) =>
           return res.status(404).json({ error: 'Lunch not found' });
         }
         res.status(200).json({ lunch });
-      } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+      } catch (error) {throw new Error('Internal Server Error');
       }
 })
 
