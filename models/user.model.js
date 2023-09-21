@@ -47,7 +47,7 @@ const User = sequelize.define('users', {
 	},
 	isAdmin: {
 		type: DataTypes.BOOLEAN,
-		allowNull: false,
+		allowNull: true,
 		defaultValue: false,
 	},
 	launch_credit_balance: {
