@@ -1,10 +1,12 @@
 import express from "express";
 import cors from "cors";
-import joi from "joi";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import router from "../routes/router.js";
 
+import swaggerJsdoc from "swagger-jsdoc";
+import SwaggerUiExpress from "swagger-ui-express";
+
+import router from "../routes/router.js";
 import lunchRouter from "../routes/lunchRoute.js";
 import withdrawalRouter from "../routes/withdrawalRoute.js";
 import inviteRouter from "../routes/invite.js";
