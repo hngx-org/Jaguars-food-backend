@@ -7,7 +7,6 @@ import router from '../routes/router.js';
 // ROUTES
 import lunchRouter from '../routes/lunchRoute.js';
 import withdrawalRouter from '../routes/withdrawalRoute.js';
-import inviteRouter from '../routes/invite.js';
 import lunchRoute from '../routes/lunchRoute.js';
 import withdrawalRoute from '../routes/withdrawalRoute.js';
 import authenticationRoute from '../routes/authenticationRoute.js';
@@ -29,7 +28,7 @@ app.use(morgan('dev'));
 
 app.use('/api/lunch', lunchRouter);
 app.use('/api/withdrawal', withdrawalRouter);
-app.use('/api/', inviteRouter);
+
 
 app.use('/api/lunch', lunchRoute);
 app.use('/api/withdrawal', withdrawalRoute);
