@@ -1,4 +1,5 @@
-import { userSignUp, adminSignUp, userLogin } from "./userSignUpController";
+import { userSignUp, adminSignUp, userLogin } from "./userSignUpController"
+
 
 export {
     userSignUp,

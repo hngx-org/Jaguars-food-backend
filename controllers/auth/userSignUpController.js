@@ -72,7 +72,7 @@ async function generateHashedPassword(userPassword, saltRounds) {
 //   }
 // }
 
-module.exports = {
+export {
   userSignUp,
   adminSignUp,
   userLogin,
