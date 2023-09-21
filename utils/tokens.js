@@ -1,7 +1,6 @@
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
-const { JWT_SECRET } = process.env;
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv").config();
+let { JWT_SECRET } = process.env;
 
 //GetToken
 export const getToken = (data, exp) =>
