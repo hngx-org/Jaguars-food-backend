@@ -1,8 +1,6 @@
-import { userSignUp, adminSignUp, userLogin } from "./userSignUpController"
+import { staffSignUp } from "./userSignUpController.js"
 
 
 export {
-    userSignUp,
-    adminSignUp,
-    userLogin,
+    staffSignUp,
 }

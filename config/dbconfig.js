@@ -5,7 +5,7 @@ import { configDotenv } from "dotenv";
 export const dev_dbconfig = {
   HOST: process.env.MYSQL_ADDON_HOST || "127.0.0.1",
   USER: process.env.MYSQL_ADDON_USER || "root",
-  PASSWORD: process.env.MYSQL_ADDON_PASSWORD || "",
+  PASSWORD: process.env.MYSQL_ADDON_PASSWORD || "2002",
   DB: process.env.MYSQL_ADDON_DB || "jaguar_food_app",
   dialect: "mysql",
 

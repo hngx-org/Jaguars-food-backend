@@ -13,35 +13,35 @@ const User = sequelize.define('users', {
 
 	org_id: {
 		type: DataTypes.INTEGER,
-		allowNull: false,
+		allowNull: true,
 	},
 	first_name: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	last_name: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	profile_picture: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	email: {
 		type: DataTypes.STRING,
-		allowNull: false,
+		allowNull: true,
 		validate: {
 			isEmail: true,
 		},
 		unique: true,
 	},
-	phonenumber: {
+	phone_number: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	password_hash: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	isAdmin: {
 		type: DataTypes.BOOLEAN,
@@ -50,39 +50,38 @@ const User = sequelize.define('users', {
 	},
 	launch_credit_balance: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	refresh_token: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	bank_number: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	bank_code: {
 		type: DataTypes.TEXT,
-		allowNull: false,
-	},
-
+		allowNull: true,
+	},	
 	bank_name: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 
 	bank_region: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 
 	currency: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 
 	currency_code: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 });
 
