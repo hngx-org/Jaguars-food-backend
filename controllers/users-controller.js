@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
-import {Lunches, User} from '../models/lunches.model'
+import {Lunches} from '../models/lunches.model.js'
+import {User} from '../models/user.model.js'
 
 //user is employee
 //GET USER PROFILE
