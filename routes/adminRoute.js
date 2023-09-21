@@ -1,8 +1,8 @@
 import { Router } from "express";
 const router = Router();
-import { createAdmin,createInvite } from "../controllers/admin-controller";
+import { createAdmin, createInvite } from "../controllers/admin-controller";
 
-router.post('/organization/create', createAdmin);
-router.post('/organization/invite', createInvite);
+router.post("/create", createAdmin);
+router.post("/invite", createInvite);
 
 export default router;
