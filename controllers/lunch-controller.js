@@ -51,7 +51,6 @@ const getAllLunches = asyncHandler(async(req,res) =>{
 })
 
 
-
 export{
     createLunch,
     getLunch,
