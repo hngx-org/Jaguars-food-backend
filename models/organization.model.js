@@ -1,17 +1,16 @@
 import { sequelize } from './index.js';
-
 import { DataTypes } from 'sequelize';
 
 const lunchWallet = sequelize.define('organization_lunch_wallet', {
 	id: {
 		allowNull: false,
+		autoIncrement: true,
 		primaryKey: true,
-		type: DataTypes.UUID,
-		defaultValue: DataTypes.UUIDV4,
+		type: DataTypes.INTEGER,
 	},
 	org_id: {
 		allowNull: false,
-		type: DataTypes.STRING,
+		type: DataTypes.INTEGER,
 	},
 	balance: {
 		type: DataTypes.INTEGER,
@@ -23,9 +22,9 @@ const lunchWallet = sequelize.define('organization_lunch_wallet', {
 const organization = sequelize.define('organization', {
 	id: {
 		allowNull: false,
+		autoIncrement: true,
 		primaryKey: true,
-		type: DataTypes.UUID,
-		defaultValue: DataTypes.UUIDV4,
+		type: DataTypes.INTEGER,
 	},
 	name: {
 		allowNull: false,
@@ -44,9 +43,9 @@ const organization = sequelize.define('organization', {
 const invites = sequelize.define('organization_invites', {
 	id: {
 		allowNull: false,
+		autoIncrement: true,
 		primaryKey: true,
-		type: DataTypes.UUID,
-		defaultValue: DataTypes.UUIDV4,
+		type: DataTypes.INTEGER,
 	},
 	email: {
 		allowNull: false,
@@ -60,6 +59,14 @@ const invites = sequelize.define('organization_invites', {
 		allowNull: false,
 		type: DataTypes.DATE,
 	},
+	org_id: {
+		allowNull: false,
+		type: DataTypes.INTEGER,
+	},
 });
+
+// Relationships
+lunchWallet.belongsTo(organization, { foreignKey: 'org_id' });
+invites.belongsTo(organization, { foreignKey: 'org_id', as: 'organization' });
 
 export { lunchWallet, organization, invites };

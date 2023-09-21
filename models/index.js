@@ -19,6 +19,8 @@ const sequelize = new Sequelize(
 		},
 		define: {
 			freezeTableName: true,
+			timestamps: true, // This enables timestamps (createdAt and updatedAt)
+			underscored: true, // This configures the column names to be in snake_case
 		},
 	}
 );
@@ -30,4 +32,5 @@ const connectToDatabase = async () => {
 export { sequelize, connectToDatabase };
 
 // TODO:: This module would be eventually used to export the initialization of all models
+// export { User } from './user.model.js';
 // current code would move to config

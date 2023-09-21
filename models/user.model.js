@@ -1,8 +1,9 @@
 import { sequelize } from './index.js';
 
 import { DataTypes } from 'sequelize';
+import { organization } from './organization.model.js';
 
-const User = sequelize.define('User', {
+const User = sequelize.define('users', {
 	id: {
 		allowNull: false,
 		autoIncrement: true,
@@ -11,7 +12,7 @@ const User = sequelize.define('User', {
 	},
 
 	org_id: {
-		type: DataTypes.TEXT,
+		type: DataTypes.INTEGER,
 		allowNull: false,
 	},
 	first_name: {
@@ -27,8 +28,12 @@ const User = sequelize.define('User', {
 		allowNull: false,
 	},
 	email: {
-		type: DataTypes.TEXT,
+		type: DataTypes.STRING,
 		allowNull: false,
+		validate: {
+			isEmail: true,
+		},
+		unique: true,
 	},
 	phonenumber: {
 		type: DataTypes.TEXT,
@@ -41,6 +46,7 @@ const User = sequelize.define('User', {
 	isAdmin: {
 		type: DataTypes.BOOLEAN,
 		allowNull: false,
+		defaultValue: false,
 	},
 	launch_credit_balance: {
 		type: DataTypes.TEXT,
@@ -80,14 +86,6 @@ const User = sequelize.define('User', {
 	},
 });
 
-const syncWithDb = () => {
-	User.sync({ force: true })
-		.then(() => {
-			console.log('Models synced successfully.');
-		})
-		.catch((error) => {
-			console.error('Error syncing models:', error);
-		});
-};
+User.belongsTo(organization, { foreignKey: 'org_id' });
 
-export { User, syncWithDb };
+export { User };

@@ -1,8 +1,11 @@
 import app, { PORT } from './config/config.js';
 
 import { sequelize, connectToDatabase } from './models/index.js';
+// import { User } from './models/index.js';
 import './models/user.model.js';
 import './models/organization.model.js';
+import './models/lunches.model.js';
+import './models/withdrawals.model.js';
 
 const startApp = async () => {
 	connectToDatabase().then(() => {
