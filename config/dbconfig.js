@@ -1,4 +1,7 @@
 
+import { configDotenv } from "dotenv";
+
+
 export const dev_dbconfig = {
   HOST: process.env.MYSQL_ADDON_HOST || "127.0.0.1",
   USER: process.env.MYSQL_ADDON_USER || "root",
