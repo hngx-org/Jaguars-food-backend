@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 import validateFields from "../../utils/validateUserFields.js";
 import { User } from "../../models/user.model.js";
+import { json } from "sequelize";
 // import { getToken } from "../../utils/tokens.js";
 
 const createAdminSignUp = asyncHandler(async (req, res) => {
@@ -25,6 +26,8 @@ const createAdminSignUp = asyncHandler(async (req, res) => {
     if (existingUser) {
       res.status(400);
       throw new Error("User with email already exists");
+      // return res.status(400).json("user exist already");
+      // throw new Error("User with email already exists");
     }
 
     // Hash the password

@@ -41,7 +41,6 @@ const User = sequelize.define(
     phone_number: {
       type: DataTypes.TEXT,
       allowNull: false,
-      defaultValue: "none",
     },
     password_hash: {
       type: DataTypes.TEXT,
@@ -55,46 +54,38 @@ const User = sequelize.define(
     launch_credit_balance: {
       type: DataTypes.TEXT,
       allowNull: true,
-      defaultValue: "none",
     },
     refresh_token: {
       type: DataTypes.TEXT,
       allowNull: true,
-      defaultValue: "none",
     },
     bank_number: {
       type: DataTypes.TEXT,
       allowNull: true,
-      defaultValue: "none",
     },
     bank_code: {
       type: DataTypes.TEXT,
       allowNull: true,
-      defaultValue: "none",
     },
 
     bank_name: {
       type: DataTypes.TEXT,
       allowNull: true,
-      defaultValue: "none",
     },
 
     bank_region: {
       type: DataTypes.TEXT,
       allowNull: true,
-      defaultValue: "none",
     },
 
     currency: {
       type: DataTypes.TEXT,
       allowNull: true,
-      defaultValue: "none",
     },
 
     currency_code: {
       type: DataTypes.TEXT,
       allowNull: true,
-      defaultValue: "none",
     },
   },
   {
