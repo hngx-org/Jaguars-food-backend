@@ -1,5 +1,5 @@
-import userSignUp from './userSignUpController'
+import orgSignUp from './createAdminController.js'
 
 // Import all the auth controllers in one file - userSignUp, login, 
 
-export  {userSignUp}
+export  {orgSignUp}
