@@ -45,7 +45,7 @@ const redeemUserLunch = asyncHandler(async (req, res) => {
     // update user balance
     await User.update({ lunch_credit_balance: curBal - amount }, { where: { id: id } });
 
-    // create a withdrawal
+    // create a withdrawal table for the current user
     const withdrawal = await Withdrawals.create({
       id: lunchID,
       user_id: id,
