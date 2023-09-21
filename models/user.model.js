@@ -13,7 +13,8 @@ const User = sequelize.define('users', {
 
 	org_id: {
 		type: DataTypes.INTEGER,
-		allowNull: false,
+		allowNull: true,
+		defaultValue: 0
 	},
 	first_name: {
 		type: DataTypes.TEXT,
@@ -25,7 +26,8 @@ const User = sequelize.define('users', {
 	},
 	profile_picture: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
+		defaultValue: 0
 	},
 	email: {
 		type: DataTypes.STRING,
@@ -50,39 +52,47 @@ const User = sequelize.define('users', {
 	},
 	launch_credit_balance: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
+		defaultValue: "none"
 	},
 	refresh_token: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
+		defaultValue: "none"
 	},
 	bank_number: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
+		defaultValue: "none"
 	},
 	bank_code: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
+		defaultValue: "none"
 	},
 
 	bank_name: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
+		defaultValue: "none"
 	},
 
 	bank_region: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
+		defaultValue: "none"
 	},
 
 	currency: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
+		defaultValue: "none"
 	},
 
 	currency_code: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
+		defaultValue: "none"
 	},
 });
 

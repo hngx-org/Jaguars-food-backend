@@ -1,7 +1,15 @@
-import express from "express";
-import {userSignUp} from "../controllers/auth/auth-controller"
+import express from 'express';
+import {
+	userSignUp,
+    adminSignUp,
+    userLogin,
+} from '../controllers/auth/index.js'
+
 const router = express.Router();
+//ADMIN SIGN UP ROUTE
+// router.route('/user/signup').post(createAdmin);
 
-// router.post('/user/signup', userSignUp)
+// ADMIN LOGIN ROUTE
+// router.route('/login').post(logInAdmin);
 
-export default router
+export default router;
