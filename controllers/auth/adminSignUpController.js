@@ -1,13 +1,12 @@
 import asyncHandler from "express-async-handler";
-import bcrypt from 'bcrypt'
-import validateFields from '../../utils/validateUserFields.js';
-import {User} from '../../models/user.model.js'
-import {getToken} from '../../utils/tokens.js'
+import bcrypt from "bcrypt";
+import validateFields from "../../utils/validateUserFields.js";
+import { User } from "../../models/user.model.js";
+// import { getToken } from "../../utils/tokens.js";
 
-const createAdminSignUp = asyncHandler(async(req,res) =>
-{
+const createAdminSignUp = asyncHandler(async (req, res) => {
   const { email, password, first_name, last_name, phone_number } = req.body;
-   // Validate user input
+  // Validate user input
   const validationErrors = validateFields({
     email,
     password,
@@ -24,7 +23,8 @@ const createAdminSignUp = asyncHandler(async(req,res) =>
     const existingUser = await User.findOne({ where: { email } });
 
     if (existingUser) {
-      return res.status(409).json({ message: 'User with this email already exists' });
+      res.status(400);
+      throw new Error("User with email already exists");
     }
 
     // Hash the password
@@ -37,19 +37,19 @@ const createAdminSignUp = asyncHandler(async(req,res) =>
       first_name,
       last_name,
       phone_number,
-      isAdmin:true
+      isAdmin: true,
     });
 
     // Generate a JWT token
-    const token = getToken()
-    res.status(201).json({ message: 'User created successfully' , token } );
+    // const token = getToken(); we dont need a return a token for sign up
+    res
+      .status(201)
+      .json({ message: "User created successfully", data: newUser });
   } catch (error) {
     console.error(error);
-    res.status(500)
-    throw new Error('There is a problem with the server');;
+    res.status(500);
+    throw new Error("There is a problem with the server");
   }
-  
-})
-
+});
 
 export default createAdminSignUp;
