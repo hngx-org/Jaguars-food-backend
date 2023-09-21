@@ -5,8 +5,8 @@ export const dev_dbconfig = {
   USER: process.env.MYSQL_ADDON_USER || "root",
   PASSWORD: process.env.MYSQL_ADDON_PASSWORD || "mhykel666",
   DB: process.env.MYSQL_ADDON_DB || "jaguar_food_app",
-  dialect: "mysql",
 
+  dialect: "mysql",
   pool: {
     max: 5,
     min: 0,
