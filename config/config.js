@@ -7,7 +7,7 @@ import router from '../routes/router.js';
 // ROUTES
 import lunchRouter from '../routes/lunchRoute.js';
 import withdrawalRouter from '../routes/withdrawalRoute.js';
-import inviteRouter from '../routes/organizationInvite.js';
+import inviteRouter from '../routes/invite.js';
 import lunchRoute from '../routes/lunchRoute.js';
 import withdrawalRoute from '../routes/withdrawalRoute.js';
 import authenticationRoute from '../routes/authenticationRoute.js';
