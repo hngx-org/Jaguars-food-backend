@@ -10,7 +10,7 @@ import withdrawalRouter from '../routes/withdrawalRoute.js';
 import inviteRouter from '../routes/invite.js';
 import lunchRoute from '../routes/lunchRoute.js';
 import withdrawalRoute from '../routes/withdrawalRoute.js';
-import authenticationRoute from '../routes/authenticationRoute.js';
+import {adminSignUpRoute, staffSignUpRoute} from '../authRoute.js';
 import userRoute from '../routes/userRoute.js';
 
 // MIDDLEWARES
@@ -33,7 +33,8 @@ app.use('/api/', inviteRouter);
 app.use('/api/lunch', lunchRoute);
 app.use('/api/withdrawal', withdrawalRoute);
 app.use('/api', userRoute);
-app.use('/api/auth', authenticationRoute);
+app.use('/api/auth', adminSignUpRoute);
+app.use('/api/organization', staffSignUpRoute)
 
 app.use(notFound);
 app.use(errHandler);
