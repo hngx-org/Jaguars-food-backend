@@ -1,6 +1,10 @@
-import express from "express";
-const router = express.Router();
+import {Router} from "express";
+import { createWithdrawal } from "../controllers/users-controller.js";
 
-// router.post('/request', createWithdrawRequest)
+const router = Router();
+
+// Withdrawal Request
+router.post('/request', createWithdrawal)
+
 
 export default router;

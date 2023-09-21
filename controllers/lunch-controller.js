@@ -19,16 +19,11 @@ const getAllLunches = asyncHandler(async(req,res) =>
 
 })
 
-//REDEEM A LUNCH
-const redeemUserLunch = asyncHandler(async(req,res) =>
-{
 
-})
 
 export{
     createLunch,
     getLunch,
     getAllLunches,
-    redeemUserLunch,
 
 }

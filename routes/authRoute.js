@@ -1,12 +1,7 @@
 import express from "express";
-import {orgSignUp} from "../controllers/auth/auth-controller.js"
+import {createAdminSignUp} from "../controllers/auth/auth-controller"
 const router = express.Router();
 
-// SIGN UP ROUTE
-router.post('/user/signup', orgSignUp);
-
-// LOGIN ROUTE
-router.post('/login');
-
+router.post('/user/signup', createAdminSignUp)
 
 export default router

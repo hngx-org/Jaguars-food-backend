@@ -4,7 +4,7 @@ import validateFields from '../../utils/validateUserFields.js';
 import {User} from '../../models/user.model.js'
 import {getToken} from '../../utils/tokens.js'
 
-const orgSignUp = asyncHandler(async(req,res) =>
+const createAdminSignUp = asyncHandler(async(req,res) =>
 {
   const { email, password, first_name, last_name, phone_number, organization_name } = req.body;
    // Validate user input
@@ -45,10 +45,11 @@ const orgSignUp = asyncHandler(async(req,res) =>
     res.status(201).json({ message: 'User created successfully' , token } );
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500)
+    throw new Error('There is a problem with the server');;
   }
   
 })
 
 
-export default orgSignUp;
+export default createAdminSignUp;
