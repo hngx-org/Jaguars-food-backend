@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const { JWT_SECRET } = process.env;
 
+//GetToken
 export const getToken = (data, exp) =>
   new Promise((accept, reject) => {
     jwt.sign(data, JWT_SECRET, { expiresIn: "7d" }, (err, token) => {
@@ -15,6 +16,7 @@ export const getToken = (data, exp) =>
     });
   });
 
+//Verifytoken
 export const verifyToken = (token) =>
   new Promise((accept, reject) => {
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
