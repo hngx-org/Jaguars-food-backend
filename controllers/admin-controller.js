@@ -3,14 +3,10 @@ import asyncHandler from 'express-async-handler';
 import express from 'express';
 import crypto from 'crypto';
 import dotenv from 'dotenv';
-import nodemailer from 'nodemailer';
-
+import { getToken, verifyToken } from '../utils/tokens.js';
+import transporter from '../config/mailconfig.js';
 const router = express.Router();
 dotenv.config();
-
-//importing isAdmin to check if organization is an Admin
-import isAdmin from '../middlewares/isAdmin.js';
-import { getToken, verifyToken } from '../utils/tokens.js';
 
 const createAdmin = asyncHandler(async (req, res) => {
     //
@@ -58,12 +54,6 @@ const createInvite = asyncHandler(async (req, res) => {
 // Implement  logic to save the invitation details to a database
 //}
 
-//function to send the invitation email
-function sendInvitationEmail(email, generateInvitationToken) {
-    // Implement y logic to send the invitation email using a library like Nodemailer or
-    //third-party service
-}
-
 function generateInvitationToken(email, secretKey) {
     const userData = {
         email: email,
@@ -78,6 +68,25 @@ function generateInvitationToken(email, secretKey) {
                 console.error('Error generating token:', error);
                 reject(error);
             });
+    });
+}
+
+// function to send the invitation email
+function sendInvitationEmail(email, generateInvitationToken) {
+    const mailOptions = {
+        from: process.env.MAIL_FROM_ADDRESS,
+        to: email,
+        subject: 'Invitation to join Jaguar Food App',
+        html: `<p>You have been invited to join Jaguar Food App. Please click on the link below to create your account.</p> 
+				<p><a href="https://jaguars-food-backend.vercel.app/invite/${generateInvitationToken}">Create account</a></p>`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log('Error sending email:', error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
     });
 }
 

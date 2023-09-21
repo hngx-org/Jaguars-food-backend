@@ -11,6 +11,7 @@ import lunchRoute from '../routes/lunchRoute.js';
 import withdrawalRoute from '../routes/withdrawalRoute.js';
 import authenticationRoute from '../routes/authenticationRoute.js';
 import userRoute from '../routes/userRoute.js';
+import adminRoute from '../routes/adminRoute.js';
 
 // MIDDLEWARES
 import errHandler from '../middlewares/errHandler.js';
@@ -28,6 +29,7 @@ app.use(morgan('dev'));
 app.use('/api/lunch', lunchRouter);
 app.use('/api/withdrawal', withdrawalRouter);
 
+app.use('/api', adminRoute);
 
 app.use('/api/lunch', lunchRoute);
 app.use('/api/withdrawal', withdrawalRoute);
