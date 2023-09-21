@@ -16,7 +16,7 @@ const User = sequelize.define(
     org_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: 0,
+      defaultValue: 1,
     },
     first_name: {
       type: DataTypes.TEXT,
