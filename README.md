@@ -6,6 +6,13 @@ Free Lunch App
 
 
 ## Collaborators
+Collaborators are always welcome!  
+
+### Pull Request
+
+Before you make a PR, make sure to go through the [PULL_REQUEST_TEMPLATE.md](doc:./PULL_REQUEST_TEMPLATE.md)
+
+
 
 ### File Structure
 
