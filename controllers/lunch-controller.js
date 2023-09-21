@@ -15,7 +15,7 @@ const createLunch = asyncHandler(async(req,res) =>
       note,
     });
     await lunch.setReceivers(receivers); 
-    return res.status(201).json({ message: 'Lunch created successfully.' });
+    return res.status(200).json({ message: 'Lunch created successfully.' });
   } catch (error) {
     throw new Error('Internal Server Error');
   }
@@ -28,7 +28,7 @@ const getLunch = asyncHandler(async(req,res) =>
         const lunchId = req.params.lunchId;
         const lunch = await Lunches.findByPk(lunchId);
         if (!lunch) {
-          return res.status(404).json({ error: 'Lunch not found' });
+          return res.status(400).json({ error: 'Lunch not found' });
         }
         res.status(200).json({ lunch });
       } catch (error) {throw new Error('Internal Server Error');
