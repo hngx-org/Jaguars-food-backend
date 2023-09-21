@@ -1,19 +1,17 @@
 //Admin or organization
 import asyncHandler from "express-async-handler";
-
-import { organization as Organization } from "../models/organization.model";
-import { verifyToken } from "../utils/tokens";
 import express from "express";
 import crypto from "crypto";
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 
-const router = express.Router();
-dotenv.config();
-
 //importing isAdmin to check if organization is an Admin
 import isAdmin from "../middlewares/isAdmin";
 import { getToken, verifyToken } from "../utils/tokens";
+import { organization as Organization } from "../models/organization.model";
+
+const router = express.Router();
+dotenv.config();
 
 const createAdmin = asyncHandler(async (req, res) => {
   const { organization_name, lunch_price, currency_code } = req.body;
