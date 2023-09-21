@@ -10,7 +10,7 @@ Collaborators are always welcome!
 
 ### Pull Request
 
-Before you make a PR, make sure to go through the [PULL_REQUEST_TEMPLATE.md](doc:./PULL_REQUEST_TEMPLATE.md)
+Before you make a PR, make sure to go through the [PULL_REQUEST_TEMPLATE.md](doc:https://github.com/hngx-org/Jaguars-food-backend/blob/tayoakosile-update-readme.md/PULL_REQUEST_TEMPLATE.md)
 
 
 
