@@ -7,7 +7,10 @@ const isAdmin = asyncHandler(async (req, res, next) => {
 
     const getUser = await User.findOne({ id });
 
-    if (!getUser.isAdmin) throw new Error("You lack admin priviledges");
+    if (!getUser.isAdmin) {
+      res.status(403);
+      throw new Error("You lack admin priviledges");
+    }
     next();
   } catch (error) {
     throw new Error(error);
