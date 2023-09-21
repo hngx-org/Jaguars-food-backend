@@ -1,5 +1,9 @@
 import asyncHandler from 'express-async-handler';
 
+import { Lunches } from "../models/lunches.model.js";
+import { User } from "../models/user.model.js";
+
+
 //user is employee
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -83,6 +87,7 @@ const searchUser = asyncHandler(async (req, res) => {
 //CREATE WITHDRAWAL REQUEST
 const createWithdrawal = asyncHandler(async (req, res) => {
   const user = req.user;
+
   if (user) {
     const withdrawal = {
       amount: req.body.amount,
@@ -90,6 +95,11 @@ const createWithdrawal = asyncHandler(async (req, res) => {
       accountNumber: req.body.accountNumber,
       accountName: req.body.accountName,
     };
+    const lunchId = req.body.lunchId; 
+     if (lunchId) {
+      // Update the status of the lunch from 'redeemed: false' to 'redeemed: true'
+      await Lunches.update({ redeemed: true }, { where: { id: lunchId, redeemed: false } });
+    }
     user.withdrawals.push(withdrawal);
     const updatedUser = await user.save();
     res.json({
@@ -101,10 +111,12 @@ const createWithdrawal = asyncHandler(async (req, res) => {
       withdrawals: updatedUser.withdrawals,
     });
   } else {
+    // If user is not found (unauthenticated), return a 404 response with an error message
     res.status(404);
     throw new Error('User not found');
   }
 });
+
 
 export {
   getUserProfile,
