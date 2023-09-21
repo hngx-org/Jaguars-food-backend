@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
-import router from '../routes/router.js';
 
 // ROUTES
 import lunchRouter from '../routes/lunchRoute.js';
@@ -16,9 +15,11 @@ import userRoute from '../routes/userRoute.js';
 // MIDDLEWARES
 import errHandler from '../middlewares/errHandler.js';
 import notFound from '../middlewares/notFound.js';
+import { docRouter } from '../docs.js';
 
 const app = express();
 dotenv.config();
+
 
 app.use(cors());
 
