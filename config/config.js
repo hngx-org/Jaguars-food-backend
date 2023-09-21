@@ -1,25 +1,21 @@
-import express from "express";
-import cors from "cors";
-import morgan from "morgan";
-import dotenv from "dotenv";
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import dotenv from 'dotenv';
+import router from '../routes/router.js';
 
-import lunchRouter from "../routes/lunchRoute.js";
-import withdrawalRouter from "../routes/withdrawalRoute.js";
-import inviteRouter from "../routes/invite.js";
+// ROUTES
+import lunchRouter from '../routes/lunchRoute.js';
+import withdrawalRouter from '../routes/withdrawalRoute.js';
+import inviteRouter from '../routes/invite.js';
+import lunchRoute from '../routes/lunchRoute.js';
+import withdrawalRoute from '../routes/withdrawalRoute.js';
+import authenticationRoute from '../routes/authenticationRoute.js';
+import userRoute from '../routes/userRoute.js';
 
-import lunchRoute from "../routes/lunchRoute.js";
-import withdrawalRoute from "../routes/withdrawalRoute.js";
-import authenticationRoute from "../routes/authenticationRoute.js";
-import userRoute from "../routes/userRoute.js";
-import errHandler from "../middlewares/errHandler.js";
-import notFound from "../middlewares/notFound.js";
-import { OrganizationInvites } from "../models/organization_invites.model.js";
-import { User } from "../models/user.model.js";
-import { Organizations } from "../models/organization.model.js";
-import { Withdrawals } from "../models/withdrawals.model.js";
-import { OrganizationLunchWallet } from "../models/organization_launch_wallet.model.js";
-import { Launches } from "../models/launches.model.js";
-import { docRouter } from "../docs.js";
+// MIDDLEWARES
+import errHandler from '../middlewares/errHandler.js';
+import notFound from '../middlewares/notFound.js';
 
 const app = express();
 dotenv.config();
