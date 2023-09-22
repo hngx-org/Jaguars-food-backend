@@ -33,6 +33,26 @@ const getLunch = asyncHandler(async (req, res) => {
 });
 
 //GET ALL LUNCHES
-const getAllLunches = asyncHandler(async (req, res) => {});
+const getAllLunches = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const userLunches = await Lunches.findAll({
+      where: {
+        receiverId: userId,
+      },
+    });
+
+    return res.status(200).json({
+      message: "Lunches retrieved successfully",
+      statusCode: 200,
+      data: userLunches,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+});
 
 export { createLunch, getLunch, getAllLunches };
