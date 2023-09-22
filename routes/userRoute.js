@@ -7,6 +7,8 @@ const {
 	addUserBank,
 	searchUser,
 	createWithdrawal,
+	create_user,
+	getUser_test
 } = require('../controllers/users-controller.js');
 const authMiddleware = require('../middlewares/authMiddleware');
 
@@ -20,6 +22,10 @@ router.put('/user/profile', editUserProfile);
 router.patch('/user/bank', authMiddleware, addUserBank);
 
 // Get all users
+router.post('/users_test', create_user)
+router.get('/users_test/:email',getUser_test )
+
+
 router.get('/users', getAllUsers);
 
 // Get user by name or email

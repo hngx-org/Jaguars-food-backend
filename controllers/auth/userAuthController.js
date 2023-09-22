@@ -3,6 +3,7 @@ const db = require('../../models');
 const { hashPassword, verifyPassword } = require('../../utils/utils');
 const { getToken, verifyToken } = require('../../utils/tokens');
 
+
 const staffSignUp = asyncHandler(async (req, res) => {
 	const sentEmail = req.body.email;
 	const sentPassword = req.body.password;
