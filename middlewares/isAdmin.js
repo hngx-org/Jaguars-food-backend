@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import { User } from "../models/user.model";
+import { User } from "../models/user.model.js";
 
 const isAdmin = asyncHandler(async (req, res, next) => {
   try {
@@ -7,8 +7,10 @@ const isAdmin = asyncHandler(async (req, res, next) => {
 
     const getUser = await User.findOne({ id });
 
-    if (!getUser.isAdmin) throw new Error("You lack admin priviledges");
-    next();
+    if (!getUser || !getUser.isAdmin) {
+      res.status(403);
+      throw new Error("You lack admin priviledges");
+    }
   } catch (error) {
     throw new Error(error);
   }

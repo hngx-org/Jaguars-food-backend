@@ -27,6 +27,6 @@ router.get("/users", getAllUsers);
 router.get("/search/:nameoremail", searchUser);
 
 // Create withdrawal request
-router.post("/user/withdrawal", verifyAccessToken, createWithdrawal);
+router.post("/user/withdrawal",verifyAccessToken ,createWithdrawal);
 
 export default router;

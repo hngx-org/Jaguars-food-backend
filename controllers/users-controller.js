@@ -1,29 +1,26 @@
-import asyncHandler from 'express-async-handler';
+import asyncHandler from "express-async-handler";
 
 import { Lunches } from "../models/lunches.model.js";
 import { User } from "../models/user.model.js";
-
+import { customResponseHandler } from "../utils/customResHandler.js";
 
 //user is employee
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = req.user;
-  if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    });
+  const id = req.user.id;
+
+  if (id) {
+    const user = await User.findOne({ where: id });
+    customResponseHandler(res, false, 200, user);
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
 //EDIT USER PROFILE
 const editUserProfile = asyncHandler(async (req, res) => {
-  const user = req.user;
+  const id = req.user.id;
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
@@ -39,15 +36,21 @@ const editUserProfile = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
 //ADD USER BANK ACCOUNT
 const addUserBank = asyncHandler(async (req, res) => {
-  const { bank_number, bank_code, bank_name, bank_region, currency, currency_code } =
-    req.body;
-  
+  const {
+    bank_number,
+    bank_code,
+    bank_name,
+    bank_region,
+    currency,
+    currency_code,
+  } = req.body;
+
   try {
     // Find the user by ID
     const user = await User.findByPk(req.user.id);
@@ -81,8 +84,8 @@ const addUserBank = asyncHandler(async (req, res) => {
 
 //GET ALL USERS
 const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
-  res.json(users);
+  const users = await User.findAll({});
+  customResponseHandler(res, false, 200, users);
 });
 
 //GET(SEARCH) USER BY NAME OR MAIL
@@ -90,8 +93,8 @@ const searchUser = asyncHandler(async (req, res) => {
   const nameOrEmail = req.params.nameoremail;
   const users = await User.find({
     $or: [
-      { name: { $regex: nameOrEmail, $options: 'i' } },
-      { email: { $regex: nameOrEmail, $options: 'i' } },
+      { name: { $regex: nameOrEmail, $options: "i" } },
+      { email: { $regex: nameOrEmail, $options: "i" } },
     ],
   });
   res.json(users);
@@ -108,10 +111,13 @@ const createWithdrawal = asyncHandler(async (req, res) => {
       accountNumber: req.body.accountNumber,
       accountName: req.body.accountName,
     };
-    const lunchId = req.body.lunchId; 
-     if (lunchId) {
+    const lunchId = req.body.lunchId;
+    if (lunchId) {
       // Update the status of the lunch from 'redeemed: false' to 'redeemed: true'
-      await Lunches.update({ redeemed: true }, { where: { id: lunchId, redeemed: false } });
+      await Lunches.update(
+        { redeemed: true },
+        { where: { id: lunchId, redeemed: false } }
+      );
     }
     user.withdrawals.push(withdrawal);
     const updatedUser = await user.save();
@@ -126,10 +132,9 @@ const createWithdrawal = asyncHandler(async (req, res) => {
   } else {
     // If user is not found (unauthenticated), return a 404 response with an error message
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
-
 
 export {
   getUserProfile,

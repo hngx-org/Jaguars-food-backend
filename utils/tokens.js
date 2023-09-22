@@ -21,7 +21,7 @@ export const verifyAccessToken = (req, res, next) => {
         reject(err);
       } else {
         accept(decoded);
-        req.user = user;
+        req.user = decoded;
         next();
       }
     });

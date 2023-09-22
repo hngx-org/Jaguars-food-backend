@@ -1,8 +1,10 @@
 import { Router } from "express";
-const router = Router();
-import { createAdmin,createInvite } from "../controllers/admin-controller";
+const adminRouter = Router();
+import { createAdmin, createInvite } from "../controllers/admin-controller.js";
+import { verifyAccessToken } from "../utils/tokens.js";
+import isAdmin from "../middlewares/isAdmin.js";
 
-router.post('/organization/create', createAdmin);
-router.post('/organization/invite', createInvite);
+adminRouter.post("/create", createAdmin);
+adminRouter.post("/invite", verifyAccessToken, isAdmin, createInvite);
 
-export default router;
+export default adminRouter;

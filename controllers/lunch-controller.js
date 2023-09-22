@@ -14,7 +14,8 @@ const createLunch = asyncHandler(async (req, res) => {
     await lunch.setReceivers(receivers);
     return res.status(200).json({ message: "Lunch created successfully." });
   } catch (error) {
-    throw new Error("Internal Server Error");
+    console.log(error,'error')
+    // throw new Error("Internal Server Error");
   }
 });
 

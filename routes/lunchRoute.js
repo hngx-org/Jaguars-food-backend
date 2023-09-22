@@ -5,14 +5,15 @@ import {
   getAllLunches,
 } from "../controllers/lunch-controller.js";
 import { verifyAccessToken } from "../utils/tokens.js";
+import isAdmin from "../middlewares/isAdmin.js";
 
 const router = Router();
 
 // Send a Lunch
-router.post("/send", verifyAccessToken, createLunch);
+router.post("/send", verifyAccessToken, isAdmin, createLunch);
 
 // Get a Lunch
-router.get('/all/:id',verifyAccessToken, getLunch);
+router.get("/:id", verifyAccessToken, getLunch);
 
 // Get all Lunches
 router.get("/all", verifyAccessToken, getAllLunches);
