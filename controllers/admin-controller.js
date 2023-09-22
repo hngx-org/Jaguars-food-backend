@@ -15,12 +15,17 @@ const createAdmin = asyncHandler(async (req, res) => {
 
 const createInvite = asyncHandler(async (req, res) => {
     const { email } = req.body;
+
+    if (!email) {
+        res.status(400).json({ error: 'Email is required' });
+    }
+
     // Generate a unique invitation token
     const invitationToken = await generateInvitationToken(email);
 
     // Send the invitation email
     sendInvitationEmail(email, invitationToken);
-    res.json({ message: 'Invitation sent successfully' });
+    res.json({ message: 'Invitation sent successfully', statusCode: 200 });
 });
 
 async function generateInvitationToken(email) {
@@ -31,7 +36,7 @@ async function generateInvitationToken(email) {
     // Save the generated token to the database
     const token = await OrganizationInvites.findOne({ where: { email: email } });
     if (token) {
-        await OrganizationInvites.update({ email: email, token: jwt_token });
+        await OrganizationInvites.update({ token: jwt_token }, { where: { email: email } });
     } else {
         await OrganizationInvites.create({ email: email, token: jwt_token });
     }
