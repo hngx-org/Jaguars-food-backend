@@ -36,18 +36,10 @@ const createLunch = asyncHandler(async (req, res) => {
 // });
 
 // //GET ALL LUNCHES
-const getAllLunches = asyncHandler(async (req, res) => {
-	try {
-		const lunches = await db.lunches.find({});
-		return res.status(200).json(lunches);
-
-	} catch (error) {
-		throw new Error('Internal Server Error');
-	}
-});
+// const getAllLunches = asyncHandler(async (req, res) => {});
 
 module.exports = {
 	createLunch,
 	// getLunch,
-	getAllLunches,
+	// getAllLunches,
 };
