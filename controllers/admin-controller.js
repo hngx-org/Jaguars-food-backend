@@ -5,6 +5,7 @@ import express from "express";
 import dotenv from "dotenv";
 import { invites, organization } from "../models/organization.model.js";
 import { getInviteTemplate } from "../utils/emailTemplate.js";
+import { User } from "../models/user.model.js";
 
 const router = express.Router();
 dotenv.config();
@@ -31,13 +32,22 @@ const createInvite = asyncHandler(async (req, res) => {
         throw new Error(error);
       }
       const OTP = generateOtp();
-      const org = await organization.findOne({ where: { id: 3 } });
+      // extract id from req.user
+      const { id } = req.user;
+      // find user and extract org_id
+      const user = await User.findOne({ where: { id } });
+      const org_id = user.dataValues.org_id || 3;
+      // find organization
+      const org = await organization.findOne({ where: { id: org_id } });
       const ORGANIZATION = org.dataValues;
+
+      // I can't create the invite
+      // Please help out
       const invite = await invites.create({
         email,
         token: OTP,
         ttl: new Date(),
-        org_id: ORGANIZATION.id,
+        org_id,
       });
 
       if (!invite) {
@@ -59,7 +69,7 @@ const createInvite = asyncHandler(async (req, res) => {
 
       await sendEmail(details);
 
-      res.status(200).json({ message: "email sent successfully" });
+      res.status(200).json({ message: "email sent successfully", USER });
     }
   } catch (error) {
     res.status(500);

@@ -5,7 +5,7 @@ import { organization } from './organization.model.js';
 
 const User = sequelize.define('users', {
 	id: {
-		// allowNull: false,
+		allowNull: false,
 		autoIncrement: true,
 		primaryKey: true,
 		type: DataTypes.INTEGER,
@@ -13,23 +13,23 @@ const User = sequelize.define('users', {
 
 	org_id: {
 		type: DataTypes.INTEGER,
-		// allowNull: false,
+		allowNull: false,
 	},
 	first_name: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 	last_name: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 	profile_picture: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 	email: {
 		type: DataTypes.STRING,
-		// allowNull: false,
+		allowNull: false,
 		validate: {
 			isEmail: true,
 		},
@@ -37,52 +37,52 @@ const User = sequelize.define('users', {
 	},
 	phonenumber: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 	password_hash: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 	isAdmin: {
 		type: DataTypes.BOOLEAN,
-		// allowNull: false,
+		allowNull: false,
 		defaultValue: false,
 	},
 	launch_credit_balance: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 	refresh_token: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 	bank_number: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 	bank_code: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 
 	bank_name: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 
 	bank_region: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 
 	currency: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 
 	currency_code: {
 		type: DataTypes.TEXT,
-		// allowNull: false,
+		allowNull: false,
 	},
 });
 

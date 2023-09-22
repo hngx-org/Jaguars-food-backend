@@ -3,11 +3,11 @@ import nodemailer from "nodemailer";
 export const sendEmail = async (data) => {
   try {
     const config = {
-      host: "sandbox.smtp.mailtrap.io",
-      port: 2525,
+      host: process.env.EMAIL_HOST,
+      port: Number(process.env.EMAIL_PORT),
       auth: {
-        user: "39a62ad9bbc926",
-        pass: "4ea5383e8f255c",
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     };
 
