@@ -1,6 +1,5 @@
-import nodemailer from 'nodemailer'
-import crypto from 'crypto'
-
+import nodemailer from "nodemailer";
+import crypto from "crypto";
 
 // // Create a transporter object that will be used to send emails
 // const transporter = nodemailer.createTransport({
@@ -12,12 +11,12 @@ import crypto from 'crypto'
 // });
 
 export async function generateOTP() {
-    const randomBytes = crypto.randomBytes(32);
-    // Convert the random buffer to a hexadecimal string
-    const token = randomBytes.toString('hex');
-    // Extract the first 6 characters (12 hexadecimal digits) of the token
-    const shortToken = token.substring(0, 6);
-    return shortToken;
+  const randomBytes = crypto.randomBytes(32);
+  // Convert the random buffer to a hexadecimal string
+  const token = randomBytes.toString("hex");
+  // Extract the first 6 characters (12 hexadecimal digits) of the token
+  const shortToken = token.substring(0, 6);
+  return shortToken;
 }
 
 //   // Helper function to save invitation details to a database
@@ -33,11 +32,11 @@ export async function generateOTP() {
 //     }
 //   });
 // }
-  
-  // Helper function to send the invitation email
-  //FAVOUR CODES HERE 
+
+// Helper function to send the invitation email
+//FAVOUR CODES HERE
 // export async function sendInvitationEmail(email) {
-//     // Implement y logic to send the invitation email using a library like Nodemailer or 
+//     // Implement y logic to send the invitation email using a library like Nodemailer or
 //     //third-party service
 //     if(!email || typeof email !== 'string') return console.log("Email is required")
 //     const otp = generateOTP();
@@ -78,5 +77,3 @@ export async function generateOTP() {
 //     return false;
 //   }
 // }
-
-  
