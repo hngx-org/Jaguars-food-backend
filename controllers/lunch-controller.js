@@ -8,7 +8,13 @@ const createLunch = asyncHandler(async (req, res) => {
 		const { id, orgId } = req.user; // user not present
 		// console.log({ id, orgId });
 		const { receivers, quantity, note } = req.body;
-
+		console.log({
+			senderId: id,
+			receiverId: receivers[0],
+			quantity,
+			note,
+			org_id: orgId,
+		});
 		// await receivers.map(async (receiver) => {
 		const lunch = await db.lunches.create({
 			senderId: id,
@@ -18,13 +24,6 @@ const createLunch = asyncHandler(async (req, res) => {
 			org_id: orgId,
 		});
 		// });
-		console.log({
-			senderId: id,
-			receiverId: receivers[0],
-			quantity,
-			note,
-			org_id: orgId,
-		});
 		return res.json({ status: 'successful', message: 'Lunch(es) sent' });
 	} catch (error) {
 		throw new Error('Internal Server Error');
@@ -65,7 +64,6 @@ const redeemUserLunch = asyncHandler(async (req, res) => {
 		// decrypt id from token using middleware
 		const { id } = req.user;
 		const { lunch_id, amount } = req.body;
-
 		// validating if the lunch id exists
 		const lunchID = await Lunches.findOne({ where: { id: lunch_id } });
 
@@ -73,7 +71,6 @@ const redeemUserLunch = asyncHandler(async (req, res) => {
 			res.status(404);
 			throw new Error('Lunch not found');
 		}
-
 		// Fetch the current user
 		const user = await User.findOne({ where: { id: id } });
 		if (!user) {
