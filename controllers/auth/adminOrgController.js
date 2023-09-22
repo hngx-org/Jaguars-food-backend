@@ -59,19 +59,18 @@ const createAdmin = asyncHandler(async (req, res) => {
 const createInvite = asyncHandler(async (req, res) => {
 	const { email } = req.body;
 	const orgId = req.user.orgId;
+	const organization = await db.organization.findOne({
+		where: { id: orgId },
+	});
+	const orgName = organization.dataValues.name;
+	console.log({ orgName });
 	if (req.user.isAdmin) {
-		// const newInvite = await getToken({ email, orgId });
-		// const url = APP_URL + 'api/organization/signup?token=';
-		// const invite_url = {
-		// 	invite_url: `${url}${newInvite}`,
-		// 	orgId,
-		// };
 		// Generate a unique invitation token
 		const invitationToken = await generateInvitationToken(email, orgId);
 		// console.log(invitationToken);
 
 		// Send the invitation email
-		sendInvitationEmail(email, invitationToken);
+		sendInvitationEmail({ email, orgName }, invitationToken);
 		res.json({ message: 'Invitation sent successfully', statusCode: 200 });
 	} else {
 		res.status(403);

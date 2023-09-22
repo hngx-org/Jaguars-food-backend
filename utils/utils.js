@@ -34,13 +34,13 @@ async function generateInvitationToken(email, orgId) {
 }
 
 // function to send the invitation email
-function sendInvitationEmail(email, invitationToken) {
-	console.log('Token:', invitationToken);
+function sendInvitationEmail(data, invitationToken) {
+	// console.log('Token:', invitationToken);
 	const mailOptions = {
 		from: process.env.MAIL_FROM_ADDRESS,
-		to: email,
-		subject: 'Invitation to join Jaguar Food App',
-		html: `<p>You have been invited to join Jaguar Food App. Use the token below to create your account.</p>
+		to: data.email,
+		subject: 'Free Lunch App Invitation',
+		html: `<p>You have been invited by ${data.orgName} to join it's organization on Free Lunch App.<br/>Use the token below to create your account.</p>
 				<p>Token: ${invitationToken}</p>
 				`,
 	};
