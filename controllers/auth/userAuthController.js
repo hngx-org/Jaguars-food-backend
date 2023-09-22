@@ -10,7 +10,6 @@ const staffSignUp = asyncHandler(async (req, res) => {
 	const sentLastName = req.body.last_name;
 	const sentPhone_number = req.body.phone_number;
 	const otp_token = req.body.otp_token;
-
 	if (
 		!sentEmail ||
 		!sentPassword ||

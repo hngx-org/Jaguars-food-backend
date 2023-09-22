@@ -5,7 +5,6 @@ const {
 	MAIL_PASSWORD,
 	MAIL_FROM_ADDRESS,
 } = require('../utils//constants');
-
 // Configure nodemailer
 const transporter = nodemailer.createTransport({
 	host: MAIL_HOST,
