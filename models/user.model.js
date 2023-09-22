@@ -2,15 +2,18 @@ module.exports = (sequelize, DataTypes) => {
 	const User = sequelize.define('users', {
 		orgId: {
 			type: DataTypes.INTEGER,
-			allowNull: false,
+			allowNull: true,
+			defaultValue: 0,
 		},
 		firstName: {
 			type: DataTypes.STRING,
-			allowNull: false,
+			allowNull: true,
+			defaultValue: '',
 		},
 		lastName: {
 			type: DataTypes.STRING,
-			allowNull: false,
+			allowNull: true,
+			defaultValue: '',
 		},
 		profilePicture: {
 			type: DataTypes.STRING,
@@ -82,6 +85,11 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			allowNull: true,
 			defaultValue: '',
+		},
+		isDeleted: {
+			type: DataTypes.BOOLEAN,
+			allowNull: true,
+			defaultValue: false,
 		},
 	});
 	return User;

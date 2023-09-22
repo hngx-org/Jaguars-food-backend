@@ -10,9 +10,18 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			type: DataTypes.STRING,
 		},
-		lunch_price: {
+		currency_code: {
 			allowNull: false,
 			type: DataTypes.STRING,
+		},
+		lunch_price: {
+			allowNull: false,
+			type: DataTypes.DOUBLE(10, 2),
+		},
+		isDeleted: {
+			type: DataTypes.BOOLEAN,
+			allowNull: true,
+			defaultValue: false,
 		},
 	});
 	return organization;

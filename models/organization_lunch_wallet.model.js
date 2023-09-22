@@ -5,9 +5,14 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 		},
 		balance: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.DOUBLE(10, 2),
 			allowNull: false,
 			defaultValue: 1000000,
+		},
+		isDeleted: {
+			type: DataTypes.BOOLEAN,
+			allowNull: true,
+			defaultValue: false,
 		},
 	});
 	return LunchWallet;
