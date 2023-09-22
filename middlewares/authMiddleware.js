@@ -11,6 +11,7 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
 			next();
 		} else if (req.body.token) {
 			const token = req.body.token;
+			// console.log(token);
 			const data = await verifyToken(token);
 			req.user = data;
 			next();

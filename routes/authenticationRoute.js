@@ -3,7 +3,10 @@ const {
 	createAdmin,
 	createInvite,
 } = require('../controllers/auth/adminOrgController');
-const { Login, signUp } = require('../controllers/auth/userAuthController');
+const {
+	Login,
+	staffSignUp,
+} = require('../controllers/auth/userAuthController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
@@ -11,7 +14,7 @@ const router = express.Router();
 //ADMIN SIGN UP ROUTE
 router.post('/user/signup', createAdmin);
 router.post('/organization/invite', authMiddleware, createInvite);
-router.post('/organization/staff/signup', authMiddleware, signUp);
+router.post('/organization/staff/signup', staffSignUp);
 // router.post('/organization/staff/signup', authMiddleware, createInvite);
 router.post('/login', Login);
 

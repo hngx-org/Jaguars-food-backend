@@ -2,7 +2,8 @@ module.exports = (sequelize, DataTypes) => {
 	const User = sequelize.define('users', {
 		orgId: {
 			type: DataTypes.INTEGER,
-			allowNull: false,
+			allowNull: true, // temp solution to test
+			defaultValue: 1,
 		},
 		firstName: {
 			type: DataTypes.STRING,
@@ -37,7 +38,6 @@ module.exports = (sequelize, DataTypes) => {
 		isAdmin: {
 			type: DataTypes.BOOLEAN,
 			allowNull: true,
-			defaultValue: '',
 			defaultValue: false,
 		},
 		launchCreditBalance: {

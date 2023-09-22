@@ -1,20 +1,23 @@
+const { NOW } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
 	const Invites = sequelize.define('organization_invites', {
 		email: {
-			allowNull: false,
 			type: DataTypes.STRING,
+			allowNull: false,
+			validate: {
+				isEmail: true,
+			},
+			unique: true,
 		},
 		token: {
-			allowNull: false,
 			type: DataTypes.STRING,
+			allowNull: false,
 		},
 		ttl: {
-			allowNull: false,
+			allowNull: true,
 			type: DataTypes.DATE,
-		},
-		org_id: {
-			allowNull: false,
-			type: DataTypes.INTEGER,
+			defaultValue: NOW,
 		},
 	});
 	return Invites;

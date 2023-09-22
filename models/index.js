@@ -27,7 +27,8 @@ db.organizationLunchWallet = require('./organization_lunch_wallet.model.js')(
 db.user = require('./user.model.js')(sequelize, DataTypes);
 db.withdrawals = require('./withdrawals.model.js')(sequelize, DataTypes);
 
-db.sequelize.sync({ alter: false }).then(() => {
+// db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({}).then(() => {
 	console.log('Database sync done!');
 });
 

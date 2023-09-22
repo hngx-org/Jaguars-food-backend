@@ -3,7 +3,11 @@ const db = require('../../models');
 const { hashPassword } = require('../../utils/utils');
 const { getToken, verifyToken } = require('../../utils/tokens');
 const { APP_URL } = require('../../utils/constants');
-
+const transporter = require('../../config/mailConfig');
+const {
+	generateInvitationToken,
+	sendInvitationEmail,
+} = require('../../utils/utils');
 //Admin or organization
 
 const createAdmin = asyncHandler(async (req, res) => {
@@ -47,15 +51,8 @@ const createAdmin = asyncHandler(async (req, res) => {
 		currency,
 	});
 	const { firstName, lastName, phoneNumber, isAdmin, orgId } = newUser;
-	const data = {
-		email,
-		password,
-		firstName,
-		lastName,
-		phoneNumber,
-		isAdmin,
-		orgId,
-	};
+	console.log(newUser);
+	const data = { firstName, lastName, phoneNumber, isAdmin, orgId };
 	return res.send({ message: 'Account created', data });
 });
 
@@ -63,13 +60,19 @@ const createInvite = asyncHandler(async (req, res) => {
 	const { email } = req.body;
 	const orgId = req.user.orgId;
 	if (req.user.isAdmin) {
-		const newInvite = await getToken({ email, orgId });
-		const url = APP_URL + 'api/organization/signup?token=';
-		const invite_url = {
-			invite_url: `${url}${newInvite}`,
-			orgId,
-		};
-		return res.send(invite_url);
+		// const newInvite = await getToken({ email, orgId });
+		// const url = APP_URL + 'api/organization/signup?token=';
+		// const invite_url = {
+		// 	invite_url: `${url}${newInvite}`,
+		// 	orgId,
+		// };
+		// Generate a unique invitation token
+		const invitationToken = await generateInvitationToken(email);
+		// console.log(invitationToken);
+
+		// Send the invitation email
+		sendInvitationEmail(email, invitationToken);
+		res.json({ message: 'Invitation sent successfully', statusCode: 200 });
 	} else {
 		res.status(403);
 		throw new Error('Only admins can invite');

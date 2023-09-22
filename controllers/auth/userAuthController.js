@@ -3,6 +3,72 @@ const db = require('../../models');
 const { hashPassword, verifyPassword } = require('../../utils/utils');
 const { getToken, verifyToken } = require('../../utils/tokens');
 
+const staffSignUp = asyncHandler(async (req, res) => {
+	const sentEmail = req.body.email;
+	const sentPassword = req.body.password;
+	const sentFirstName = req.body.first_name;
+	const sentLastName = req.body.last_name;
+	const sentPhone_number = req.body.phone_number;
+	const otp_token = req.body.otp_token;
+
+	if (
+		!sentEmail ||
+		!sentPassword ||
+		!sentFirstName ||
+		!sentLastName ||
+		!sentPhone_number
+	) {
+		res.status(400).json({ error: 'All section is required' });
+		return;
+	}
+	const jwtToken = await db.organizationInvites.findOne({
+		where: { email: sentEmail },
+	});
+	// console.log(jwtToken);
+	// console.log(jwtToken.dataValues.token);
+	if (!jwtToken) {
+		return res.status(404).json({ error: 'invalid token' });
+	}
+
+	const data = await verifyToken(jwtToken.dataValues.token);
+	req.user = data;
+	// console.log(req.user);
+
+	const decodedToken = await verifyToken(jwtToken.dataValues.token);
+	// console.log(decodedToken.otp, otp_token);
+	if (decodedToken?.otp?.toString() !== otp_token) {
+		return res.status(400).json({ error: 'invalid token' });
+	}
+
+	// if(decodedToken !== sentEmail){
+	//   res.status(400)
+	//   throw new Error("Invalid Token")
+	// }
+	try {
+		const hashedPassword = hashPassword(sentPassword);
+		const newUser = await db.user.findOne({ where: { email: sentEmail } });
+		if (newUser) {
+			return res.status(409).json({ error: 'Staff already Exist' });
+		} else {
+			const signUp = await db.user.create({
+				email: sentEmail,
+				passwordHash: hashedPassword,
+				firstName: sentFirstName,
+				lastName: sentLastName,
+				phoneNumber: sentPhone_number,
+				// orgId: 1,
+			});
+			// TODO: UPDATE INVITE TO HOLD ORGANIZATION ID
+			// console.log(signUp);
+			res.status(201).json({ message: 'Signup Successful', signUp });
+		}
+	} catch (error) {
+		res.status(500);
+		// console.log(error);
+		throw new Error('Server Error');
+	}
+});
+
 const signUp = asyncHandler(async (req, res) => {
 	const { email, password, first_name, last_name, phone_number } = req.body;
 	const checkUser = await db.user.findOne({ where: { email } });
@@ -13,7 +79,7 @@ const signUp = asyncHandler(async (req, res) => {
 		res.status(400);
 		throw new Error('User already exists. Try login');
 	}
-	const newUser = db.user.create({
+	const newUser = await db.user.create({
 		email,
 		firstName: first_name,
 		lastName: last_name,
@@ -21,17 +87,9 @@ const signUp = asyncHandler(async (req, res) => {
 		orgId: req.user.orgId,
 		passwordHash: hashPassword(password),
 	});
-
+	// console.log(newUser);
 	const { firstName, lastName, phoneNumber, isAdmin, orgId } = newUser;
-	const data = {
-		email,
-		password,
-		firstName,
-		lastName,
-		phoneNumber,
-		isAdmin,
-		orgId,
-	};
+	const data = { firstName, lastName, phoneNumber, isAdmin, orgId };
 	return res.send({ message: 'Account created', data });
 });
 
@@ -88,4 +146,4 @@ const Login = asyncHandler(async (req, res) => {
 	}
 });
 
-module.exports = { Login, signUp };
+module.exports = { Login, signUp, staffSignUp };
