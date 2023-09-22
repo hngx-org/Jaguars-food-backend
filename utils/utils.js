@@ -27,7 +27,11 @@ async function generateInvitationToken(email, orgId) {
 			{ where: { email: email } }
 		);
 	} else {
-		await db.organizationInvites.create({ email: email, token: jwt_token });
+		await db.organizationInvites.create({
+			email: email,
+			token: jwt_token,
+			org_id: orgId,
+		});
 	}
 
 	return generatedToken;

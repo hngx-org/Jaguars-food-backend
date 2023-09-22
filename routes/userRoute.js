@@ -17,7 +17,7 @@ router.get('/user/profile', authMiddleware, getUserProfile);
 router.put('/user/profile', editUserProfile);
 
 // Add bank account
-router.post('/user/bank', addUserBank);
+router.patch('/user/bank', authMiddleware, addUserBank);
 
 // Get all users
 router.get('/users', getAllUsers);
