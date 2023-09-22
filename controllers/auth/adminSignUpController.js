@@ -1,24 +1,15 @@
-import asyncHandler from "express-async-handler";
-import bcrypt from "bcrypt";
-import validateFields from "../../utils/validateUserFields.js";
-import { User } from "../../models/user.model.js";
-import { json } from "sequelize";
 // import { getToken } from "../../utils/tokens.js";
 
-const createAdminSignUp = asyncHandler(async (req, res) => {
-  const { email, password, first_name, last_name, phone_number } = req.body;
-  // Validate user input
-  const validationErrors = validateFields({
-    email,
-    password,
-    first_name,
-    last_name,
-    phone_number,
-  });
+const asyncHandler = require("express-async-handler");
 
-  if (Object.keys(validationErrors).length > 0) {
-    return res.status(400).json({ errors: validationErrors });
-  }
+const bcrypt = require("bcrypt");
+
+const db = require("../../models/index.js"); // Update the path accordingly
+const User = db.user; // Assuming the user model is exported as 'user' from user.model.js
+
+const createAdminSignUp = asyncHandler(async (req, res) => {
+  const { email, password, first_name, last_name, phoneNumber } = req.body;
+
   try {
     // Check if the user with the same email already exists
     const existingUser = await User.findOne({ where: { email } });
@@ -36,10 +27,10 @@ const createAdminSignUp = asyncHandler(async (req, res) => {
     // Create a new user
     const newUser = await User.create({
       email,
-      password_hash: hashedPassword,
+      passwordHash: hashedPassword,
       first_name,
       last_name,
-      phone_number,
+      phoneNumber,
       isAdmin: true,
     });
 
@@ -55,4 +46,4 @@ const createAdminSignUp = asyncHandler(async (req, res) => {
   }
 });
 
-export { createAdminSignUp };
+module.exports = { createAdminSignUp };

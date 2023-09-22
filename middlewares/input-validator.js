@@ -3,19 +3,22 @@ const Joi = require("joi");
 exports.validateSchema = (schema) => {
   return async (req, res, next) => {
     try {
-      const data = await schema.validateAsync(req.body, {
-        abortEarly: false,
-        allowUnknown: true,
-        stripUnknown: true,
-      });
-      req.body = data;
-      next();
+      const data = req.body; // Assuming the data to validate is in the request body
+
+      const { error } = schema.validate(data);
+
+      if (error) {
+        const errorMessages = error.details.map(({ message, path }) => ({
+          message,
+          path,
+        }));
+
+        return res.status(400).json({ errors: errorMessages });
+      }
+
+      next(); // Move to the next middleware or route handler
     } catch (error) {
-      const errors = error.details.map(({ message, path }) => {
-        return { message, path: path[0] };
-      });
-      res.status(422).json({ status: "error", errors });
-      console.log(errors);
+      return res.status(500).json({ error: "Internal Server Error" });
     }
   };
 };

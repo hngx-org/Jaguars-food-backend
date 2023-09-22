@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     orgId: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: 0,
+      //   defaultValue: 0,
     },
     firstName: {
       type: DataTypes.STRING,
