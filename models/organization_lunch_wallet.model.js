@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-	const LunchWallet = sequelize.define('organization_lunch_wallet', {
+	const LunchWallet = sequelize.define('organization_lunch_wallets', {
 		org_id: {
 			allowNull: false,
 			type: DataTypes.INTEGER,
