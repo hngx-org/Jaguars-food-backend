@@ -1,20 +1,31 @@
-import { Router } from "express";
+const { Router } = require('express');
 const router = Router();
-import {
-  getUserProfile,
-  getAllUsers,
-  addUserBank,
-  searchUser,
-} from "../controllers/users-controller.js";
-
+const {
+	getUserProfile,
+	editUserProfile,
+	getAllUsers,
+	addUserBank,
+	searchUser,
+	createWithdrawal,
+} = require('../controllers/users-controller.js');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 // Get the user profile
-router.get("/user/profile", getUserProfile)
+router.get('/user/profile', authMiddleware, getUserProfile);
+
+// Edit the user profile
+router.put('/user/profile', authMiddleware, editUserProfile);
+
 // Add bank account
-router.post('/user/bank', addUserBank);
+router.patch('/user/bank', authMiddleware, addUserBank);
+
 // Get all users
-router.get('/users', getAllUsers);
+router.get('/users', authMiddleware, getAllUsers);
 
-router.get('/search/:nameoremail', searchUser);
+// Get user by name or email
+router.get('/search/:nameoremail', authMiddleware, searchUser);
 
-export default router;
+// Create withdrawal request
+router.post('/user/withdrawal', authMiddleware, createWithdrawal);
+
+module.exports = router;

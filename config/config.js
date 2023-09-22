@@ -1,35 +1,41 @@
-import express from "express";
-import cors from "cors";
-import joi from "joi";
-import morgan from "morgan";
-import dotenv from "dotenv";
-import router from "../routes/router.js";
-import lunchRouter from "../routes/lunchRoute.js";
-import withdrawalRouter from "../routes/withdrawalRoute.js";
-import organizationRouter from "../routes/organizationRoute.js";
-import authorizationRouter from "../routes/authorizationRoute.js";
-import userRouter from "../routes/userRoute.js";
+const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
+const dotenv = require('dotenv');
+const router = require('../routes/router.js');
 
+// ROUTES
+const lunchRouter = require('../routes/lunchRoute.js');
+const withdrawalRouter = require('../routes/withdrawalRoute.js');
+const lunchRoute = require('../routes/lunchRoute.js');
+const withdrawalRoute = require('../routes/withdrawalRoute.js');
+const authenticationRoute = require('../routes/authenticationRoute.js');
+const userRoute = require('../routes/userRoute.js');
 
+// MIDDLEWARES
+const errHandler = require('../middlewares/errHandler.js');
+const notFound = require('../middlewares/notFound.js');
 
 const app = express();
 dotenv.config();
 
 app.use(cors());
 app.use(router);
-// app.use(joi);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 
-app.use('/api', userRouter);
 app.use('/api/lunch', lunchRouter);
 app.use('/api/withdrawal', withdrawalRouter);
-app.use('/api/organization', organizationRouter);
-app.use('/api/auth', authorizationRouter);
 
+app.use('/api/lunch', lunchRoute);
+app.use('/api/withdrawal', withdrawalRoute);
+app.use('/api', userRoute);
+app.use('/api/auth', authenticationRoute);
 
+app.use(notFound);
+app.use(errHandler);
 
-export const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4000;
 
-export default app;
+module.exports = { app, PORT };

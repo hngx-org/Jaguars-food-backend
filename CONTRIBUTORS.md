@@ -1,6 +1,6 @@
 # Contributing to Jaguars-food-backend repo
 
-Thank you for your interest in contributing to this project! We welcome contributions from the community and appreciate your help in making this project better.
+Thank you for your interest in contributing to this project! We welcome contributions = require( the community and appreciate your help in making this project better.
 
 ## How to Contribute
 
@@ -14,4 +14,7 @@ To get started, follow these steps:
    git clone https://github.com/<your-username>/<repository-name>.git
 
 ## Names of contibutors 
-1.Oni Oluwatomiwa : [26thavenue](https://github.com/26thavenue)
+
+1.Oni Oluwatomiwa : [26thavenue](https://github.com/26thavenue) Slack Name: Oluwatomiwa Oni
+2. Ejiofor Emmanuel Whyte : [kalwhyte](https://github.com/kalwhyte) Slack name: Ejiofor Emmanuel Whyte
+3. Emmanuel O. Fasogba : [fashemma007](https://github.com/fashemma007) Slack name: Emmanuel Fasogba

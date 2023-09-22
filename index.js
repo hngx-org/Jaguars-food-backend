@@ -1,5 +1,15 @@
-import app, { PORT } from "./config/config.js";
+const { app, PORT } = require('./config/config.js');
+// const db = require('./models');
 
-app.listen(PORT, () => {
-  console.log(`Server started at port ${PORT}`);
-});
+require('dotenv').config({ path: '.env' });
+
+const startApp = async () => {
+	// db.connectToDatabase().then(() => {
+	// 	console.log('Database connection successful.');
+	// });
+	app.listen(PORT, () => {
+		console.log(`Server is up and running at port ${PORT}`);
+	});
+};
+
+startApp();
