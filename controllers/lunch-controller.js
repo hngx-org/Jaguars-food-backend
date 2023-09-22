@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const db = require('../models');
+const lunchesModel = require('../models/lunches.model');
 
 //SEND A LUNCH
 const createLunch = asyncHandler(async (req, res) => {
@@ -36,10 +37,29 @@ const createLunch = asyncHandler(async (req, res) => {
 // });
 
 // //GET ALL LUNCHES
-// const getAllLunches = asyncHandler(async (req, res) => {});
+	const getAllLunches = asyncHandler(async(req,res) =>{
+		try {
+			  
+			 const allLunch = db.lunches.findAll({ });  
+			  if (!allLunch) {
+				return res.status(400).json({ error: 'Error getting lunches' });
+			  }
+			  res.status(200).json({
+				  message: "Lunches retrieved sucessfully ",
+				  statusCode: 200,
+				  data: allLunch,
+				});
+			  
+			} catch (error) {throw new Error('Internal Server Error');
+			}
+	  
+
+});
+
+
 
 module.exports = {
 	createLunch,
 	// getLunch,
-	// getAllLunches,
+	 getAllLunches,
 };

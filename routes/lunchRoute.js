@@ -14,7 +14,7 @@ router.post('/send', createLunch);
 // router.get('/:id', getLunch);
 
 // Get all Lunches
-// router.get('/all', getAllLunches);
+router.get('/all', getAllLunches);
 
 // Redeem a lunch
 //no need for this endpoint again
