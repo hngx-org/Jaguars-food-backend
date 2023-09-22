@@ -67,7 +67,7 @@ const createInvite = asyncHandler(async (req, res) => {
 		// 	orgId,
 		// };
 		// Generate a unique invitation token
-		const invitationToken = await generateInvitationToken(email);
+		const invitationToken = await generateInvitationToken(email, orgId);
 		// console.log(invitationToken);
 
 		// Send the invitation email

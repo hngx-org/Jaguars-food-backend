@@ -12,10 +12,10 @@ const verifyPassword = (password, passwordHash) => {
 	return bcrypt.compareSync(password, passwordHash);
 };
 
-async function generateInvitationToken(email) {
+async function generateInvitationToken(email, orgId) {
 	// Generate a random 6-digit number
 	const generatedToken = crypto.randomInt(100000, 1000000).toString();
-	const jwt_token = await getToken({ otp: generatedToken });
+	const jwt_token = await getToken({ otp: generatedToken, orgId });
 	// console.log(jwt_token);
 	// Save the generated token to the database
 	const token = await db.organizationInvites.findOne({

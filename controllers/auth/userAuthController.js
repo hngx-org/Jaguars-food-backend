@@ -31,8 +31,7 @@ const staffSignUp = asyncHandler(async (req, res) => {
 	}
 
 	const data = await verifyToken(jwtToken.dataValues.token);
-	req.user = data;
-	// console.log(req.user);
+	const { orgId } = data;
 
 	const decodedToken = await verifyToken(jwtToken.dataValues.token);
 	// console.log(decodedToken.otp, otp_token);
@@ -56,7 +55,7 @@ const staffSignUp = asyncHandler(async (req, res) => {
 				firstName: sentFirstName,
 				lastName: sentLastName,
 				phoneNumber: sentPhone_number,
-				// orgId: 1,
+				orgId,
 			});
 			// TODO: UPDATE INVITE TO HOLD ORGANIZATION ID
 			// console.log(signUp);
