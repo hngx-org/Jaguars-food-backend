@@ -10,7 +10,7 @@ dotenv.config();
 
 //importing isAdmin to check if organization is an Admin 
 import isAdmin from "../middlewares/isAdmin"
-import {getToken ,verifyToken} from "../utils/tokens"
+import {generateAccessToken ,verifyAccessToken} from "../utils/tokens"
 
 
 
@@ -34,7 +34,7 @@ router.post(`/api/organizations/invite`, isAdmin, (req, res) => {
   generateInvitationToken(email, secretKey)
     .then((invitationToken) => {
       // Verify the invitation token
-      verifyToken(invitationToken, secretKey)
+      verifyAccessToken(req,res,next,invitationToken, secretKey)
         .then(() => {
           // Sending invitation email
           sendInvitationEmail(email, invitationToken);
@@ -83,7 +83,7 @@ function generateInvitationToken(email, secretKey) {
   };
 
   return new Promise((resolve, reject) => {
-    getToken(userData)
+    generateAccessToken(userData)
       .then((token) => {
         
         resolve(token);

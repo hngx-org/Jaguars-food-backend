@@ -15,6 +15,7 @@ import userRoute from '../routes/userRoute.js';
 // MIDDLEWARES
 import errHandler from '../middlewares/errHandler.js';
 import notFound from '../middlewares/notFound.js';
+import authRouter from '../routes/authRoute.js';
 
 const app = express();
 dotenv.config();
@@ -32,7 +33,8 @@ app.use('/api/withdrawal', withdrawalRouter);
 app.use('/api/lunch', lunchRoute);
 app.use('/api/withdrawal', withdrawalRoute);
 app.use('/api', userRoute);
-app.use('/api/auth', authenticationRoute);
+app.use('/api/auth', authRouter);
+// app.use('/api/auth', authenticationRoute);
 
 app.use(notFound);
 app.use(errHandler);

@@ -2,7 +2,7 @@ import express from 'express';
 // import {
 // 	createAdmin,
 // 	logInAdmin,
-// } from '../controllers/auth/userSignUpController.js';
+// } from '../controllers/auth/organisationSignUpController.js';
 
 const router = express.Router();
 //ADMIN SIGN UP ROUTE

@@ -8,7 +8,7 @@ import './models/lunches.model.js';
 import './models/withdrawals.model.js';
 
 const startApp = async () => {
-	connectToDatabase().then(() => {
+	await connectToDatabase().then(() => {
 		console.log('Database connection successful.');
 		sequelize.sync({ force: true });
 	});
@@ -18,3 +18,5 @@ const startApp = async () => {
 };
 
 startApp();
+
+// TODO Added Auth 

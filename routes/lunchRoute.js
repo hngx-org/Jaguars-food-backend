@@ -4,18 +4,18 @@ import {
   getLunch,
   getAllLunches,
 } from "../controllers/lunch-controller.js";
+import { verifyAccessToken } from "../utils/tokens.js";
 
 const router = Router();
 
-
 // Send a Lunch
-router.post('/send', createLunch);
+router.post("/send", verifyAccessToken, createLunch);
 
 // Get a Lunch
-router.get('/:id', getLunch);
+router.get('/all/:id',verifyAccessToken, getLunch);
 
 // Get all Lunches
-router.get('/all', getAllLunches);
+router.get("/all", verifyAccessToken, getAllLunches);
 
 // Redeem a lunch
 //no need for this endpoint again

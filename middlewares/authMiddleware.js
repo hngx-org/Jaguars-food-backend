@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import { verifyToken } from "../utils/tokens";
+import { verifyAccessToken } from "../utils/tokens.js";
 
 const authMiddleware = asyncHandler(async (req, res, next) => {
   try {
@@ -8,7 +8,7 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
 
       if (!token) throw new Error("Unauthorized");
 
-      const data = await verifyToken(token);
+      const data = await verifyAccessToken(token);
       req.user = data;
       next();
     } else {
