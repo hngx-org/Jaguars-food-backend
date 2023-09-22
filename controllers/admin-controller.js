@@ -1,11 +1,11 @@
-import joi from "joi";
-import { sendEmail } from "../utils/sendMail.js";
-import asyncHandler from "express-async-handler";
-import express from "express";
-import dotenv from "dotenv";
-import { invites, organization } from "../models/organization.model.js";
-import { getInviteTemplate } from "../utils/emailTemplate.js";
-import { User } from "../models/user.model.js";
+const joi =require("joi");
+const { sendEmail } = require("../utils/sendMail.js");
+const asyncHandler  = require("express-async-handler");
+const express = require("express");
+const dotenv = require("dotenv");
+const { invites, organization } = require("../models/organization.model.js");
+const { getInviteTemplate } = require("../utils/emailTemplate.js");
+const { User } = require("../models/user.model.js");
 
 const router = express.Router();
 dotenv.config();
@@ -79,7 +79,7 @@ const createInvite = asyncHandler(async (req, res) => {
 
 router.post(`/api/organizations/invite`, createInvite);
 
-export { createInvite, createAdmin, router };
+module.exports = { createInvite, createAdmin, router };
 
 const generateOtp = () => {
   let otp = "";

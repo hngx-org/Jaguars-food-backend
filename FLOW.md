@@ -4,11 +4,11 @@ This is a brief highlight of the expected usage/functionality of the Free Lunch 
 
 Feel free to add/remove/edit any neccessary infomation here.
 
-Link to endpoints declaration -
-[https://benrobo.notion.site/benrobo/Free-Lunch-Endpoint-9ffcb74dfe274c968fa412553e015791](https://benrobo.notion.site/benrobo/Free-Lunch-Endpoint-9ffcb74dfe274c968fa412553e015791)
+Link to endpoints declaration
+[Endpoints Template](https://benrobo.notion.site/benrobo/Free-Lunch-Endpoint-9ffcb74dfe274c968fa412553e015791)
 
-Link to database schema - 
-[https://drawsql.app/teams/benrobo/diagrams/free-lunch](https://drawsql.app/teams/benrobo/diagrams/free-lunch)
+Link to database schema
+[Database Schema](https://drawsql.app/teams/benrobo/diagrams/free-lunch)
 
 - ### User luanches the App and has Three options:
 

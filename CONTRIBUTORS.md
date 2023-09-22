@@ -1,6 +1,6 @@
 # Contributing to Jaguars-food-backend repo
 
-Thank you for your interest in contributing to this project! We welcome contributions from the community and appreciate your help in making this project better.
+Thank you for your interest in contributing to this project! We welcome contributions = require( the community and appreciate your help in making this project better.
 
 ## How to Contribute
 
