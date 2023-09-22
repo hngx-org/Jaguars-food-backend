@@ -3,6 +3,7 @@ const {
 	createLunch,
 	getLunch,
 	redeemUserLunch,
+	getAllLunches
 } = require('../controllers/lunch-controller.js');
 const authMiddleware = require('../middlewares/authMiddleware');
 
