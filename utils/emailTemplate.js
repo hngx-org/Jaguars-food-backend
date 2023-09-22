@@ -1,4 +1,4 @@
-export const getInviteTemplate = (otp, organization, subject) => {
+const getInviteTemplate = (otp, organization, subject) => {
   return `
     <!DOCTYPE html>
   <html lang="en">
@@ -48,11 +48,10 @@ export const getInviteTemplate = (otp, organization, subject) => {
           <div class='child'>
             <h2>${subject}</h2>
             <p>
-              You are receiving this email because you invited to join ${organization}.
+              You have been invited by ${organization} to join it's organization on Free Lunch App.
+              <br/>Use the token below to create your account..
             </p>
-            <p>Please enter the following code for verification:</p>
             <p class="center">${otp}</p>
-           
           </div>
         </div>
       </div>
@@ -60,3 +59,4 @@ export const getInviteTemplate = (otp, organization, subject) => {
   </html>
   `;
 };
+module.exports = { getInviteTemplate };

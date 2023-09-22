@@ -1,16 +1,15 @@
-const { app, PORT } = require('./config/config.js');
-// const db = require('./models');
+const { app, PORT } = require("./config/config");
+const { connectToDatabase } = require("./models");
 
-require('dotenv').config({ path: '.env' });
+require("dotenv").config({ path: ".env" });
 
 const startApp = async () => {
-	connectToDatabase().then(() => {
-		console.log('Database connection successful.');
-		// sequelize.sync({ force: true });
-	});
-	app.listen(PORT, () => {
-		console.log(`Server started at port ${PORT}`);
-	});
+  connectToDatabase().then(() => {
+    console.log("Database connection successful.");
+  });
+  app.listen(PORT, () => {
+    console.log(`Server started at port ${PORT}`);
+  });
 };
 
 startApp();

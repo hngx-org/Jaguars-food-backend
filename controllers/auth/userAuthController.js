@@ -24,8 +24,6 @@ const staffSignUp = asyncHandler(async (req, res) => {
 	const jwtToken = await db.organizationInvites.findOne({
 		where: { email: sentEmail },
 	});
-	// console.log(jwtToken);
-	// console.log(jwtToken.dataValues.token);
 	if (!jwtToken) {
 		return res
 			.status(403)
