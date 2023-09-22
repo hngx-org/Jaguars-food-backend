@@ -45,24 +45,37 @@ const editUserProfile = asyncHandler(async (req, res) => {
 
 //ADD USER BANK ACCOUNT
 const addUserBank = asyncHandler(async (req, res) => {
-  const user = req.user;
-  if (user) {
-    user.bank = {
-      bankName: req.body.bankName,
-      accountNumber: req.body.accountNumber,
-      accountName: req.body.accountName,
-    };
-    const updatedUser = await user.save();
-    res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
-      bank: updatedUser.bank,
-    });
-  } else {
-    res.status(404);
-    throw new Error('User not found');
+  const { bank_number, bank_code, bank_name, bank_region, currency, currency_code } =
+    req.body;
+  
+  try {
+    // Find the user by ID
+    const user = await User.findByPk(req.user.id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found", statusCode: 404 });
+    }
+
+    // Update the user's bank details in the user model
+    user.bank_number = bank_number;
+    user.bank_code = bank_code;
+    user.bank_name = bank_name;
+    user.bank_region = bank_region;
+    user.currency = currency;
+    user.currency_code = currency_code;
+
+    // Save the updated user to the database
+    await user.save();
+
+    return res
+      .status(200)
+      .json({ message: "Successfully added bank details", statusCode: 200 });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", statusCode: 500 });
   }
 });
 
