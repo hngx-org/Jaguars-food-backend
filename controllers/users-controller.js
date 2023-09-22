@@ -1,9 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const db = require('../models');
 const { hashPassword, verifyPassword } = require('../utils/utils');
-const db = require('../models');
+const { Op } = require('sequelize');
 
-//user is employee
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
 	const id = req.user.id;
@@ -39,6 +38,7 @@ const editUserProfile = asyncHandler(async (req, res) => {
 	}
 });
 
+// TODO
 //ADD USER BANK ACCOUNT
 const addUserBank = asyncHandler(async (req, res) => {
 	const user = req.user;
@@ -61,6 +61,8 @@ const addUserBank = asyncHandler(async (req, res) => {
 		throw new Error('User not found');
 	}
 });
+
+//GET ALL USERS
 /**
  * @desc Get all Users
  * @route GET /api
@@ -69,39 +71,45 @@ const addUserBank = asyncHandler(async (req, res) => {
  */
 const getAllUsers = asyncHandler(async (req, res) => {
 	try {
-	  // Assuming you retrieve all users from the database
-	  const users = await db.user.find({});
-	  // Response data
-	  const responseData = {
-		message: 'Successfully gotten all users',
-		statusCode: 200,
-		data: users.map((user) => ({
-	      firstName: user.name,
-		  email: user.email,
-		  profilePicture: user.profile_picture || 'user-profile-picture-url', // Replace with the actual profile picture URL or a default value
-		  _id: user._id, // Assuming "_id" is the user identifier in your model
-		})),
-	  };
-	  res.status(200).json(responseData);
+		// Assuming you retrieve all users from the database
+		const users = await db.user.findAll({});
+		// Response data
+		const responseData = {
+			message: 'Successfully gotten all users',
+			statusCode: 200,
+			data: users.map((user) => ({
+				firstName: user.name,
+				email: user.email,
+				profilePicture:
+					user.profile_picture || 'user-profile-picture-url', // Replace with the actual profile picture URL or a default value
+				_id: user._id, // Assuming "_id" is the user identifier in your model
+			})),
+		};
+		res.status(200).json(responseData);
 	} catch (error) {
-	  // Handle errors and send an error response
-	  console.error(error);
-	  throw new Error(error)
+		// Handle errors and send an error response
+		console.error(error);
+		throw new Error(error);
 	}
+});
 
-})
 //GET(SEARCH) USER BY NAME OR MAIL
 const searchUser = asyncHandler(async (req, res) => {
 	const nameOrEmail = req.params.nameoremail;
-	const users = await db.user.find({
-		$or: [
-			{ name: { $regex: nameOrEmail, $options: 'i' } },
-			{ email: { $regex: nameOrEmail, $options: 'i' } },
-		],
+	// console.log(nameOrEmail);
+	const users = await db.user.findAll({
+		where: {
+			[Op.or]: [
+				{ firstName: { [Op.like]: '%' + nameOrEmail + '%' } },
+				{ lastName: { [Op.like]: '%' + nameOrEmail + '%' } },
+				{ email: { [Op.like]: '%' + nameOrEmail + '%' } },
+			],
+		},
 	});
 	res.json(users);
 });
 
+// TODO
 //CREATE WITHDRAWAL REQUEST
 const createWithdrawal = asyncHandler(async (req, res) => {
 	const user = req.user;

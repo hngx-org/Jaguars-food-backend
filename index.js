@@ -8,7 +8,7 @@ const startApp = async () => {
 	// 	console.log('Database connection successful.');
 	// });
 	app.listen(PORT, () => {
-		console.log(`Server started at port ${PORT}`);
+		console.log(`Server is up and running at port ${PORT}`);
 	});
 };
 
