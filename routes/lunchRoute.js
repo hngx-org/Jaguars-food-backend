@@ -2,7 +2,6 @@ const { Router } = require('express');
 const {
 	createLunch,
 	getLunch,
-	getAllLunches,
 } = require('../controllers/lunch-controller.js');
 const authMiddleware = require('../middlewares/authMiddleware');
 

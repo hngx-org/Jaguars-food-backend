@@ -9,6 +9,20 @@ const {
 //Admin or organization
 
 const createAdmin = asyncHandler(async (req, res) => {
+  const schema = joi.object({
+    email: joi.string().email({ minDomainSegments: 2 }).required(),
+    password: joi.string().required(),
+    first_name: joi.string().required(),
+    last_name: joi.string().required(),
+    phone_number: joi.string().required(),
+    organization_name: joi.string().required(),
+    lunch_price: joi.string().required(),
+    currency: joi.string().required(),
+    currency_code: joi.string().required(),
+  });
+
+  const { error } = schema.validate(req.body);
+
   const {
     email,
     password,
@@ -20,6 +34,10 @@ const createAdmin = asyncHandler(async (req, res) => {
     currency,
     currency_code,
   } = req.body;
+
+  if (error) {
+    throw new Error(error);
+  }
   const checkOrg = await db.organization.findOne({
     where: { name: organization_name },
   });
