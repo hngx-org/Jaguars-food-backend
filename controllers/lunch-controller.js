@@ -43,7 +43,11 @@ const getAllLunches = asyncHandler(async(req,res) =>{
         if (!allLunch) {
           return res.status(400).json({ error: 'Error getting lunches' });
         }
-        res.status(200).json({ allLunch });
+        res.status(200).json({
+          message: "All lunches available ",
+          statusCode: 200,
+          data: allLunch,
+        });
       } catch (error) {throw new Error('Internal Server Error');
       }
 
