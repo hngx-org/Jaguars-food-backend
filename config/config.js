@@ -1,20 +1,30 @@
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import dotenv from 'dotenv';
-import router from '../routes/router.js';
+const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
+const dotenv = require('dotenv');
+const router = require('../routes/router.js');
 
 // ROUTES
+<<<<<<< HEAD
 import lunchRouter from '../routes/lunchRoute.js';
 import withdrawalRouter from '../routes/withdrawalRoute.js';
 import lunchRoute from '../routes/lunchRoute.js';
 import withdrawalRoute from '../routes/withdrawalRoute.js';
 import authenticationRoute from '../routes/authenticationRoute.js';
 import userRoute from '../routes/userRoute.js';
+=======
+const lunchRouter = require('../routes/lunchRoute.js');
+const withdrawalRouter = require('../routes/withdrawalRoute.js');
+const inviteRouter = require('../routes/invite.js');
+const lunchRoute = require('../routes/lunchRoute.js');
+const withdrawalRoute = require('../routes/withdrawalRoute.js');
+const authenticationRoute = require('../routes/authenticationRoute.js');
+const userRoute = require('../routes/userRoute.js');
+>>>>>>> a39f5282f1e6e373be35ccf261659786edc11129
 
 // MIDDLEWARES
-import errHandler from '../middlewares/errHandler.js';
-import notFound from '../middlewares/notFound.js';
+const errHandler = require('../middlewares/errHandler.js');
+const notFound = require('../middlewares/notFound.js');
 
 const app = express();
 dotenv.config();
@@ -37,6 +47,6 @@ app.use('/api/auth', authenticationRoute);
 app.use(notFound);
 app.use(errHandler);
 
-export const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4000;
 
-export default app;
+module.exports = { app, PORT };
