@@ -1,11 +1,9 @@
-import { Router } from "express";
-import { createWithdrawal } from "../controllers/users-controller.js";
-import { verifyAccessToken } from "../utils/tokens.js";
+const { Router } = require('express');
+const { createWithdrawal } = require('../controllers/users-controller.js');
 
 const router = Router();
 
 // Withdrawal Request
+router.post('/request', createWithdrawal);
 
-router.post("/request", verifyAccessToken, createWithdrawal);
-
-export default router;
+module.exports = router;

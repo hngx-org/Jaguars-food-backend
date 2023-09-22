@@ -1,11 +1,12 @@
-import asyncHandler from "express-async-handler";
-import { User } from "../models/user.model.js";
+const asyncHandler = require('express-async-handler');
+const { user } = require('../models');
 
 const isAdmin = asyncHandler(async (req, res, next) => {
-  try {
-    const { id } = req.user;
+	try {
+		const { id } = req.user;
 
-    const getUser = await User.findOne({ id });
+		const getUser = await user.findOne({ id });
+		// console.log(getUser);
 
     if (!getUser || !getUser.isAdmin) {
       res.status(403);
@@ -16,4 +17,4 @@ const isAdmin = asyncHandler(async (req, res, next) => {
   }
 });
 
-export default isAdmin;
+module.exports = isAdmin;

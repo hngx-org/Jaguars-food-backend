@@ -57,3 +57,4 @@ function generateInvitationToken(email, secretKey) {
 // function sendInvitationEmail(email, generateInvitationToken) {}
 
 export { createInvite, createAdmin };
+

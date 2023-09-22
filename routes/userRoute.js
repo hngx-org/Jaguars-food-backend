@@ -1,24 +1,24 @@
-import { Router } from "express";
+const { Router } = require("express");
 const router = Router();
-import {
+const {
   getUserProfile,
   editUserProfile,
   getAllUsers,
   addUserBank,
   searchUser,
   createWithdrawal,
-} from "../controllers/users-controller.js";
-import authMiddeleware from "../middlewares/authMiddleware.js";
-import { verifyAccessToken } from "../utils/tokens.js";
+} = require("../controllers/users-controller.js");
+const authMiddleware = require("../middlewares/authMiddleware");
+const { verifyAccessToken } = require("../utils/tokens.js");
 
 // Get the user profile
-router.get("/user/profile", verifyAccessToken, getUserProfile);
+router.get("/user/profile", authMiddleware, getUserProfile);
 
 // Edit the user profile
 router.put("/user/profile", verifyAccessToken, editUserProfile);
 
 // Add bank account
-router.patch("/user/bank", verifyAccessToken, authMiddeleware, addUserBank);
+router.patch("/user/bank", verifyAccessToken, authMiddleware, addUserBank);
 
 // Get all users
 router.get("/users", getAllUsers);
@@ -27,6 +27,6 @@ router.get("/users", getAllUsers);
 router.get("/search/:nameoremail", searchUser);
 
 // Create withdrawal request
-router.post("/user/withdrawal",verifyAccessToken ,createWithdrawal);
+router.post("/user/withdrawal", verifyAccessToken, createWithdrawal);
 
-export default router;
+module.exports = router;

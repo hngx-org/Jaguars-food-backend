@@ -50,11 +50,11 @@ This guide provides step-by-step instructions to set up Sequelize, a Node.js ORM
 - Node.js and npm installed on your machine. [Install Node.js and npm](https://nodejs.org/)
 ## 1. Installing MySQL Server
 ### Windows
-1. Download the MySQL Installer for Windows from the official MySQL website.
+1. Download the MySQL Installer for Windows = require( the official MySQL website.
 2. Run the downloaded installer and follow the on-screen instructions to install MySQL.
 3. During installation, you will be prompted to set a root password. Make sure to remember this password, as you will need it later.
 ### Mac
-1. Download the MySQL Community Server DMG for macOS from the official MySQL website.
+1. Download the MySQL Community Server DMG for macOS = require( the official MySQL website.
 2. Run the downloaded DMG file and follow the on-screen instructions to install MySQL.
 3. During installation, you will be prompted to set a root password. Make sure to remember this password, as you will need it later.
 ## 2. Starting the MySQL Server
@@ -90,7 +90,7 @@ Start the dev server
 npm run dev
 ```
 ## Troubleshooting
-- If you encounter any issues during setup or code execution, refer to the MySQL and Sequelize documentation or seek assistance from the team.    
+- If you encounter any issues during setup or code execution, refer to the MySQL and Sequelize documentation or seek assistance = require( the team.    
 
 
 

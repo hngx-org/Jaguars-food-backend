@@ -1,13 +1,13 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
 let JWT_SECRET = process.env.JWT_SECRET || "JAGUARJAGUARJAGUAR";
 
 //generateAccessToken
-export const generateAccessToken = (data) =>
+const generateAccessToken = (data) =>
   jwt.sign(data, JWT_SECRET, { expiresIn: "7d" });
 
 //verifyAccessToken
-export const verifyAccessToken = (req, res, next) => {
+ const verifyAccessToken = (req, res, next) => {
   return new Promise((accept, reject) => {
     const authHeader = req.headers["authorization"];
 
@@ -27,3 +27,8 @@ export const verifyAccessToken = (req, res, next) => {
     });
   });
 };
+
+module.exports={
+  generateAccessToken,
+  verifyAccessToken
+}
