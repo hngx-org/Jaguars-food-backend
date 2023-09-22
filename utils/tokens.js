@@ -3,18 +3,8 @@ import jwt from "jsonwebtoken";
 let JWT_SECRET = process.env.JWT_SECRET || "JAGUARJAGUARJAGUAR";
 
 //generateAccessToken
-export const generateAccessToken = (data) => {
-  return new Promise((accept, reject) => {
-    jwt.sign(data, JWT_SECRET, { expiresIn: "7d" }, (err, token) => {
-      if (err) {
-        console.error(err);
-        reject(err);
-      } else {
-        accept(token);
-      }
-    });
-  });
-};
+export const generateAccessToken = (data) =>
+  jwt.sign(data, JWT_SECRET, { expiresIn: "7d" });
 
 //verifyAccessToken
 export const verifyAccessToken = (req, res, next) => {

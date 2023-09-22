@@ -13,19 +13,19 @@ const User = sequelize.define('users', {
 
 	org_id: {
 		type: DataTypes.INTEGER,
-		allowNull: false,
+		allowNull: true,
 	},
 	first_name: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	last_name: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	profile_picture: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	email: {
 		type: DataTypes.STRING,
@@ -37,7 +37,7 @@ const User = sequelize.define('users', {
 	},
 	phonenumber: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	password_hash: {
 		type: DataTypes.TEXT,
@@ -45,7 +45,7 @@ const User = sequelize.define('users', {
 	},
 	isAdmin: {
 		type: DataTypes.BOOLEAN,
-		allowNull: false,
+		allowNull: true,
 		defaultValue: false,
 	},
 	launch_credit_balance: {
@@ -58,31 +58,31 @@ const User = sequelize.define('users', {
 	},
 	bank_number: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 	bank_code: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 
 	bank_name: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 
 	bank_region: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 
 	currency: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 
 	currency_code: {
 		type: DataTypes.TEXT,
-		allowNull: false,
+		allowNull: true,
 	},
 });
 
