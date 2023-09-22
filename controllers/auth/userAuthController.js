@@ -5,63 +5,60 @@ const { hashPassword, verifyPassword } = require("../../utils/utils");
 const { getToken, verifyToken } = require("../../utils/tokens");
 
 const staffSignUp = asyncHandler(async (req, res) => {
-  const schema = joi.object({
-    email: joi.string().email({ minDomainSegments: 2 }).required(),
-    password: joi.string().required(),
-    first_name: joi.string().required(),
-    last_name: joi.string().required(),
-    phone_number: joi.string().required(),
-    otp_token: joi.string().required(),
-  });
-
-  const { error } = schema.validate(req.body);
-  if (error) {
-    throw new Error(error);
-  }
-  const sentEmail = req.body.email;
-  const sentPassword = req.body.password;
-  const sentFirstName = req.body.first_name;
-  const sentLastName = req.body.last_name;
-  const sentPhone_number = req.body.phone_number;
-  const otp_token = req.body.otp_token;
-
-  const jwtToken = await db.organizationInvites.findOne({
-    where: { email: sentEmail },
-  });
-  if (!jwtToken) {
-    return res.status(403).json({
-      message: "Impersonation warning!",
-      error: "Unauthorized Access",
-    });
-  }
-
-  const data = await verifyToken(jwtToken.dataValues.token);
-  const { orgId } = data;
-
-  const decodedToken = await verifyToken(jwtToken.dataValues.token);
-  if (decodedToken?.otp?.toString() !== otp_token) {
-    return res.status(400).json({ error: "Invalid token" });
-  }
-
   try {
-    const hashedPassword = hashPassword(sentPassword);
-    const newUser = await db.user.findOne({ where: { email: sentEmail } });
-    if (newUser) {
-      return res.status(409).json({ error: "Staff already Exist" });
-    } else {
-      const signUp = await db.user.create({
-        email: sentEmail,
-        passwordHash: hashedPassword,
-        firstName: sentFirstName,
-        lastName: sentLastName,
-        phoneNumber: sentPhone_number,
-        orgId,
-      });
+    const schema = joi.object({
+      email: joi.string().email({ minDomainSegments: 2 }).required(),
+      password: joi.string().required(),
+      first_name: joi.string().required(),
+      last_name: joi.string().required(),
+      phone_number: joi.string().required(),
+      otp_token: joi.string().required(),
+    });
 
-      const { email, id, firstName, lastName, phoneNumber, orgId } = signUp;
-      const data = { email, id, firstName, lastName, phoneNumber, orgId };
-      res.status(201).json({ message: "Signup Successful", data });
+    const { error } = schema.validate(req.body);
+    if (error) {
+      throw new Error(error);
     }
+    const sentEmail = req.body.email;
+    const sentPassword = req.body.password;
+    const sentFirstName = req.body.first_name;
+    const sentLastName = req.body.last_name;
+    const sentPhone_number = req.body.phone_number;
+    const otp_token = req.body.otp_token;
+    const jwtToken = await db.organizationInvites.findOne({
+      where: { email: sentEmail },
+    });
+
+    if (!jwtToken.dataValues.token) {
+      return res.status(403).json({
+        message: "Impersonation warning!",
+        error: "Unauthorized Access",
+      });
+    }
+    const decodedToken = await verifyToken(jwtToken.dataValues.token);
+
+    if (decodedToken?.otp?.toString() !== otp_token) {
+      return res.status(400).json({ error: "Invalid token" });
+    }
+
+    const hashedPassword = hashPassword(sentPassword);
+    const duplicate = await db.user.findOne({ where: { email: sentEmail } });
+    if (duplicate) {
+      return res.status(409).json({ error: "Staff already Exist" });
+    }
+
+    const signUp = await db.user.create({
+      email: sentEmail,
+      passwordHash: hashedPassword,
+      firstName: sentFirstName,
+      lastName: sentLastName,
+      phoneNumber: sentPhone_number,
+      orgId: decodedToken?.orgId,
+    });
+
+    const { email, id, firstName, lastName, phoneNumber, orgId } = signUp;
+    const data = { email, id, firstName, lastName, phoneNumber, orgId };
+    res.status(201).json({ message: "Signup Successful", data });
   } catch (error) {
     res.status(500);
     throw new Error("Server Error");
