@@ -20,7 +20,7 @@ router.put('/user/profile', editUserProfile);
 router.patch('/user/bank', authMiddleware, addUserBank);
 
 // Get all users
-router.get('/users', getAllUsers);
+router.get('/users', authMiddleware, getAllUsers);
 
 // Get user by name or email
 router.get('/search/:nameoremail', searchUser);
