@@ -11,7 +11,7 @@ const dev_dbconfig = {
 	dialect: 'mysql',
 
 	pool: {
-		max: 5,
+		max: 100,
 		min: 0,
 		accuire: 30000,
 		idle: 10000,

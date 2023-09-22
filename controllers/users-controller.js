@@ -1,11 +1,12 @@
 const asyncHandler = require('express-async-handler');
-const { lunches, user } = require('../models');
+const db = require('../models');
 const { hashPassword, verifyPassword } = require('../utils/utils');
 
 //user is employee
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
-	const user = req.user;
+	const id = req.user.id;
+	const user = await db.user.findOne({ where: { id } });
 	if (user) {
 		res.json(user);
 	} else {
@@ -14,6 +15,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 	}
 });
 
+// TODO:: Check ctrls to be sure db was queried
 //EDIT USER PROFILE
 const editUserProfile = asyncHandler(async (req, res) => {
 	const user = req.user;
@@ -23,7 +25,7 @@ const editUserProfile = asyncHandler(async (req, res) => {
 		if (req.body.password) {
 			user.password = req.body.password;
 		}
-		const updatedUser = await user.save();
+		const updatedUser = await db.user.save();
 		res.json({
 			_id: updatedUser._id,
 			name: updatedUser.name,
@@ -45,7 +47,7 @@ const addUserBank = asyncHandler(async (req, res) => {
 			accountNumber: req.body.accountNumber,
 			accountName: req.body.accountName,
 		};
-		const updatedUser = await user.save();
+		const updatedUser = await db.user.save();
 		res.json({
 			_id: updatedUser._id,
 			name: updatedUser.name,
@@ -61,14 +63,14 @@ const addUserBank = asyncHandler(async (req, res) => {
 
 //GET ALL USERS
 const getAllUsers = asyncHandler(async (req, res) => {
-	const users = await User.find({});
+	const users = await db.user.find({});
 	res.json(users);
 });
 
 //GET(SEARCH) USER BY NAME OR MAIL
 const searchUser = asyncHandler(async (req, res) => {
 	const nameOrEmail = req.params.nameoremail;
-	const users = await User.find({
+	const users = await db.user.find({
 		$or: [
 			{ name: { $regex: nameOrEmail, $options: 'i' } },
 			{ email: { $regex: nameOrEmail, $options: 'i' } },
@@ -97,7 +99,7 @@ const createWithdrawal = asyncHandler(async (req, res) => {
 			);
 		}
 		user.withdrawals.push(withdrawal);
-		const updatedUser = await user.save();
+		const updatedUser = await db.user.save();
 		res.json({
 			_id: updatedUser._id,
 			name: updatedUser.name,

@@ -11,7 +11,6 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
 			next();
 		} else if (req.body.token) {
 			const token = req.body.token;
-			// console.log(token);
 			const data = await verifyToken(token);
 			req.user = data;
 			next();
@@ -20,6 +19,7 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
 			req.headers.authorization.startsWith('Bearer')
 		) {
 			const token = req.headers.authorization.split(' ')[1];
+			// console.log(token);
 
 			if (!token) throw new Error('Unauthorized');
 
