@@ -33,7 +33,7 @@ app.use("/api/", inviteRouter);
 app.use("/api/lunch", lunchRoute);
 app.use("/api/withdrawal", withdrawalRoute);
 app.use("/api", userRoute);
-app.use("/api/auth", authRoute);
+app.use("/api/auth", authenticationRoute);
 // app.use("/api/organization", staffSignUpRoute);
 
 app.use(notFound);

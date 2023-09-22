@@ -1,4 +1,4 @@
-import Joi from "joi";
+const Joi = require("joi");
 
 const RequiredString = Joi.string().required();
 const UnrequiredString = Joi.string().allow("");
@@ -11,4 +11,4 @@ const CreateLunch = Joi.object({
   note: RequiredString,
 });
 
-export { CreateLunch };
+module.exports = { CreateLunch };

@@ -1,6 +1,6 @@
-import Joi from "joi";
+const Joi = require("joi");
 
-const validateSchema = (schema) => {
+exports.validateSchema = (schema) => {
   return async (req, res, next) => {
     try {
       const data = await schema.validateAsync(req.body, {
@@ -19,5 +19,3 @@ const validateSchema = (schema) => {
     }
   };
 };
-
-export default validateSchema;

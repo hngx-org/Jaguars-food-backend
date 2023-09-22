@@ -1,49 +1,34 @@
-<<<<<<< HEAD
-import { Router } from "express";
+const { Router } = require("express");
 const router = Router();
-import {
+const {
   getUserProfile,
   editUserProfile,
   getAllUsers,
   addUserBank,
   searchUser,
   createWithdrawal,
-} from "../controllers/users-controller.js";
-import validateSchema from "../middlewares/input-validator.js";
-import {
+} = require("../controllers/users-controller.js");
+const authMiddleware = require("../middlewares/authMiddleware");
+const { validateSchema } = require("../middlewares/input-validator.js");
+const {
+  EditUserProfile,
   AddUserBank,
   CreateWithdrawal,
-  EditUserProfile,
-} from "../schema/user-schema.js";
+} = require("../schema/user-schema.js");
 
 // Get the user profile
-router.get("/user/profile", getUserProfile);
-=======
-const { Router } = require('express');
-const router = Router();
-const {
-	getUserProfile,
-	editUserProfile,
-	getAllUsers,
-	addUserBank,
-	searchUser,
-	createWithdrawal,
-} = require('../controllers/users-controller.js');
-const authMiddleware = require('../middlewares/authMiddleware');
-
-// Get the user profile
-router.get('/user/profile', authMiddleware, getUserProfile);
->>>>>>> 29968b7a69867c2a41e0b0d52b2fffdc00355f45
+router.get("/user/profile", authMiddleware, getUserProfile);
 
 // Edit the user profile
 router.put("/user/profile", validateSchema(EditUserProfile), editUserProfile);
 
 // Add bank account
-<<<<<<< HEAD
-router.post("/user/bank", validateSchema(AddUserBank), addUserBank);
-=======
-router.patch('/user/bank', authMiddleware, addUserBank);
->>>>>>> 29968b7a69867c2a41e0b0d52b2fffdc00355f45
+router.post(
+  "/user/bank",
+  authMiddleware,
+  validateSchema(AddUserBank),
+  addUserBank
+);
 
 // Get all users
 router.get("/users", getAllUsers);

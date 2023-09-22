@@ -1,4 +1,4 @@
-import Joi from "joi";
+const Joi = require("joi");
 
 const RequiredString = Joi.string().required();
 const UnrequiredString = Joi.string().allow("");
@@ -25,4 +25,4 @@ const CreateWithdrawal = Joi.object({
   lunchId: RequiredNumber,
 });
 
-export { CreateWithdrawal, AddUserBank, EditUserProfile };
+module.exports = { CreateWithdrawal, AddUserBank, EditUserProfile };

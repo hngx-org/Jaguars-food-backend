@@ -4,6 +4,8 @@ const {
   getLunch,
   getAllLunches,
 } = require("../controllers/lunch-controller.js");
+const { validateSchema } = require("../middlewares/input-validator.js");
+const { CreateLunch } = require("../schema/launch-schema.js");
 
 const router = Router();
 
