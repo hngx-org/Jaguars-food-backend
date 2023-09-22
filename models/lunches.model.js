@@ -20,11 +20,18 @@ module.exports = (sequelize, DataTypes) => {
 
 		redeemed: {
 			type: DataTypes.BOOLEAN,
-			allowNull: false,
+			allowNull: true,
+			defaultValue: false,
+		},
+		isDeleted: {
+			type: DataTypes.BOOLEAN,
+			allowNull: true,
+			defaultValue: false,
 		},
 		note: {
 			type: DataTypes.TEXT,
-			allowNull: false,
+			allowNull: true,
+			defaultValue: '',
 		},
 	});
 	return Lunches;

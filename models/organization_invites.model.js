@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
 			validate: {
 				isEmail: true,
 			},
-			unique: true,
 		},
 		token: {
 			type: DataTypes.STRING,
@@ -18,6 +17,15 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true,
 			type: DataTypes.DATE,
 			defaultValue: NOW,
+		},
+		org_id: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+		},
+		isDeleted: {
+			type: DataTypes.BOOLEAN,
+			allowNull: true,
+			defaultValue: false,
 		},
 	});
 	return Invites;
