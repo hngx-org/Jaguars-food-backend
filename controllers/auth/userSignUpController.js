@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import bcrypt from 'bcrypt'
 import { verifyToken } from "../../utils/tokens.js";
 import { User } from "../../models/user.model.js";
+import { OrganizationInvites } from "../../models/Organization-invite-model.js";
 
 
 
@@ -17,11 +18,22 @@ const staffSignUp = asyncHandler(async(req,res) =>{
       res.status(400).json({ error: "All section is required" });
       return;
     }
-    const decodedToken = verifyToken(otp_token)
-    if(decodedToken !== sentEmail){
-      res.status(400)
-      throw new Error("Invalid Token")
+    const jwtToken = await OrganizationInvites.findOne({ where: { email: sentEmail } });
+    console.log(jwtToken)
+    console.log(jwtToken.dataValues.token)
+    if(!jwtToken){
+      return res.status(404).json({error:"invalid token"})
     }
+    const decodedToken = verifyToken(jwtToken.dataValues.token)
+    console.log(decodedToken.otp,otp_token)
+    if(decodedToken.otp.toString() !== otp_token){
+      return res.status(400).json({error:"invalid token"})
+    }
+    
+    // if(decodedToken !== sentEmail){
+    //   res.status(400)
+    //   throw new Error("Invalid Token")
+    // }
     try {
       const hashedPassword = await generateHashedPassword(sentPassword, 10)
       const newUser = await User.findOne({ where: { email: sentEmail } });
