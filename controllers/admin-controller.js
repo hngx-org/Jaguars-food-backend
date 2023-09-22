@@ -25,17 +25,17 @@ const createAdmin = asyncHandler(async (req, res) => {
     });
   }
 
-  // const authHeader = req.headers.authorization;
-  // if (!(authHeader && authHeader.startsWith("Bearer "))) {
-  //   return res.status(401).json({
-  //     message: "An error occurred",
-  //     errorMessage: "Invalid auth header",
-  //   });
-  // }
-  // const token = authHeader.split(" ")[1];
+  const authHeader = req.headers.authorization;
+  if (!(authHeader && authHeader.startsWith("Bearer "))) {
+    return res.status(401).json({
+      message: "An error occurred",
+      errorMessage: "Invalid auth header",
+    });
+  }
+  const token = authHeader.split(" ")[1];
 
   try {
-    // verifyToken(token);
+    verifyToken(token);
   } catch (error) {
     return res.status(403).json({
       message: "An error occurred",
