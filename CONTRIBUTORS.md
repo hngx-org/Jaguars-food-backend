@@ -18,3 +18,4 @@ To get started, follow these steps:
 1.Oni Oluwatomiwa : [26thavenue](https://github.com/26thavenue) Slack Name: Oluwatomiwa Oni
 2. Ejiofor Emmanuel Whyte : [kalwhyte](https://github.com/kalwhyte) Slack name: Ejiofor Emmanuel Whyte
 3. Emmanuel O. Fasogba : [fashemma007](https://github.com/fashemma007) Slack name: Emmanuel Fasogba
+4.Egbiri Oluwayoyinsola Cecil : [Cyrus-11](https://github.com/Cyrus-11) Slack name: CECIL-CYRUS-11
