@@ -28,7 +28,7 @@ app.use(morgan('dev'));
 
 app.use('/api/lunch', lunchRouter);
 app.use('/api/withdrawal', withdrawalRouter);
-app.use('/api/', inviteRouter);
+
 
 app.use('/api/lunch', lunchRoute);
 app.use('/api/withdrawal', withdrawalRoute);
