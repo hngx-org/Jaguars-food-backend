@@ -1,34 +1,24 @@
-import { sequelize } from "./index.js";
-
-import { DataTypes } from "sequelize";
-import { organization } from "./organization.model.js";
-
-const User = sequelize.define(
-  "users",
-  {
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER,
-    },
-
-    org_id: {
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define("users", {
+    orgId: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      defaultValue: 0,
     },
-    first_name: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    last_name: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    profile_picture: {
-      type: DataTypes.TEXT,
+    firstName: {
+      type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: "none",
+      defaultValue: "",
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: "",
+    },
+    profilePicture: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: "",
     },
     email: {
       type: DataTypes.STRING,
@@ -38,12 +28,13 @@ const User = sequelize.define(
       },
       unique: true,
     },
-    phone_number: {
-      type: DataTypes.TEXT,
-      allowNull: false,
+    phoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: "",
     },
-    password_hash: {
-      type: DataTypes.TEXT,
+    passwordHash: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     isAdmin: {
@@ -51,49 +42,55 @@ const User = sequelize.define(
       allowNull: true,
       defaultValue: false,
     },
-    launch_credit_balance: {
-      type: DataTypes.TEXT,
+    launchCreditBalance: {
+      type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: "",
     },
-    refresh_token: {
-      type: DataTypes.TEXT,
+    refreshToken: {
+      type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: "",
     },
-    bank_number: {
-      type: DataTypes.TEXT,
+    bankNumber: {
+      type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: "",
     },
-    bank_code: {
-      type: DataTypes.TEXT,
+    bankCode: {
+      type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: "",
     },
 
-    bank_name: {
-      type: DataTypes.TEXT,
+    bankName: {
+      type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: "",
     },
 
-    bank_region: {
-      type: DataTypes.TEXT,
+    bankRegion: {
+      type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: "",
     },
 
     currency: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: "",
     },
 
-    currency_code: {
-      type: DataTypes.TEXT,
+    currencyCode: {
+      type: DataTypes.STRING,
       allowNull: true,
+      defaultValue: "",
     },
-  },
-  {
-    timestamps: true, // This enables timestamps (createdAt and updatedAt)
-    underscored: true, // This configures the column names to be in snake_case (e.g., created_at, updated_at)
-  }
-);
-
-User.belongsTo(organization, { foreignKey: "org_id" });
-
-export { User };
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    },
+  });
+  return User;
+};

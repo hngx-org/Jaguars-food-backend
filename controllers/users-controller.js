@@ -1,18 +1,13 @@
-import asyncHandler from "express-async-handler";
-import { Lunches } from "../models/lunches.model.js";
-import { User } from "../models/user.model.js";
+const asyncHandler = require("express-async-handler");
+const { lunches, user } = require("../models");
+const { hashPassword, verifyPassword } = require("../utils/utils");
 
 //user is employee
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = req.user;
   if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    });
+    res.json(user);
   } else {
     res.status(404);
     throw new Error("User not found");
@@ -118,7 +113,7 @@ const createWithdrawal = asyncHandler(async (req, res) => {
   }
 });
 
-export {
+module.exports = {
   getUserProfile,
   editUserProfile,
   getAllUsers,

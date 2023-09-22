@@ -1,11 +1,9 @@
-import { Router } from "express";
-import {
+const { Router } = require("express");
+const {
   createLunch,
   getLunch,
   getAllLunches,
-} from "../controllers/lunch-controller.js";
-import validateSchema from "../middlewares/input-validator.js";
-import { CreateLunch } from "../schema/launch-schema.js";
+} = require("../controllers/lunch-controller.js");
 
 const router = Router();
 
@@ -13,13 +11,13 @@ const router = Router();
 router.post("/send", validateSchema(CreateLunch), createLunch);
 
 // Get a Lunch
-router.get("/:id", getLunch);
+// router.get('/:id', getLunch);
 
 // Get all Lunches
-router.get("/all", getAllLunches);
+// router.get('/all', getAllLunches);
 
 // Redeem a lunch
 //no need for this endpoint again
 //router.put('/redeem/:id', redeemUserLunch);
 
-export default router;
+module.exports = router;
