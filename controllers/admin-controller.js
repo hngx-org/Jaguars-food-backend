@@ -38,7 +38,7 @@ const createAdmin = asyncHandler(async (req, res) => {
     verifyToken(token);
   } catch (error) {
     return res.status(403).json({
-      message: "An error occured",
+      message: "An error occurred",
       errorMessage: "Not authorized",
     });
   }
@@ -55,19 +55,19 @@ const createAdmin = asyncHandler(async (req, res) => {
     .then(([user, created]) => {
       if (!created) {
         return res.status(500).send({
-          message: "An Error Occured",
+          message: "An error occurred",
           errorMessage: `Organization '${organization_name}' already exists`,
         });
       }
 
       return res.status(201).send({
-        message: "Organization Created Successfully",
+        message: "Organization created successfully",
         data: user.dataValues,
       });
     })
     .catch((error) => {
       return res.status(500).send({
-        message: "An Error Occured",
+        message: "An error occurred",
         errorMessage: error.message,
       });
     });
