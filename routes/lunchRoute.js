@@ -13,8 +13,8 @@ router.post('/send', createLunch);
 // Get a Lunch
 // router.get('/:id', getLunch);
 
-// Get all Lunches
-// router.get('/all', getAllLunches);
+//Get all Lunches
+router.get('/all', getAllLunches);
 
 // Redeem a lunch
 //no need for this endpoint again
