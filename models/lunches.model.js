@@ -1,12 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
 	const Lunches = sequelize.define('lunches', {
-		id: {
-			allowNull: false,
-			autoIncrement: true,
-			primaryKey: true,
-			type: DataTypes.INTEGER,
-		},
-
 		org_id: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
