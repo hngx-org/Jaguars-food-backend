@@ -3,6 +3,10 @@ info:
   title: Free Lunch API
   description: API endpoints for user authentication
   version: 1.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/boluwatife010/Jaguarfoodbackend/1.0.0
 
 paths:
   /api/auth/login:
@@ -817,7 +821,3 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/TEMITOPEBOLUOJO/Free-Lunch-App/1.0.0
