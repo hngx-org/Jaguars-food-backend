@@ -8,9 +8,10 @@ const {
 	searchUser,
 	createWithdrawal,
 } = require('../controllers/users-controller.js');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 // Get the user profile
-router.get('/user/profile', getUserProfile);
+router.get('/user/profile', authMiddleware, getUserProfile);
 
 // Edit the user profile
 router.put('/user/profile', editUserProfile);

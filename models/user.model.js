@@ -1,27 +1,21 @@
 module.exports = (sequelize, DataTypes) => {
 	const User = sequelize.define('users', {
-		id: {
-			allowNull: false,
-			autoIncrement: true,
-			primaryKey: true,
-			type: DataTypes.INTEGER,
-		},
-
-		org_id: {
+		orgId: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-		first_name: {
-			type: DataTypes.TEXT,
+		firstName: {
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		last_name: {
-			type: DataTypes.TEXT,
+		lastName: {
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		profile_picture: {
-			type: DataTypes.TEXT,
-			allowNull: false,
+		profilePicture: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			defaultValue: '',
 		},
 		email: {
 			type: DataTypes.STRING,
@@ -31,54 +25,64 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			unique: true,
 		},
-		phonenumber: {
-			type: DataTypes.TEXT,
-			allowNull: false,
+		phoneNumber: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			defaultValue: '',
 		},
-		password_hash: {
-			type: DataTypes.TEXT,
+		passwordHash: {
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
 		isAdmin: {
 			type: DataTypes.BOOLEAN,
-			allowNull: false,
+			allowNull: true,
+			defaultValue: '',
 			defaultValue: false,
 		},
-		launch_credit_balance: {
-			type: DataTypes.TEXT,
-			allowNull: false,
+		launchCreditBalance: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			defaultValue: '',
 		},
-		refresh_token: {
-			type: DataTypes.TEXT,
-			allowNull: false,
+		refreshToken: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			defaultValue: '',
 		},
-		bank_number: {
-			type: DataTypes.TEXT,
-			allowNull: false,
+		bankNumber: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			defaultValue: '',
 		},
-		bank_code: {
-			type: DataTypes.TEXT,
-			allowNull: false,
+		bankCode: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			defaultValue: '',
 		},
 
-		bank_name: {
-			type: DataTypes.TEXT,
-			allowNull: false,
+		bankName: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			defaultValue: '',
 		},
 
-		bank_region: {
-			type: DataTypes.TEXT,
-			allowNull: false,
+		bankRegion: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			defaultValue: '',
 		},
 
 		currency: {
-			type: DataTypes.TEXT,
-			allowNull: false,
+			type: DataTypes.STRING,
+			allowNull: true,
+			defaultValue: '',
 		},
 
-		currency_code: {
-			type: DataTypes.TEXT,
-			allowNull: false,
+		currencyCode: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			defaultValue: '',
 		},
 	});
 	return User;

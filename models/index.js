@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '.env' });
 const mysql2 = require('mysql2');
 const sequelize = require('../config/dbconfig.js');
 const { Sequelize, DataTypes } = require('sequelize');
@@ -26,7 +27,7 @@ db.organizationLunchWallet = require('./organization_lunch_wallet.model.js')(
 db.user = require('./user.model.js')(sequelize, DataTypes);
 db.withdrawals = require('./withdrawals.model.js')(sequelize, DataTypes);
 
-db.sequelize.sync({ force: false }).then(() => {
+db.sequelize.sync({ alter: false }).then(() => {
 	console.log('Database sync done!');
 });
 
