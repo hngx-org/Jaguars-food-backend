@@ -24,10 +24,9 @@ const createAdminSignUp = asyncHandler(async (req, res) => {
     const existingUser = await User.findOne({ where: { email } });
 
     if (existingUser) {
-      res.status(400);
-      throw new Error("User with email already exists");
-      // return res.status(400).json("user exist already");
-      // throw new Error("User with email already exists");
+      return res
+        .status(400)
+        .json({ error: "user with this email already exist" });
     }
 
     // Hash the password
@@ -49,9 +48,8 @@ const createAdminSignUp = asyncHandler(async (req, res) => {
       .status(201)
       .json({ message: "User created successfully", data: newUser });
   } catch (error) {
-    console.error(error);
     res.status(500);
-    throw new Error("There is a problem with the server xxx");
+    throw new Error("There is a problem with the server");
   }
 });
 
