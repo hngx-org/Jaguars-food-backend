@@ -30,7 +30,7 @@ const createInvite = asyncHandler(async (req, res) => {
 
 async function generateInvitationToken(email) {
     // Generate a random 6-digit number
-    const generatedToken = crypto.randomInt(100000, 1000000);
+    const generatedToken = crypto.randomInt(100000, 1000000).toString();
     const jwt_token = await getToken(generatedToken);
 
     // Save the generated token to the database
