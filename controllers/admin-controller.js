@@ -16,10 +16,19 @@ dotenv.config();
 const createAdmin = asyncHandler(async (req, res) => {
   const { organization_name, lunch_price, currency_code } = req.body;
 
+  // This would be unnecessary if allowBlank is set to false along with
+  // allowNull in the schema.
+  if (!organization_name) {
+    return res.status(400).json({
+      message: "An error occurred",
+      errorMessage: "Organization name cannot be empty",
+    });
+  }
+
   const authHeader = req.headers.authorization;
   if (!(authHeader && authHeader.startsWith("Bearer "))) {
     return res.status(401).json({
-      message: "An error occured",
+      message: "An error occurred",
       errorMessage: "Invalid auth header",
     });
   }
@@ -36,18 +45,18 @@ const createAdmin = asyncHandler(async (req, res) => {
 
   await Organization.findOrCreate({
     where: {
-      organization_name: organization_name,
+      name: organization_name,
     },
     defaults: {
-      currency_code: currency_code ?? "NGN",
-      lunch_price: lunch_price ?? 1000,
+      currency: currency_code ?? "NGN",
+      lunch_price: lunch_price ?? "1000",
     },
   })
     .then(([user, created]) => {
       if (!created) {
         return res.status(500).send({
           message: "An Error Occured",
-          errorMessage: `${organization_name} already exists`,
+          errorMessage: `Organization '${organization_name}' already exists`,
         });
       }
 
