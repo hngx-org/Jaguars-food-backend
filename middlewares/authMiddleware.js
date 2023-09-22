@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import { verifyToken } from "../utils/tokens";
+import { verifyToken } from "../utils/tokens.js";
 
 const authMiddleware = asyncHandler(async (req, res, next) => {
   try {

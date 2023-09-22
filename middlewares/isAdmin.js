@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import { User } from "../models/user.model";
+import { User } from "../models/user.model.js";
 
 const isAdmin = asyncHandler(async (req, res, next) => {
   try {

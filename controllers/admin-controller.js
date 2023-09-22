@@ -6,9 +6,9 @@ import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 
 //importing isAdmin to check if organization is an Admin
-import isAdmin from "../middlewares/isAdmin";
-import { getToken, verifyToken } from "../utils/tokens";
-import { organization as Organization } from "../models/organization.model";
+import isAdmin from "../middlewares/isAdmin.js";
+import { getToken, verifyToken } from "../utils/tokens.js";
+import { organization as Organization } from "../models/organization.model.js";
 
 const router = express.Router();
 dotenv.config();
