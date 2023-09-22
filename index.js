@@ -8,10 +8,10 @@ import './models/lunches.model.js';
 import './models/withdrawals.model.js';
 
 const startApp = async () => {
-	connectToDatabase().then(() => {
-		console.log('Database connection successful.');
-		sequelize.sync({ force: true });
-	});
+	// connectToDatabase().then(() => {
+	// 	console.log('Database connection successful.');
+	// 	sequelize.sync({ force: true });
+	// });
 	app.listen(PORT, () => {
 		console.log(`Server started at port ${PORT}`);
 	});

@@ -43,7 +43,7 @@ const options = {
   apis: ["./routes/*.js"],
   paths: {
     "/api/auth/login": {
-      post: {
+       post: {
         summary: "Login",
         description: "Login to the application with email and password.",
         requestBody: {
