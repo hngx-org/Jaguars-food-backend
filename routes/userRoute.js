@@ -1,17 +1,17 @@
-import { Router } from 'express';
+const { Router } = require('express');
 const router = Router();
-import {
-  getUserProfile,
-  editUserProfile,
-  getAllUsers,
-  addUserBank,
-  searchUser,
-  createWithdrawal,
-} from '../controllers/users-controller.js';
-import authMiddeleware from '../middlewares/authMiddleware.js';
+const {
+	getUserProfile,
+	editUserProfile,
+	getAllUsers,
+	addUserBank,
+	searchUser,
+	createWithdrawal,
+} = require('../controllers/users-controller.js');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 // Get the user profile
-router.get('/user/profile', getUserProfile);
+router.get('/user/profile', authMiddleware, getUserProfile);
 
 // Edit the user profile
 router.put('/user/profile', editUserProfile);
@@ -28,4 +28,4 @@ router.get('/search/:nameoremail', searchUser);
 // Create withdrawal request
 router.post('/user/withdrawal', createWithdrawal);
 
-export default router;
+module.exports = router;

@@ -1,0 +1,19 @@
+module.exports = (sequelize, DataTypes) => {
+	const LunchWallet = sequelize.define('organization_lunch_wallet', {
+		org_id: {
+			allowNull: false,
+			type: DataTypes.INTEGER,
+		},
+		balance: {
+			type: DataTypes.DOUBLE(10, 2),
+			allowNull: false,
+			defaultValue: 1000000,
+		},
+		isDeleted: {
+			type: DataTypes.BOOLEAN,
+			allowNull: true,
+			defaultValue: false,
+		},
+	});
+	return LunchWallet;
+};
