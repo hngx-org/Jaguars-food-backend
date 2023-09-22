@@ -1,12 +1,13 @@
 import nodemailer from "nodemailer";
 
-const sendEmail = async (data, configObj) => {
+export const sendEmail = async (data) => {
   try {
     const config = {
-      service: "gmail",
+      host: "sandbox.smtp.mailtrap.io",
+      port: 2525,
       auth: {
-        user: configObj.user,
-        pass: configObj.password,
+        user: "39a62ad9bbc926",
+        pass: "4ea5383e8f255c",
       },
     };
 
@@ -23,5 +24,3 @@ const sendEmail = async (data, configObj) => {
     console.error(error);
   }
 };
-
-module.exports = { sendEmail };

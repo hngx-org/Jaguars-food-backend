@@ -30,6 +30,10 @@ const organization = sequelize.define('organization', {
 		allowNull: false,
 		type: DataTypes.STRING,
 	},
+	email: {
+		allowNull: false,
+		type: DataTypes.STRING,
+	},
 	lunch_price: {
 		allowNull: false,
 		type: DataTypes.STRING,

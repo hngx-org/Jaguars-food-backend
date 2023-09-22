@@ -1,4 +1,4 @@
-export const getInviteTemplate = (otp, subject = "Invitetion to ") => {
+export const getInviteTemplate = (otp, organization, subject) => {
   return `
     <!DOCTYPE html>
   <html lang="en">
@@ -8,17 +8,16 @@ export const getInviteTemplate = (otp, subject = "Invitetion to ") => {
       <title>Document</title>
       <style>
         @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;1,700&display=swap");
-        * {
-          box-sizing: border-box;
+        div,h1,p {
           padding: 0;
           margin: 0;
           font-family: "Nunito", sans-serif;
           font-weight: 400;
-          margin-bottom: 0.75rem;
+          margin-bottom: 12px;
         }
         .body {
           width: 100%;
-          min-height: 100dvh;
+          height: 100%;
           background-color: #f1f1f1;
         }
         h1 {
@@ -27,40 +26,37 @@ export const getInviteTemplate = (otp, subject = "Invitetion to ") => {
         }
         .center {
           text-align: center;
-          font-size: 1.5rem;
+          font-size: 24px;
         }
         .container {
           width: 96%;
           margin: 0 auto;
-          padding-top: 1rem;
-          padding-bottom: 1rem;
+          padding-top: 24px;
+          padding-bottom: 24px;
           max-width: 600px;
         }
-        .container > div {
+        .child {
           background-color: white;
-          padding: 1.75rem;
+          padding: 28px;
         }
       </style>
     </head>
-    <body>
+    <div>
       <div class="body">
         <div class="container">
-          <h1>Official Port</h1>
-          <div>
+          <h1>${organization}</h1>
+          <div class='child'>
             <h2>${subject}</h2>
             <p>
-              You are receiving this email because a request was made for a
-              one-time code that can be used for authentication.
+              You are receiving this email because you invited to join ${organization}.
             </p>
             <p>Please enter the following code for verification:</p>
             <p class="center">${otp}</p>
-            <p>
-              If you did not request this change, please change your password.
-            </p>
+           
           </div>
         </div>
       </div>
-    </body>
+    </div>
   </html>
   `;
 };
