@@ -20,6 +20,7 @@ const createAdmin = asyncHandler(async (req, res) => {
 		organization_name,
 		lunch_price,
 		currency,
+		currency_code,
 	} = req.body;
 	const checkOrg = await db.organization.findOne({
 		where: { name: organization_name },
@@ -36,11 +37,12 @@ const createAdmin = asyncHandler(async (req, res) => {
 	const newOrg = await db.organization.create({
 		name: organization_name,
 		lunch_price,
+		currency_code,
 	});
 
 	// console.log(newOrg);
 
-	const newUser = db.user.create({
+	const newUser = await db.user.create({
 		email,
 		firstName: first_name,
 		lastName: last_name,
@@ -49,9 +51,10 @@ const createAdmin = asyncHandler(async (req, res) => {
 		orgId: newOrg.id,
 		passwordHash: hashPassword(password),
 		currency,
+		currency_code,
 	});
 	const { firstName, lastName, phoneNumber, isAdmin, orgId } = newUser;
-	console.log(newUser);
+	// console.log(newUser);
 	const data = { firstName, lastName, phoneNumber, isAdmin, orgId };
 	return res.send({ message: 'Account created', data });
 });
@@ -63,10 +66,10 @@ const createInvite = asyncHandler(async (req, res) => {
 		where: { id: orgId },
 	});
 	const orgName = organization.dataValues.name;
-	console.log({ orgName });
 	if (req.user.isAdmin) {
 		// Generate a unique invitation token
 		const invitationToken = await generateInvitationToken(email, orgId);
+		// console.log({ orgId });
 		// console.log(invitationToken);
 
 		// Send the invitation email
