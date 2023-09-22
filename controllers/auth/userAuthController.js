@@ -27,7 +27,12 @@ const staffSignUp = asyncHandler(async (req, res) => {
 	// console.log(jwtToken);
 	// console.log(jwtToken.dataValues.token);
 	if (!jwtToken) {
-		return res.status(404).json({ error: 'invalid token' });
+		return res
+			.status(403)
+			.json({
+				message: 'Impersonation warning!',
+				error: 'Unauthorized Access',
+			});
 	}
 
 	const data = await verifyToken(jwtToken.dataValues.token);
@@ -36,13 +41,9 @@ const staffSignUp = asyncHandler(async (req, res) => {
 	const decodedToken = await verifyToken(jwtToken.dataValues.token);
 	// console.log(decodedToken.otp, otp_token);
 	if (decodedToken?.otp?.toString() !== otp_token) {
-		return res.status(400).json({ error: 'invalid token' });
+		return res.status(400).json({ error: 'Invalid token' });
 	}
 
-	// if(decodedToken !== sentEmail){
-	//   res.status(400)
-	//   throw new Error("Invalid Token")
-	// }
 	try {
 		const hashedPassword = hashPassword(sentPassword);
 		const newUser = await db.user.findOne({ where: { email: sentEmail } });
@@ -57,8 +58,7 @@ const staffSignUp = asyncHandler(async (req, res) => {
 				phoneNumber: sentPhone_number,
 				orgId,
 			});
-			// TODO: UPDATE INVITE TO HOLD ORGANIZATION ID
-			// console.log(signUp);
+
 			res.status(201).json({ message: 'Signup Successful', signUp });
 		}
 	} catch (error) {
