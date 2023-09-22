@@ -23,3 +23,4 @@ const OrganizationInvites = sequelize.define('organization_invites', {
 });
 
 export { OrganizationInvites };
+
