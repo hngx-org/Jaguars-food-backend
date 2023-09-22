@@ -642,6 +642,860 @@ const options = {
         ],
       },
     },
+    "/api/user/bank": {
+      patch: {
+        summary: "Add Bank Account",
+        description: "Allows users to add a bank account.",
+        tags: ["User"],
+        parameters: [
+          {
+            name: "Authorization",
+            in: "header",
+            required: true,
+            schema: {
+              type: "string",
+              format: "bearer",
+            },
+            description: "Bearer token for authentication",
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  bank_number: {
+                    type: "string",
+                    example: "1234-5678-9012-3456",
+                  },
+                  bank_code: {
+                    type: "string",
+                    example: "123456",
+                  },
+                  bank_name: {
+                    type: "string",
+                    example: "Bank Name",
+                  },
+                },
+                required: ["bank_number", "bank_code", "bank_name"],
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "Bank account created successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Successfully created bank account",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 200,
+                    },
+                  },
+                  required: ["message", "statusCode"],
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    "/api/user/all": {
+      get: {
+        summary: "Get all Users",
+        description: "Fetches a list of all users.",
+        tags: ["User"],
+        parameters: [
+          {
+            name: "Authorization",
+            in: "header",
+            required: true,
+            schema: {
+              type: "string",
+              format: "bearer",
+            },
+            description: "Bearer token for authentication",
+          },
+        ],
+        requestBody: {
+          required: false, // No request body for this endpoint
+        },
+        responses: {
+          200: {
+            description: "List of users fetched successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "List of users fetched successfully",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 200,
+                    },
+                    data: {
+                      type: "array",
+                      items: {
+                        type: "object",
+                        properties: {
+                          id: {
+                            type: "string",
+                            example: "unique-user-id-1",
+                          },
+                          name: {
+                            type: "string",
+                            example: "John Doe",
+                          },
+                          email: {
+                            type: "string",
+                            example: "john@example.com",
+                          },
+                          // Add more user properties here
+                        },
+                        required: ["id", "name", "email"],
+                      },
+                    },
+                  },
+                  required: ["message", "statusCode", "data"],
+                },
+              },
+            },
+          },
+          401: {
+            description: "Unauthorized",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Unauthorized: Invalid access token",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 401,
+                    },
+                  },
+                },
+                example: {
+                  message: "Unauthorized: Invalid access token",
+                  statusCode: 401,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    "/api/user/search/{nameoremail}": {
+      get: {
+        summary: "Search Users",
+        description: "Search for a user by name or email.",
+        tags: ["User"],
+        parameters: [
+          {
+            name: "nameoremail",
+            in: "path",
+            required: true,
+            schema: {
+              type: "string",
+            },
+            description: "Name or email of the user to search for",
+            example: "john@example.com",
+          },
+          {
+            name: "Authorization",
+            in: "header",
+            required: true,
+            schema: {
+              type: "string",
+              format: "bearer",
+            },
+            description: "Bearer token for authentication",
+          },
+        ],
+        requestBody: {
+          required: false, // No request body for this endpoint
+        },
+        responses: {
+          200: {
+            description: "User found",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "User found",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 200,
+                    },
+                    data: {
+                      type: "object",
+                      properties: {
+                        name: {
+                          type: "string",
+                          example: "John Doe",
+                        },
+                        email: {
+                          type: "string",
+                          example: "john@mail.com",
+                        },
+                        profile_picture: {
+                          type: "string",
+                          example: "user-profile-picture-url",
+                        },
+                        user_id: {
+                          type: "string",
+                          example: "unique-user-id",
+                        },
+                      },
+                      required: ["name", "email", "profile_picture", "user_id"],
+                    },
+                  },
+                  required: ["message", "statusCode", "data"],
+                },
+              },
+            },
+          },
+          404: {
+            description: "User not found",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "User not found",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 404,
+                    },
+                  },
+                },
+                example: {
+                  message: "User not found",
+                  statusCode: 404,
+                },
+              },
+            },
+          },
+          401: {
+            description: "Unauthorized",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Unauthorized: Invalid access token",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 401,
+                    },
+                  },
+                },
+                example: {
+                  message: "Unauthorized: Invalid access token",
+                  statusCode: 401,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    "/api/lunch/send": {
+      post: {
+        summary: "Send a Lunch",
+        description: "Create a new lunch request.",
+        tags: ["Lunch"],
+        parameters: [
+          {
+            name: "Authorization",
+            in: "header",
+            required: true,
+            schema: {
+              type: "string",
+              format: "bearer",
+            },
+            description: "Bearer token for authentication",
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  receivers: {
+                    type: "array",
+                    items: {
+                      type: "string",
+                      example: "user_id",
+                    },
+                    description: "An array of user IDs to send the lunch to",
+                  },
+                  quantity: {
+                    type: "integer",
+                    example: 5,
+                    description: "The quantity of lunches to send",
+                  },
+                  note: {
+                    type: "string",
+                    example: "Special instructions for the lunch",
+                    description: "Special instructions for the lunch",
+                  },
+                },
+                required: ["receivers", "quantity", "note"],
+              },
+            },
+          },
+        },
+        responses: {
+          201: {
+            description: "Lunch request created successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Lunch request created successfully",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 201,
+                    },
+                    data: {
+                      type: "object",
+                      properties: {},
+                    },
+                  },
+                  required: ["message", "statusCode", "data"],
+                },
+              },
+            },
+          },
+          400: {
+            description: "Bad Request: Invalid input data",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Bad Request: Invalid input data",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 400,
+                    },
+                  },
+                },
+                example: {
+                  message: "Bad Request: Invalid input data",
+                  statusCode: 400,
+                },
+              },
+            },
+          },
+          401: {
+            description: "Unauthorized: Invalid access token",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Unauthorized: Invalid access token",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 401,
+                    },
+                  },
+                },
+                example: {
+                  message: "Unauthorized: Invalid access token",
+                  statusCode: 401,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    "/api/lunch/{id}": {
+      get: {
+        summary: "Get a Lunch",
+        description: "Get a specific lunch request by its ID.",
+        tags: ["Lunch"],
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            required: true,
+            schema: {
+              type: "string",
+            },
+            description: "ID of the lunch request",
+          },
+          {
+            name: "Authorization",
+            in: "header",
+            required: true,
+            schema: {
+              type: "string",
+              format: "bearer",
+            },
+            description: "Bearer token for authentication",
+          },
+        ],
+        responses: {
+          200: {
+            description: "Lunch request retrieved successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Lunch request retrieved successfully",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 200,
+                    },
+                    data: {
+                      type: "object",
+                      properties: {
+                        receiverId: {
+                          type: "string",
+                          example: "user_id",
+                        },
+                        senderId: {
+                          type: "string",
+                          example: "user_id",
+                        },
+                        quantity: {
+                          type: "integer",
+                          example: 5,
+                        },
+                        redeemed: {
+                          type: "boolean",
+                          example: false,
+                        },
+                        note: {
+                          type: "string",
+                          example: "Special instructions for the lunch",
+                        },
+                        created_at: {
+                          type: "string",
+                          example: "2023-09-19T12:00:00Z",
+                        },
+                        id: {
+                          type: "string",
+                          example: "unique-lunch-id",
+                        },
+                      },
+                    },
+                  },
+                  required: ["message", "statusCode", "data"],
+                },
+              },
+            },
+          },
+          401: {
+            description: "Unauthorized: Invalid access token",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Unauthorized: Invalid access token",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 401,
+                    },
+                  },
+                },
+                example: {
+                  message: "Unauthorized: Invalid access token",
+                  statusCode: 401,
+                },
+              },
+            },
+          },
+          404: {
+            description: "Not Found: Lunch request not found",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Not Found: Lunch request not found",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 404,
+                    },
+                  },
+                },
+                example: {
+                  message: "Not Found: Lunch request not found",
+                  statusCode: 404,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    "/api/lunch/all": {
+      get: {
+        summary: "Get all Lunches",
+        description: "Get all lunch requests available for the authenticated user.",
+        tags: ["Lunch"],
+        parameters: [
+          {
+            name: "Authorization",
+            in: "header",
+            required: true,
+            schema: {
+              type: "string",
+              format: "bearer",
+            },
+            description: "Bearer token for authentication",
+          },
+        ],
+        responses: {
+          200: {
+            description: "Lunch requests retrieved successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Lunch requests retrieved successfully",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 200,
+                    },
+                    data: {
+                      type: "array",
+                      items: {
+                        type: "object",
+                        properties: {
+                          receiverId: {
+                            type: "string",
+                            example: "user_id",
+                          },
+                          senderId: {
+                            type: "string",
+                            example: "user_id",
+                          },
+                          quantity: {
+                            type: "integer",
+                            example: 5,
+                          },
+                          redeemed: {
+                            type: "boolean",
+                            example: false,
+                          },
+                          note: {
+                            type: "string",
+                            example: "Special instructions for the lunch",
+                          },
+                          created_at: {
+                            type: "string",
+                            example: "2023-09-19T12:00:00Z",
+                          },
+                          id: {
+                            type: "string",
+                            example: "unique-lunch-id",
+                          },
+                        },
+                      },
+                    },
+                  },
+                  required: ["message", "statusCode", "data"],
+                },
+              },
+            },
+          },
+          401: {
+            description: "Unauthorized: Invalid access token",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Unauthorized: Invalid access token",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 401,
+                    },
+                  },
+                },
+                example: {
+                  message: "Unauthorized: Invalid access token",
+                  statusCode: 401,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    "/api/user/redeem": {
+      post: {
+        summary: "Redeem Lunch Credit (Users)",
+        description: "Allows a user to add lunch credit to their lunch credit balance. A token must be redeemed before it can be withdrawn.",
+        tags: ["User"],
+        parameters: [
+          {
+            name: "Authorization",
+            in: "header",
+            required: true,
+            schema: {
+              type: "string",
+              format: "bearer",
+            },
+            description: "Bearer token for authentication",
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  ids: {
+                    type: "array",
+                    items: {
+                      type: "string",
+                      example: "token_id",
+                    },
+                  },
+                },
+                required: ["ids"],
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: "Lunch credit redeemed successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Lunch credit redeemed successfully",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 200,
+                    },
+                    data: {
+                      type: "null",
+                      example: null,
+                    },
+                  },
+                  required: ["message", "statusCode", "data"],
+                },
+              },
+            },
+          },
+          401: {
+            description: "Unauthorized: Invalid access token",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Unauthorized: Invalid access token",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 401,
+                    },
+                  },
+                },
+                example: {
+                  message: "Unauthorized: Invalid access token",
+                  statusCode: 401,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    "/api/withdrawal/request": {
+      post: {
+        summary: "Create Withdrawal Request",
+        description: "Create a withdrawal request for user lunch credit and organization lunch price.",
+        tags: ["Withdrawal"],
+        parameters: [
+          {
+            name: "Authorization",
+            in: "header",
+            required: true,
+            schema: {
+              type: "string",
+              format: "bearer",
+            },
+            description: "Bearer token for authentication",
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  bank_name: {
+                    type: "string",
+                    example: "Bank",
+                  },
+                  bank_number: {
+                    type: "string",
+                    example: "1234-5678-9012-3456",
+                  },
+                  bank_code: {
+                    type: "string",
+                    example: "123456",
+                  },
+                  amount: {
+                    type: "integer",
+                    example: 100,
+                  },
+                },
+                required: ["bank_name", "bank_number", "bank_code", "amount"],
+              },
+            },
+          },
+        },
+        responses: {
+          201: {
+            description: "Withdrawal request created successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Withdrawal request created successfully",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 201,
+                    },
+                    data: {
+                      type: "object",
+                      properties: {
+                        id: {
+                          type: "string",
+                          example: "unique-withdrawal-id",
+                        },
+                        user_id: {
+                          type: "string",
+                          example: "user-id",
+                        },
+                        status: {
+                          type: "string",
+                          example: "success",
+                        },
+                        amount: {
+                          type: "integer",
+                          example: 100,
+                        },
+                        created_at: {
+                          type: "string",
+                          format: "date-time",
+                          example: "2023-09-19T12:00:00Z",
+                        },
+                      },
+                    },
+                  },
+                  required: ["message", "statusCode", "data"],
+                },
+              },
+            },
+          },
+          401: {
+            description: "Unauthorized: Invalid access token",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example: "Unauthorized: Invalid access token",
+                    },
+                    statusCode: {
+                      type: "integer",
+                      example: 401,
+                    },
+                  },
+                },
+                example: {
+                  message: "Unauthorized: Invalid access token",
+                  statusCode: 401,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+                        
   },
 };
 
