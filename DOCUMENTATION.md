@@ -4,7 +4,7 @@
 
 This project is a backend API that's used to managed a person resource. 
 
-baseURL = `to-be-added`
+baseURL = [https://jaguars-food-backend.vercel.app/](https://jaguars-food-backend.vercel.app/)
 
 <br>
 

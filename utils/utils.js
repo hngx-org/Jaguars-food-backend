@@ -1,9 +1,9 @@
-const bcrypt = require("bcrypt");
-const crypto = require("crypto");
-const { getToken } = require("../utils/tokens.js");
-const db = require("../models/index");
-const templates = require("../utils/emailTemplate.js");
-const transporter = require("../config/mailConfig");
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const { getToken } = require('../utils/tokens.js');
+const db = require('../models/index');
+const templates = require('../utils/emailTemplate.js');
+const transporter = require('../config/mailConfig');
 
 const hashPassword = (password) => {
   return bcrypt.hashSync(password, 10);
@@ -38,21 +38,21 @@ async function generateInvitationToken(email, orgId) {
 
 // function to send the invitation email
 function sendInvitationEmail(data, invitationToken) {
-  const subject = "Free Lunch Invitation 😋🍽️";
+  const subject = 'Free Lunch Invitation 😋🍽️';
   const mailOptions = {
-    from: `${data?.orgName} <${data.orgEmail}>`,
+    from: process.env.MAIL_FROM_ADDRESS,
     to: data.email,
-    subject: "Free Lunch App Invitation",
+    subject: 'Free Lunch App Invitation',
     html: templates.getInvite(invitationToken, data.orgName, subject),
   };
 
   return new Promise((resolve, reject) => {
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log("Error sending email:", error);
+        console.log('Error sending email:', error);
         reject(error);
       } else {
-        console.log("Email sent: " + info.response);
+        console.log('Email sent: ' + info.response);
         resolve(info);
       }
     });
@@ -61,9 +61,9 @@ function sendInvitationEmail(data, invitationToken) {
 
 // function to send the invitation email
 const sendPasswordResetOTPEmail = (data, invitationToken) => {
-  const subject = "Password Reset One time Verification";
+  const subject = 'Password Reset OTP';
   const mailOptions = {
-    from: `${data?.orgName} <${data.orgEmail}>`,
+    from: process.env.MAIL_FROM_ADDRESS,
     to: data.email,
     subject,
     html: templates.getOtp(invitationToken, data.orgName, subject),
@@ -72,10 +72,10 @@ const sendPasswordResetOTPEmail = (data, invitationToken) => {
   return new Promise((resolve, reject) => {
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log("Error sending email:", error);
+        console.log('Error sending email:', error);
         reject(error);
       } else {
-        console.log("Email sent: " + info.response);
+        console.log('Email sent: ' + info.response);
         resolve(info);
       }
     });

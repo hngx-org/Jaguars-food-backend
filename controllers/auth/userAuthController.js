@@ -1,13 +1,13 @@
-const joi = require("joi");
-const asyncHandler = require("express-async-handler");
-const crypto = require("crypto");
-const db = require("../../models");
+const joi = require('joi');
+const asyncHandler = require('express-async-handler');
+const crypto = require('crypto');
+const db = require('../../models');
 const {
   hashPassword,
   verifyPassword,
   sendPasswordResetOTPEmail,
-} = require("../../utils/utils");
-const { getToken, verifyToken } = require("../../utils/tokens");
+} = require('../../utils/utils');
+const { getToken, verifyToken } = require('../../utils/tokens');
 
 const staffSignUp = asyncHandler(async (req, res) => {
   try {
@@ -36,8 +36,8 @@ const staffSignUp = asyncHandler(async (req, res) => {
 
     if (!jwtToken) {
       return res.status(403).json({
-        message: "Impersonation warning!",
-        error: "Unauthorized Access",
+        message: 'Impersonation warning!',
+        error: 'Unauthorized Access',
       });
     }
     console.log(3);
@@ -45,7 +45,7 @@ const staffSignUp = asyncHandler(async (req, res) => {
     console.log(4);
 
     if (decodedToken?.otp?.toString() !== otp_token) {
-      return res.status(400).json({ error: "Invalid token" });
+      return res.status(400).json({ error: 'Invalid token' });
     }
     console.log(5);
 
@@ -54,7 +54,7 @@ const staffSignUp = asyncHandler(async (req, res) => {
     const duplicate = await db.user.findOne({ where: { email: sentEmail } });
     console.log(7);
     if (duplicate) {
-      return res.status(409).json({ error: "Staff already Exist" });
+      return res.status(409).json({ error: 'Staff already Exist' });
     }
     console.log(8);
 
@@ -69,10 +69,10 @@ const staffSignUp = asyncHandler(async (req, res) => {
 
     const { email, id, firstName, lastName, phoneNumber, orgId } = signUp;
     const data = { email, id, firstName, lastName, phoneNumber, orgId };
-    res.status(201).json({ message: "Signup Successful", data });
+    res.status(201).json({ message: 'Signup Successful', data });
   } catch (error) {
     res.status(500);
-    throw new Error("Server Error");
+    throw new Error('Server Error');
   }
 });
 
@@ -94,30 +94,28 @@ const forgotPassword = asyncHandler(async (req, res) => {
     const user = await db.user.findOne({ where: { email } });
     if (!user) {
       res.status(404);
-      throw new Error("User does not exist");
+      throw new Error('User does not exist');
     }
     // generate token
     const generatedToken = crypto.randomInt(100000, 1000000).toString();
-    const jwt_token = await getToken({  generatedToken, email }, '5m');
+    // const jwt_token = await getToken({  generatedToken, email }, '5m');
+
+    user.refreshToken = generatedToken;
+    user.save();
 
     const org = await db.organization.findOne({
-      where: { id: user.dataValues.org_id },
-    });
-
-    const adminUser = await db.user.findOne({
-      where: { org_id: user.dataValues.org_id, isAdmin: true },
+      where: { id: user.org_id },
     });
 
     await sendPasswordResetOTPEmail(
       {
         email,
-        orgName: org.dataValues.name,
-        orgEmail: adminUser.dataValues.email,
+        orgName: org.name,
       },
-      jwt_token
+      generatedToken
     );
 
-    return res.json({ message: "OTP sent to user email" });
+    return res.json({ message: 'OTP sent to user email' });
   } catch (error) {
     res.status(500);
     throw new Error(error);
@@ -128,7 +126,7 @@ const resetPassword = asyncHandler(async (req, res) => {
   try {
     const schema = joi.object({
       email: joi.string().email({ minDomainSegments: 2 }).required(),
-      otp_token: joi.string().required(),
+      otp: joi.number().required(),
       password: joi.string().required(),
     });
 
@@ -137,31 +135,27 @@ const resetPassword = asyncHandler(async (req, res) => {
     if (error) {
       throw new Error(error);
     }
-    const { email, otp_token, password } = req.body;
+    const { email, otp, password } = req.body;
 
     const user = await db.user.findOne({ where: { email } });
 
     if (!user) {
       return res.status(404).json({
-        message: `User with email ${email} not found`,
-        error: "404 Not found",
+        message: `User with email ${email} not found.`,
+        error: '404 Not found',
       });
     }
 
-    const decoded = await verifyToken(otp_token);
-
-    if (user.dataValues.email !== decoded.email) {
-      return res.status(400).json({ error: "Invalid token" });
+    if (user.refreshToken === otp.toString()) {
+      user.refreshToken = '';
+      const hashedPassword = hashPassword(password);
+      user.passwordHash = hashedPassword;
+      user.save();
+      res.status(201);
+      return res.json({ message: 'password updated successfully' });
+    } else {
+      throw new Error('Invalid OTP');
     }
-
-    const hashedPassword = hashPassword(password);
-
-    await db.user.update(
-      { passwordHash: hashedPassword },
-      { where: { email: email } }
-    );
-
-    return res.json({ message: "password updated successfully" });
   } catch (error) {
     console.error(error);
     throw new Error(error);
@@ -169,57 +163,57 @@ const resetPassword = asyncHandler(async (req, res) => {
 });
 
 const Login = asyncHandler(async (req, res) => {
-	const { email, password } = req.body;
-	const checkUser = await db.user.findOne({ where: { email } });
-	if (!checkUser) {
-		res.status(400);
-		throw new Error('User does not exist');
-	}
-	const validPassword = verifyPassword(password, checkUser.passwordHash);
-	if (!validPassword) {
-		res.status(400);
-		throw new Error('Invalid password');
-	} else {
-		const {
-			id,
-			orgId,
-			firstName,
-			lastName,
-			profilePicture,
-			email,
-			phoneNumber,
-			isAdmin,
-			launchCreditBalance,
-			refreshToken,
-			bankNumber,
-			bankCode,
-			bankName,
-			bankRegion,
-			currency,
-			currencyCode,
-		} = checkUser;
+  const { email, password } = req.body;
+  const checkUser = await db.user.findOne({ where: { email } });
+  if (!checkUser) {
+    res.status(400);
+    throw new Error('User does not exist');
+  }
+  const validPassword = verifyPassword(password, checkUser.passwordHash);
+  if (!validPassword) {
+    res.status(400);
+    throw new Error('Invalid password');
+  } else {
+    const {
+      id,
+      orgId,
+      firstName,
+      lastName,
+      profilePicture,
+      email,
+      phoneNumber,
+      isAdmin,
+      launchCreditBalance,
+      refreshToken,
+      bankNumber,
+      bankCode,
+      bankName,
+      bankRegion,
+      currency,
+      currencyCode,
+    } = checkUser;
 
-		const user = {
-			id,
-			orgId,
-			firstName,
-			lastName,
-			profilePicture,
-			email,
-			phoneNumber,
-			isAdmin,
-			launchCreditBalance,
-			refreshToken,
-			bankNumber,
-			bankCode,
-			bankName,
-			bankRegion,
-			currency,
-			currencyCode,
-		};
-		const token = await getToken(user);
-		return res.json({ token });
-	}
+    const user = {
+      id,
+      orgId,
+      firstName,
+      lastName,
+      profilePicture,
+      email,
+      phoneNumber,
+      isAdmin,
+      launchCreditBalance,
+      refreshToken,
+      bankNumber,
+      bankCode,
+      bankName,
+      bankRegion,
+      currency,
+      currencyCode,
+    };
+    const token = await getToken(user);
+    return res.json({ token });
+  }
 });
 
 module.exports = { Login, staffSignUp, forgotPassword, resetPassword };
