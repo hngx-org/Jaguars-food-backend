@@ -19,7 +19,4 @@ router.post('/organization/staff/signup', staffSignUp);
 // router.post('/organization/staff/signup', authMiddleware, createInvite);
 router.post('/login', Login);
 
-// ADMIN LOGIN ROUTE
-// router.route('/login').post(logInAdmin);
-
 module.exports = router;

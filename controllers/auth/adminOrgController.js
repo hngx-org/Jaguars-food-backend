@@ -1,9 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const db = require('../../models');
 const { hashPassword } = require('../../utils/utils');
-const { getToken, verifyToken } = require('../../utils/tokens');
-const { APP_URL } = require('../../utils/constants');
-const transporter = require('../../config/mailConfig');
 const {
 	generateInvitationToken,
 	sendInvitationEmail,

@@ -6,7 +6,6 @@ const db = require('../models');
 const createLunch = asyncHandler(async (req, res) => {
 	try {
 		const { id, orgId } = req.user; // user not present
-		// console.log({ id, orgId });
 		const { receivers, quantity, note } = req.body;
 		console.log({
 			senderId: id,
@@ -65,14 +64,14 @@ const redeemUserLunch = asyncHandler(async (req, res) => {
 		const { id } = req.user;
 		const { lunch_id, amount } = req.body;
 		// validating if the lunch id exists
-		const lunchID = await Lunches.findOne({ where: { id: lunch_id } });
+		const lunchID = await db.lunches.findOne({ where: { id: lunch_id } });
 
 		if (!lunchID) {
 			res.status(404);
 			throw new Error('Lunch not found');
 		}
 		// Fetch the current user
-		const user = await User.findOne({ where: { id: id } });
+		const user = await db.user.findOne({ where: { id: id } });
 		if (!user) {
 			res.status(404);
 			throw new Error('User not found');
@@ -87,13 +86,13 @@ const redeemUserLunch = asyncHandler(async (req, res) => {
 		}
 
 		// update user balance for current user
-		await User.update(
+		await user.update(
 			{ lunch_credit_balance: curBal - amount },
 			{ where: { id: id } }
 		);
 
 		// create a withdrawal table
-		const withdrawal = await Withdrawals.create({
+		const withdrawal = await db.withdrawals.create({
 			id: lunchID,
 			user_id: id,
 			status: 'completed',
@@ -101,7 +100,7 @@ const redeemUserLunch = asyncHandler(async (req, res) => {
 		});
 
 		// update lunch status
-		await Lunches.update({ redeemed: true }, { where: { id: lunch_id } });
+		await db.lunches.update({ redeemed: true }, { where: { id: lunch_id } });
 
 		res.status(200).json({
 			status: 'success',

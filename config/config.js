@@ -7,10 +7,8 @@ const router = require('../routes/router.js');
 // ROUTES
 const lunchRouter = require('../routes/lunchRoute.js');
 const withdrawalRouter = require('../routes/withdrawalRoute.js');
-const lunchRoute = require('../routes/lunchRoute.js');
-const withdrawalRoute = require('../routes/withdrawalRoute.js');
-const authenticationRoute = require('../routes/authenticationRoute.js');
-const userRoute = require('../routes/userRoute.js');
+const authenticationRouter = require('../routes/authenticationRoute.js');
+const userRouter = require('../routes/userRoute.js');
 
 // MIDDLEWARES
 const errHandler = require('../middlewares/errHandler.js');
@@ -28,10 +26,9 @@ app.use(morgan('dev'));
 app.use('/api/lunch', lunchRouter);
 app.use('/api/withdrawal', withdrawalRouter);
 
-app.use('/api/lunch', lunchRoute);
-app.use('/api/withdrawal', withdrawalRoute);
-app.use('/api', userRoute);
-app.use('/api/auth', authenticationRoute);
+
+app.use('/api', userRouter);
+app.use('/api/auth', authenticationRouter);
 
 app.use(notFound);
 app.use(errHandler);
