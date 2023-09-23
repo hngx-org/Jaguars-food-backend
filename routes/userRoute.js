@@ -20,7 +20,12 @@ const {
 router.get("/user/profile", authMiddleware, getUserProfile);
 
 // Edit the user profile
-router.put("/user/profile", authMiddleware, editUserProfile);
+router.put(
+  "/user/profile",
+  authMiddleware,
+  validateSchema(EditUserProfile),
+  editUserProfile
+);
 
 // Add bank account
 router.post(

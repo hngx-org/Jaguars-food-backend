@@ -11,4 +11,8 @@ const CreateLunch = Joi.object({
   note: RequiredString,
 });
 
-module.exports = { CreateLunch };
+const RedeemUserLunch = Joi.object({
+  lunch_id: RequiredNumber,
+  amount: RequiredNumber,
+});
+module.exports = { CreateLunch, RedeemUserLunch };
