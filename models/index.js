@@ -1,6 +1,6 @@
 require('dotenv').config({ path: '.env' });
 const sequelize = require('../config/dbconfig.js');
-const { Sequelize } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 
 const db = {};
 
