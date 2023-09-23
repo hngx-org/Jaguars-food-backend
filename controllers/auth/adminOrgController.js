@@ -153,24 +153,27 @@ const searchOrg = asyncHandler(async (req, res) => {
 });
 
 const orgWalletBalance = asyncHandler(async (req, res) => {
-  const wallet = req.params.wallet;
+  const { orgId } = req.user;
   try {
-    const orgs = await db.organization.findOne({
+    const org = await db.organizationLunchWallet.findOne({
       where: {
-        id: wallet,
+        org_id: orgId,
       },
     });
     // console.log(orgs);
-    if (!orgs) {
+    if (!org) {
       res.status(404);
       return res.json({
-        error: `organization with id ${wallet} doesn"t exist`,
+        error: `organization not found`,
       });
     } else {
-      res.status(201).json({ data: orgs });
+      res.status(200).json({
+        status: "success",
+        wallet_balance: org.balance,
+      });
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ data: error });
   }
 });
@@ -181,4 +184,5 @@ module.exports = {
   searchOrg,
   update0rgFoodPrice,
   update0rgWalletBalance,
+  orgWalletBalance,
 };

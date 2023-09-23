@@ -5,6 +5,7 @@ const {
   searchOrg,
   update0rgFoodPrice,
   update0rgWalletBalance,
+  orgWalletBalance,
 } = require("../controllers/auth/adminOrgController");
 const authMiddleware = require("../middlewares/authMiddleware");
 const isAdmin = require("../middlewares/isAdmin");
@@ -31,14 +32,15 @@ orgRouter.patch(
   isAdmin,
   update0rgWalletBalance
 );
+
 orgRouter.patch("/lunch/update", authMiddleware, isAdmin, update0rgFoodPrice);
 
 // TODO: Get org account balance
-// orgRouter.get(
-// 	'organization/wallet',
-// 	authMiddleware,
-// 	isAdmin,
-// 	0rgWalletBalance
-// );
+orgRouter.get(
+  "/organization/wallet",
+  authMiddleware,
+  isAdmin,
+  orgWalletBalance
+);
 
 module.exports = { orgRouter, authRouter };
