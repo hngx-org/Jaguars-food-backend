@@ -1,5 +1,4 @@
 require('dotenv').config({ path: '.env' });
-const mysql2 = require('mysql2');
 const sequelize = require('../config/dbconfig.js');
 const { Sequelize, DataTypes } = require('sequelize');
 
