@@ -10,6 +10,7 @@ const {
 } = require('../../utils/utils');
 //Admin or organization
 
+// Courtesy @26thavenue
 const createAdmin = asyncHandler(async (req, res) => {
 	const {
 		email,
@@ -65,7 +66,7 @@ const createInvite = asyncHandler(async (req, res) => {
 	const organization = await db.organization.findOne({
 		where: { id: orgId },
 	});
-	const orgName = organization.dataValues.name;
+	const orgName = organization?.dataValues?.name;
 	if (req.user.isAdmin) {
 		// Generate a unique invitation token
 		const invitationToken = await generateInvitationToken(email, orgId);
