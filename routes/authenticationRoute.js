@@ -25,13 +25,13 @@ authRouter.post('/login', Login);
 
 // ORG ACTIVITIES
 orgRouter.post('/invite', authMiddleware, isAdmin, createInvite);
-// orgRouter.patch(
-// 	'/wallet/update',
-// 	authMiddleware,
-// 	isAdmin,
-// 	update0rgWalletBalance
-// );
-// orgRouter.patch('/lunch/update', authMiddleware, isAdmin, update0rgFoodPrice);
+orgRouter.patch(
+	'/wallet/update',
+	authMiddleware,
+	isAdmin,
+	update0rgWalletBalance
+);
+orgRouter.patch('/lunch/update', authMiddleware, isAdmin, update0rgFoodPrice);
 
 // TODO: Get org account balance
 // orgRouter.get(

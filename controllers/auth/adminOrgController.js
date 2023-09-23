@@ -86,6 +86,56 @@ const createInvite = asyncHandler(async (req, res) => {
 	}
 });
 
+const update0rgWalletBalance = asyncHandler(async (req, res) => {
+	try {
+		const { orgId } = req.user;
+		const { amount } = req.body;
+		if (!amount || typeof amount !== 'number') {
+			res.status(400);
+			throw new Error('Please fill in valid amounts');
+		}
+		const orgWallet = await db.organizationLunchWallet.findOne({
+			where: { org_id: orgId },
+		});
+		orgWallet.balance += amount;
+		await orgWallet.save();
+		return res.status(200).json({
+			message: 'successfully updated',
+			new_balance: orgWallet.balance,
+		});
+	} catch (error) {
+		throw new Error(error);
+	}
+});
+
+const update0rgFoodPrice = asyncHandler(async (req, res) => {
+	try {
+		const { orgId } = req.user;
+		const { lunch_price } = req.body;
+		if (!lunch_price) {
+			res.status(400);
+			throw new Error('Please fill in valid amounts');
+		}
+		const findOrg = await db.organization.findOne({
+			where: {
+				id: orgId,
+			},
+		});
+		if (!findOrg) {
+			res.status(404);
+			throw new Error('org not found');
+		}
+		findOrg.lunch_price = lunch_price;
+		await findOrg.save();
+		return res.status(200).json({
+			message: 'successfully updated',
+			new_lunch_price: findOrg.lunch_price,
+		});
+	} catch (error) {
+		throw new Error(error);
+	}
+});
+
 const searchOrg = asyncHandler(async (req, res) => {
 	const name = req.params.name;
 	const orgs = await db.organization.findAll({
