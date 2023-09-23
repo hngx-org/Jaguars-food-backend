@@ -1,14 +1,29 @@
-const asyncHandler = require('express-async-handler');
-const db = require('../../models');
-const { hashPassword } = require('../../utils/utils');
+const joi = require("joi");
 const {
   generateInvitationToken,
   sendInvitationEmail,
-} = require('../../utils/utils');
+  hashPassword,
+} = require("../../utils/utils");
+const asyncHandler = require("express-async-handler");
+const db = require("../../models");
 //Admin or organization
 
 // Courtesy @26thavenue
 const createAdmin = asyncHandler(async (req, res) => {
+  const schema = joi.object({
+    email: joi.string().email({ minDomainSegments: 2 }).required(),
+    password: joi.string().required(),
+    first_name: joi.string().required(),
+    last_name: joi.string().required(),
+    phone_number: joi.string().required(),
+    organization_name: joi.string().required(),
+    lunch_price: joi.string().required(),
+    currency: joi.string().required(),
+    currency_code: joi.string().required(),
+  });
+
+  const { error } = schema.validate(req.body);
+
   const {
     email,
     password,
@@ -20,18 +35,30 @@ const createAdmin = asyncHandler(async (req, res) => {
     currency,
     currency_code,
   } = req.body;
+
+  if (error) {
+    throw new Error(error);
+  }
   const checkOrg = await db.organization.findOne({
     where: { name: organization_name },
   });
   if (checkOrg) {
     res.status(400);
-    throw new Error('Organization already exists.');
+    throw new Error("Organization already exists.");
   }
   const checkUser = await db.user.findOne({ where: { email } });
   if (checkUser) {
     res.status(400);
-    throw new Error('User already exists. Try login');
+    throw new Error("User already exists. Try login");
   }
+
+  // =======
+
+  if (checkOrg) {
+    res.status(400);
+    throw new Error("Organization already exists.");
+  }
+
   const newOrg = await db.organization.create({
     name: organization_name,
     lunch_price,
@@ -58,28 +85,37 @@ const createAdmin = asyncHandler(async (req, res) => {
   const { firstName, lastName, phoneNumber, isAdmin, orgId } = newUser;
   // console.log(newUser);
   const data = { firstName, lastName, phoneNumber, isAdmin, orgId };
-  return res.send({ message: 'Account created', data });
+
+  return res.json({ message: "Account created", data });
 });
 
 const createInvite = asyncHandler(async (req, res) => {
   const { email } = req.body;
   const orgId = req.user.orgId;
+  const orgEmail = req.user.email;
   const organization = await db.organization.findOne({
     where: { id: orgId },
   });
-  const orgName = organization?.dataValues?.name;
+  const orgName = organization.dataValues.name;
   if (req.user.isAdmin) {
+    const { error } = joi
+      .string()
+      .email({ minDomainSegments: 2 })
+      .required()
+      .validate(email);
+
+    if (error) {
+      res.status(400);
+      throw new Error(error);
+    }
     // Generate a unique invitation token
     const invitationToken = await generateInvitationToken(email, orgId);
-    // console.log({ orgId });
-    // console.log(invitationToken);
-
     // Send the invitation email
-    sendInvitationEmail({ email, orgName }, invitationToken);
-    res.json({ message: 'Invitation sent successfully', statusCode: 200 });
+    await sendInvitationEmail({ email, orgName, orgEmail }, invitationToken);
+    res.json({ message: "Invitation sent successfully", statusCode: 200 });
   } else {
     res.status(403);
-    throw new Error('Only admins can invite');
+    throw new Error("Only admins can invite");
   }
 });
 
@@ -87,9 +123,9 @@ const update0rgWalletBalance = asyncHandler(async (req, res) => {
   try {
     const { orgId } = req.user;
     const { amount } = req.body;
-    if (!amount || typeof amount !== 'number') {
+    if (!amount || typeof amount !== "number") {
       res.status(400);
-      throw new Error('Please fill in valid amounts');
+      throw new Error("Please fill in valid amounts");
     }
     const orgWallet = await db.organizationLunchWallet.findOne({
       where: { org_id: orgId },
@@ -97,7 +133,7 @@ const update0rgWalletBalance = asyncHandler(async (req, res) => {
     orgWallet.balance += amount;
     await orgWallet.save();
     return res.status(200).json({
-      message: 'successfully updated',
+      message: "successfully updated",
       new_balance: orgWallet.balance,
     });
   } catch (error) {
@@ -111,7 +147,7 @@ const update0rgFoodPrice = asyncHandler(async (req, res) => {
     const { lunch_price } = req.body;
     if (!lunch_price) {
       res.status(400);
-      throw new Error('Please fill in valid amounts');
+      throw new Error("Please fill in valid amounts");
     }
     const findOrg = await db.organization.findOne({
       where: {
@@ -120,12 +156,12 @@ const update0rgFoodPrice = asyncHandler(async (req, res) => {
     });
     if (!findOrg) {
       res.status(404);
-      throw new Error('org not found');
+      throw new Error("org not found");
     }
     findOrg.lunch_price = lunch_price;
     await findOrg.save();
     return res.status(200).json({
-      message: 'successfully updated',
+      message: "successfully updated",
       new_lunch_price: findOrg.lunch_price,
     });
   } catch (error) {
@@ -165,7 +201,7 @@ const orgWalletBalance = asyncHandler(async (req, res) => {
       });
     } else {
       res.status(200).json({
-        status: 'success',
+        status: "success",
         wallet_balance: org.balance,
       });
     }

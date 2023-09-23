@@ -12,6 +12,8 @@ const isAdmin = require('../middlewares/isAdmin');
 const {
   Login,
   staffSignUp,
+  forgotPassword,
+  resetPassword,
 } = require('../controllers/auth/userAuthController');
 
 const {
@@ -29,6 +31,8 @@ authRouter.post('/user/signup', validateAdminRequestBody, createAdmin);
 authRouter.get('/organization/:name', searchOrg);
 authRouter.post('/staff/signup', validateStaffSignUpRequest, staffSignUp);
 authRouter.post('/login', validateLoginRequestBody, Login);
+authRouter.post('/forgot-password', forgotPassword);
+authRouter.post('/reset-password', resetPassword);
 
 // ORG ACTIVITIES
 orgRouter.post('/invite', authMiddleware, isAdmin, createInvite);
