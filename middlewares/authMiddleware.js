@@ -1,7 +1,5 @@
-
 const asyncHandler = require('express-async-handler');
 const { verifyToken } = require('../utils/tokens');
-
 
 const authMiddleware = asyncHandler(async (req, res, next) => {
 	try {
