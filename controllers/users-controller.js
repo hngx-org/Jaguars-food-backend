@@ -40,7 +40,6 @@ const editUserProfile = asyncHandler(async (req, res) => {
 // TODO
 //ADD USER BANK ACCOUNT
 const addUserBank = asyncHandler(async (req, res) => {
-  console.log(req.user);
   const { bank_number, bank_code, bank_name } = req.body;
   await db.user.update(
     {
