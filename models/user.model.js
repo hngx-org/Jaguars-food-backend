@@ -86,11 +86,6 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: true,
 			defaultValue: '',
 		},
-		otpToken: {
-			type: DataTypes.STRING,
-			allowNull: true,
-			defaultValue: '',
-		},
 		isDeleted: {
 			type: DataTypes.BOOLEAN,
 			allowNull: true,

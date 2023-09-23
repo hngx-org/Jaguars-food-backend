@@ -185,7 +185,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     }
     // generate token
     const generatedToken = crypto.randomInt(100000, 1000000).toString();
-    const jwt_token = await getToken({ otpToken: generatedToken });
+    const jwt_token = await getToken({ otpToken: generatedToken, email });
 
     const org = await db.organization.findOne({
       where: { id: user.dataValues.org_id },
@@ -195,15 +195,13 @@ const forgotPassword = asyncHandler(async (req, res) => {
       where: { org_id: user.dataValues.org_id, isAdmin: true },
     });
 
-    await db.user.update({ otpToken: jwt_token }, { where: { email: email } });
-
     await sendPasswordResetOTPEmail(
       {
         email,
         orgName: org.dataValues.name,
         orgEmail: adminUser.dataValues.email,
       },
-      generatedToken
+      jwt_token
     );
 
     return res.json({ message: "OTP sent to user email" });
@@ -214,45 +212,50 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
-  const schema = joi.object({
-    email: joi.string().email({ minDomainSegments: 2 }).required(),
-    otp_token: joi.string().required(),
-    password: joi.string().required(),
-  });
+  try {
+    if (!req?.query) {
+      const schema = joi.object({
+        email: joi.string().email({ minDomainSegments: 2 }).required(),
+        otp_token: joi.string().required(),
+        password: joi.string().required(),
+      });
 
-  const { error } = schema.validate(req.body);
+      const { error } = schema.validate(req.body);
 
-  if (error) {
+      if (error) {
+        throw new Error(error);
+      }
+      const { email, otp_token, password } = req.body;
+
+      if (!user) {
+        return res.status(404).json({
+          message: `User with email ${email} not found`,
+          error: "404 Not found",
+        });
+      }
+
+      const decoded = await verifyToken(otp_token);
+
+      if (user.dataValues.email !== decoded.email) {
+        return res.status(400).json({ error: "Invalid token" });
+      }
+
+      const hashedPassword = hashPassword(password);
+
+      await db.user.update(
+        { passwordHash: hashedPassword },
+        { where: { email: email } }
+      );
+
+      return res.json({ message: "password updated successfully" });
+    }
+    if (req?.query?.token) {
+      // yet to be implemented
+    }
+  } catch (error) {
+    console.error(error);
     throw new Error(error);
   }
-  const { email, otp_token, password } = req.body;
-
-  const user = await db.user.findOne({ where: { email } });
-
-  if (!user) {
-    return res.status(404).json({
-      message: `User with email ${email} not found`,
-      error: "404 Not found",
-    });
-  }
-  if (!user?.dataValues?.otpToken) {
-    res.status(400);
-    throw new Error("Invalid token");
-  }
-  const decodedToken = await verifyToken(user.dataValues.otpToken);
-
-  if (decodedToken?.otpToken.toString() !== otp_token) {
-    return res.status(400).json({ error: "Invalid token" });
-  }
-
-  const hashedPassword = hashPassword(password);
-
-  await db.user.update(
-    { passwordHash: hashedPassword, otpToken: "" },
-    { where: { email: email } }
-  );
-
-  return res.json({ message: "password updated successfully" });
 });
 
 module.exports = { Login, staffSignUp, forgotPassword, resetPassword };
