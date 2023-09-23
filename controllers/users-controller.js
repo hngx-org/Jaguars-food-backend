@@ -1,6 +1,7 @@
-const asyncHandler = require("express-async-handler");
-const db = require("../models");
-const { Op } = require("sequelize");
+const asyncHandler = require('express-async-handler');
+const db = require('../models');
+const { Op } = require('sequelize');
+const joi = require('joi');
 
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -22,7 +23,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     bankRegion,
     currency,
     currencyCode,
-    org_id,
+    isAdmin,
   } = user;
 
   if (user) {
@@ -33,6 +34,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       lastName,
       profilePicture,
       email,
+      isAdmin,
       phoneNumber,
       launchCreditBalance,
       bankNumber,
@@ -41,11 +43,10 @@ const getUserProfile = asyncHandler(async (req, res) => {
       bankRegion,
       currency,
       currencyCode,
-      org_id,
     });
   } else {
     res.status(404);
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 });
 
@@ -56,12 +57,12 @@ const editUserProfile = asyncHandler(async (req, res) => {
     const user = await db.user.findByPk(req.user.id);
     if (req.body.firstName) {
       const { error } = joi.string().validate(req.body.firstName);
-      if (error) throw new Error("firstName must be a string");
+      if (error) throw new Error('firstName must be a string');
       user.firstName = req.body.firstName;
     }
     if (req.body.lastName) {
       const { error } = joi.string().validate(req.body.lastName);
-      if (error) throw new Error("lastName must be a string");
+      if (error) throw new Error('lastName must be a string');
       user.lastName = req.body.lastName;
     }
     if (req.body.email) {
@@ -79,26 +80,25 @@ const editUserProfile = asyncHandler(async (req, res) => {
     const updatedUser = await user.save();
     res.json({
       id: updatedUser.id,
-      name: updatedUser.firstName + " " + updatedUser.lastName,
+      name: updatedUser.firstName + ' ' + updatedUser.lastName,
       email: updatedUser.email,
     });
   } else {
     res.status(404);
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 });
 
-// TODO
 //ADD USER BANK ACCOUNT
 const addUserBank = asyncHandler(async (req, res) => {
-  const user = await db.user.findByPk(req.user.id);
+  const user = await db.user.findOne({ where: { email: req.user.email } });
   if (user) {
     const { error } = joi
       .object({
-        bankNumber: joi.string().required(),
-        bankName: joi.string().required(),
-        bankCode: joi.string().required(),
-        bankRegion: joi.string().required(),
+        bank_name: joi.string().required(),
+        bank_number: joi.string().required(),
+        bank_region: joi.string().required(),
+        bank_code: joi.string().required(),
       })
       .validate(req.body);
 
@@ -106,24 +106,24 @@ const addUserBank = asyncHandler(async (req, res) => {
       throw new Error(error);
     }
 
-    user.bankName = req.body.bankName;
-    user.bankNumber = req.body.bankNumber;
-    user.bankRegion = req.body.bankRegion;
-    user.bankCode = req.body.bankCode;
+    user.bankName = req.body.bank_name;
+    user.bankNumber = req.body.bank_number;
+    user.bankRegion = req.body.bank_region;
+    user.bankCode = req.body.bank_code;
 
-    const updatedUser = await user.save();
+    await user.save();
     res.json({
-      id: updatedUser.id,
-      name: updatedUser.firstName + " " + updatedUser.lastName,
-      email: updatedUser.email,
-      bankNumber: updatedUser.bankNumber,
-      bankName: updatedUser.bankName,
-      bankCode: updatedUser.bankCode,
-      bankRegion: updatedUser.bankRegion,
+      id: user.id,
+      name: user.firstName + ' ' + user.lastName,
+      email: user.email,
+      bank_number: user.bankNumber,
+      bank_name: user.bankName,
+      bank_code: user.bankCode,
+      bank_region: user.bankRegion,
     });
   } else {
     res.status(404);
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 });
 
@@ -140,13 +140,13 @@ const getAllUsers = asyncHandler(async (req, res) => {
     const users = await db.user.findAll({});
     // Response data
     const responseData = {
-      message: "Successfully gotten all users",
+      message: 'Successfully gotten all users',
       statusCode: 200,
       data: users.map((user) => ({
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        profilePicture: user.profile_picture || "user-profile-picture-url", // Replace with the actual profile picture URL or a default value
+        profilePicture: user.profile_picture || 'user-profile-picture-url', // Replace with the actual profile picture URL or a default value
         id: user.id,
         orgId: user.orgId,
       })),
@@ -166,15 +166,15 @@ const searchUser = asyncHandler(async (req, res) => {
     where: {
       org_id: req.user.orgId,
       [Op.or]: [
-        { firstName: { [Op.like]: "%" + nameOrEmail + "%" } },
-        { lastName: { [Op.like]: "%" + nameOrEmail + "%" } },
-        { email: { [Op.like]: "%" + nameOrEmail + "%" } },
+        { firstName: { [Op.like]: '%' + nameOrEmail + '%' } },
+        { lastName: { [Op.like]: '%' + nameOrEmail + '%' } },
+        { email: { [Op.like]: '%' + nameOrEmail + '%' } },
       ],
     },
   });
   res.json({
     users: users.map((user) => ({
-      name: user.firstName + " " + user.lastName,
+      name: user.firstName + ' ' + user.lastName,
       email: user.email,
       profilePicture: user.profilePicture,
       id: user.id,
@@ -215,7 +215,7 @@ const createWithdrawal = asyncHandler(async (req, res) => {
   } else {
     // If user is not found (unauthenticated), return a 404 response with an error message
     res.status(404);
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 });
 
