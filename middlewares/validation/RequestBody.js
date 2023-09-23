@@ -14,21 +14,23 @@ const schema = Joi.object({
 function validateLoginRequestBody(req, res, next) {
   // console.log(req.body);
   if (!req.body) {
-    return res.status(400).json({ error: "Empty request body can't be processed!" })
+    return res
+      .status(400)
+      .json({ error: "Empty request body can't be processed!" });
   }
-  const {email, password} = req.body;
+  const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(400).json({ error: "Email and Password are required!" })
+    return res.status(400).json({ error: 'Email and Password are required!' });
   }
-try {
-  const { error } = schema.validate(req.body);
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
+  try {
+    const { error } = schema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
+    next();
+  } catch (error) {
+    next(error);
   }
-  next();
-} catch (error) {
-  next(error);
-}
 }
 
-module.exports = { validateLoginRequestBody }
+module.exports = { validateLoginRequestBody };
