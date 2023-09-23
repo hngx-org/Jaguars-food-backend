@@ -1,7 +1,6 @@
-const { app, PORT } = require('./config/config.js');
-// const db = require('./models');
+const { app, PORT } = require("./config/config");
 
-require('dotenv').config({ path: '.env' });
+require("dotenv").config({ path: ".env" });
 
 const startApp = async () => {
 	app.listen(PORT, () => {

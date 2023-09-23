@@ -20,4 +20,6 @@ To get started, follow these steps:
 | 1.| Oluwatomiwa Oni| [26thavenue](https://github.com/26thavenue)               |
 | 2.| Ejiofor Emmanuel Whyte|  [kalwhyte](https://github.com/kalwhyte)           |
 | 3.| Emmanuel Fasogba|[fashemma007](https://github.com/fashemma007)             |
-| 4.| CECIL-CYRUS-11|  [Cyrus-11](https://github.com/Cyrus-11)                   |
+| 4.| Izugance      |  [Izugance](https://github.com/Izugance)                   |
+| 5.| CECIL-CYRUS-11|  [Cyrus-11](https://github.com/Cyrus-11)                   |
+| 6.| samshot_01|  [sam-shot](https://github.com/sam-shot)                       |
