@@ -1,5 +1,5 @@
-const asyncHandler = require("express-async-handler");
 const joi = require("joi");
+const asyncHandler = require("express-async-handler");
 const crypto = require("crypto");
 const db = require("../../models");
 const {
@@ -74,93 +74,6 @@ const staffSignUp = asyncHandler(async (req, res) => {
     res.status(500);
     throw new Error("Server Error");
   }
-});
-
-// const signUp = asyncHandler(async (req, res) => {
-//   const { email, password, first_name, last_name, phone_number } = req.body;
-//   const checkUser = await db.user.findOne({ where: { email } });
-//   if (req.user.email !== email) {
-//     res.status(403);
-//     throw new Error("Unauthorized");
-//   } else if (checkUser) {
-//     res.status(400);
-//     throw new Error("User already exists. Try login");
-//   }
-//   const newUser = await db.user.create({
-//     email,
-//     firstName: first_name,
-//     lastName: last_name,
-//     phoneNumber: phone_number,
-//     orgId: req.user.orgId,
-//     passwordHash: hashPassword(password),
-//   });
-//   // console.log(newUser);
-//   const { firstName, lastName, phoneNumber, isAdmin, orgId } = newUser;
-//   const data = { firstName, lastName, phoneNumber, isAdmin, orgId };
-//   return res.send({ message: "Account created", data });
-// });
-
-const Login = asyncHandler(async (req, res) => {
-  const schema = joi.object({
-    email: joi.string().email({ minDomainSegments: 2 }).required(),
-    password: joi.string().required(),
-  });
-
-  const { error } = schema.validate(req.body);
-
-  if (error) {
-    throw new Error(error);
-  }
-  const { email: r_email, password } = req.body;
-
-  const checkUser = await db.user.findOne({ where: { email: r_email } });
-  if (!checkUser) {
-    res.status(400);
-    throw new Error("User does not exist");
-  }
-  const validPassword = verifyPassword(password, checkUser.passwordHash);
-  if (!validPassword) {
-    res.status(400);
-    throw new Error("Invalid password");
-  }
-  const {
-    id,
-    orgId,
-    firstName,
-    lastName,
-    profilePicture,
-    email,
-    phoneNumber,
-    isAdmin,
-    launchCreditBalance,
-    refreshToken,
-    bankNumber,
-    bankCode,
-    bankName,
-    bankRegion,
-    currency,
-    currencyCode,
-  } = checkUser;
-  const user = {
-    id,
-    orgId,
-    firstName,
-    lastName,
-    profilePicture,
-    email,
-    phoneNumber,
-    isAdmin,
-    launchCreditBalance,
-    refreshToken,
-    bankNumber,
-    bankCode,
-    bankName,
-    bankRegion,
-    currency,
-    currencyCode,
-  };
-  const token = await getToken(user);
-  return res.json({ token });
 });
 
 const forgotPassword = asyncHandler(async (req, res) => {
@@ -253,6 +166,60 @@ const resetPassword = asyncHandler(async (req, res) => {
     console.error(error);
     throw new Error(error);
   }
+});
+
+const Login = asyncHandler(async (req, res) => {
+	const { email, password } = req.body;
+	const checkUser = await db.user.findOne({ where: { email } });
+	if (!checkUser) {
+		res.status(400);
+		throw new Error('User does not exist');
+	}
+	const validPassword = verifyPassword(password, checkUser.passwordHash);
+	if (!validPassword) {
+		res.status(400);
+		throw new Error('Invalid password');
+	} else {
+		const {
+			id,
+			orgId,
+			firstName,
+			lastName,
+			profilePicture,
+			email,
+			phoneNumber,
+			isAdmin,
+			launchCreditBalance,
+			refreshToken,
+			bankNumber,
+			bankCode,
+			bankName,
+			bankRegion,
+			currency,
+			currencyCode,
+		} = checkUser;
+
+		const user = {
+			id,
+			orgId,
+			firstName,
+			lastName,
+			profilePicture,
+			email,
+			phoneNumber,
+			isAdmin,
+			launchCreditBalance,
+			refreshToken,
+			bankNumber,
+			bankCode,
+			bankName,
+			bankRegion,
+			currency,
+			currencyCode,
+		};
+		const token = await getToken(user);
+		return res.json({ token });
+	}
 });
 
 module.exports = { Login, staffSignUp, forgotPassword, resetPassword };

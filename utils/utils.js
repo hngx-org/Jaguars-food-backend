@@ -2,8 +2,8 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const { getToken } = require("../utils/tokens.js");
 const db = require("../models/index");
+const templates = require("../utils/emailTemplate.js");
 const transporter = require("../config/mailConfig");
-const { getInviteTemplate, getOtpTemplate } = require("./emailTemplate");
 
 const hashPassword = (password) => {
   return bcrypt.hashSync(password, 10);
@@ -38,15 +38,12 @@ async function generateInvitationToken(email, orgId) {
 
 // function to send the invitation email
 function sendInvitationEmail(data, invitationToken) {
+  const subject = "Free Lunch Invitation 😋🍽️";
   const mailOptions = {
     from: `${data?.orgName} <${data.orgEmail}>`,
     to: data.email,
     subject: "Free Lunch App Invitation",
-    html: getInviteTemplate(
-      invitationToken,
-      data.orgName,
-      "Free Lunch App Invitation"
-    ),
+    html: templates.getInvite(invitationToken, data.orgName, subject),
   };
 
   return new Promise((resolve, reject) => {
@@ -64,15 +61,12 @@ function sendInvitationEmail(data, invitationToken) {
 
 // function to send the invitation email
 const sendPasswordResetOTPEmail = (data, invitationToken) => {
+  const subject = "Password Reset One time Verification";
   const mailOptions = {
     from: `${data?.orgName} <${data.orgEmail}>`,
     to: data.email,
-    subject: "Password Reset One time Verification",
-    html: getOtpTemplate(
-      invitationToken,
-      data.orgName,
-      "Password Reset One-time Verification"
-    ),
+    subject,
+    html: templates.getOtp(invitationToken, data.orgName, subject),
   };
 
   return new Promise((resolve, reject) => {

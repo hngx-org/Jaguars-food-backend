@@ -1,8 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const db = require("../models");
-const joi = require("joi");
 const { Op } = require("sequelize");
-const { hashPassword } = require("../utils/utils");
 
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -139,16 +137,18 @@ const addUserBank = asyncHandler(async (req, res) => {
 const getAllUsers = asyncHandler(async (req, res) => {
   try {
     // Assuming you retrieve all users from the database
-    const users = await db.user.findAll({ where: { org_id: req.user.orgId } });
+    const users = await db.user.findAll({});
     // Response data
     const responseData = {
       message: "Successfully gotten all users",
       statusCode: 200,
       data: users.map((user) => ({
-        name: user.firstName + " " + user.lastName,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
-        profilePicture: user.profilePicture,
+        profilePicture: user.profile_picture || "user-profile-picture-url", // Replace with the actual profile picture URL or a default value
         id: user.id,
+        orgId: user.orgId,
       })),
     };
     res.status(200).json(responseData);

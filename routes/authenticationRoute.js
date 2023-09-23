@@ -2,6 +2,10 @@ const express = require("express");
 const {
   createAdmin,
   createInvite,
+  searchOrg,
+  update0rgFoodPrice,
+  update0rgWalletBalance,
+  orgWalletBalance,
 } = require("../controllers/auth/adminOrgController");
 const authMiddleware = require("../middlewares/authMiddleware");
 const isAdmin = require("../middlewares/isAdmin");
@@ -12,19 +16,35 @@ const {
   resetPassword,
 } = require("../controllers/auth/userAuthController");
 
-const router = express.Router();
+const authRouter = express.Router();
+const orgRouter = express.Router();
+// const orgRouter = express.Router();
 
 //ADMIN SIGN UP ROUTE
-router.post("/user/signup", createAdmin);
-router.post("/organization/invite", authMiddleware, isAdmin, createInvite);
-router.post("/organization/staff/signup", staffSignUp);
-// router.post('/organization/staff/signup', authMiddleware, createInvite);
-router.post("/login", Login);
-router.post("/forgot-password", forgotPassword);
-router.post("/resend-otp", forgotPassword);
-router.post("/reset-password", resetPassword);
+authRouter.post("/user/signup", createAdmin);
+authRouter.get("/organization/:name", searchOrg);
+authRouter.post("/staff/signup", staffSignUp);
+authRouter.post("/login", Login);
+authRouter.post("/forgot-password", forgotPassword);
+authRouter.post("/reset-password", resetPassword);
 
-// ADMIN LOGIN ROUTE
-// router.route('/login').post(logInAdmin);
+// ORG ACTIVITIES
+orgRouter.post("/invite", authMiddleware, isAdmin, createInvite);
+orgRouter.patch(
+  "/wallet/update",
+  authMiddleware,
+  isAdmin,
+  update0rgWalletBalance
+);
 
-module.exports = router;
+orgRouter.patch("/lunch/update", authMiddleware, isAdmin, update0rgFoodPrice);
+
+// TODO: Get org account balance
+orgRouter.get(
+  "/organization/wallet",
+  authMiddleware,
+  isAdmin,
+  orgWalletBalance
+);
+
+module.exports = { orgRouter, authRouter };

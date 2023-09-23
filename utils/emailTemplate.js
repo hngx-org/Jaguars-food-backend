@@ -1,11 +1,12 @@
-const getInviteTemplate = (otp, organization, subject) => {
+// Courtesy @chisomchris
+const getInvite = (otp, organization, subject) => {
   return `
     <!DOCTYPE html>
   <html lang="en">
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Document</title>
+      <title>Invitation</title>
       <style>
         @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;1,700&display=swap");
         div,h1,p {
@@ -35,6 +36,9 @@ const getInviteTemplate = (otp, organization, subject) => {
           padding-bottom: 24px;
           max-width: 600px;
         }
+        h2{
+          color: "white";
+        }
         .child {
           background-color: white;
           padding: 28px;
@@ -44,9 +48,8 @@ const getInviteTemplate = (otp, organization, subject) => {
     <div>
       <div class="body">
         <div class="container">
-          <h1>${organization}</h1>
-          <div class='child'>
-            <h2>${subject}</h2>
+          <h3>${subject}</h3>
+        <div class='child'>
             <p>
               You have been invited by ${organization} to join it's organization on Free Lunch App.
               <br/>Use the token below to create your account..
@@ -59,14 +62,14 @@ const getInviteTemplate = (otp, organization, subject) => {
   </html>
   `;
 };
-
-const getOtpTemplate = (otp, organization, subject) => {
-  return `<!DOCTYPE html>
+const getOtp = (otp, organization, subject) => {
+  return `
+    <!DOCTYPE html>
   <html>
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Document</title>
+<title>Password Reset</title>
     </head>
     <body>
       <div
@@ -105,29 +108,14 @@ const getOtpTemplate = (otp, organization, subject) => {
             You are getting this mail because you requested for a password reset.
             <br />Use the token below to verify you password reset your account..
           </p>
-          <!--<p>
-            <a
-              style="
-                padding: 4px 16px;
-                display: inline-block;
-                background-color: #571fcd;
-                color: #ffffff;
-                font-size: 24px;
-                text-decoration: none;
-              "
-              href="/api/v1/auth/reset-password?token=${otp}"
-              target="_blank"
-              >Click here</a
-            >
-          </p>-->
-  
-          <p>Or you can copy this code to your app</p>
           <p>${String(otp)}</p>
         </div>
       </div>
     </body>
   </html>
-  `
+  `;
 };
 
-module.exports = { getInviteTemplate, getOtpTemplate };
+const templates = { getInvite, getOtp };
+
+module.exports = templates;

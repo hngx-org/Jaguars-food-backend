@@ -1,51 +1,25 @@
 const asyncHandler = require("express-async-handler");
 const db = require("../models");
-const joi = require("joi");
 
 //SEND A LUNCH
 // TODO:
 const createLunch = asyncHandler(async (req, res) => {
-  try {
-    const { id, orgId } = req.user;
-    const { receiver, quantity, note } = req.body;
-    const { error } = joi
-      .object({
-        receiver: joi.number().integer().required(),
-        quantity: joi.number().integer().required(),
-      })
-      .validate({
-        receiver: Number(receiver),
-        quantity: Number(quantity),
-      });
-
-    if (error) {
-      throw new Error(error);
-    }
-    if (note) {
-      const { error } = joi
-        .object({
-          note: joi.string(),
-        })
-        .validate({ note });
-
-      if (error) {
-        throw new Error(error);
-      }
-    }
-
-    // await receivers.map(async (receiver) => {
-    await db.lunches.create({
-      senderId: id,
-      receiverId: receiver,
-      quantity,
-      note,
-      org_id: orgId,
-    });
-
-    return res.json({ status: "successful", message: "Lunch(es) sent" });
-  } catch (error) {
-    throw new Error("Internal Server Error");
-  }
+	try {
+		const { id, orgId } = req.user; // user not present
+		const { receivers, quantity, note } = req.body;
+		const lunch = await receivers.map(async (receiver) => {
+			await db.lunches.create({
+				senderId: id,
+				receiverId: receiver,
+				quantity,
+				note,
+				org_id: orgId,
+			});
+		});
+		return res.json({ status: 'successful', message: 'Lunch(es) sent' });
+	} catch (error) {
+		throw new Error('Internal Server Error');
+	}
 });
 
 //GET A LUNCH
@@ -76,67 +50,91 @@ const getLunch = asyncHandler(async (req, res) => {
 
 //REDEEM A LUNCH
 const redeemUserLunch = asyncHandler(async (req, res) => {
-  try {
-    // decrypt id from token using middleware
-    const { id } = req.user;
-    const { lunch_id, amount } = req.body;
+	try {
+		// decrypt id from token using middleware
+		const { id } = req.user;
+		const { lunch_id, amount } = req.body;
+		// validating if the lunch id exists
+		const lunchID = await db.lunches.findOne({ where: { id: lunch_id } });
 
-    // validating if the lunch id exists
-    const lunchID = await Lunches.findOne({ where: { id: lunch_id } });
+		if (!lunchID) {
+			res.status(404);
+			throw new Error('Lunch not found');
+		}
+		// Fetch the current user
+		const user = await db.user.findOne({ where: { id: id } });
+		if (!user) {
+			res.status(404);
+			throw new Error('User not found');
+		}
 
-    if (!lunchID) {
-      res.status(404);
-      throw new Error("Lunch not found");
-    }
+		const curBal = user.lunch_credit_balance;
 
-    // Fetch the current user
-    const user = await User.findOne({ where: { id: id } });
-    if (!user) {
-      res.status(404);
-      throw new Error("User not found");
-    }
+		// if current  balance is less than the amount
+		if (curBal < amount) {
+			res.status(400);
+			throw new Error('Insufficient balance');
+		}
 
-    const curBal = user.lunch_credit_balance;
+		// update user balance for current user
+		await user.update(
+			{ lunch_credit_balance: curBal - amount },
+			{ where: { id: id } }
+		);
 
-    // if current  balance is less than the amount
-    if (curBal < amount) {
-      res.status(400);
-      throw new Error("Insufficient balance");
-    }
+		// create a withdrawal table
+		const withdrawal = await db.withdrawals.create({
+			id: lunchID,
+			user_id: id,
+			status: 'completed',
+			amount: amount,
+		});
 
-    // update user balance for current user
-    await User.update(
-      { lunch_credit_balance: curBal - amount },
-      { where: { id: id } }
-    );
+		// update lunch status
+		await db.lunches.update(
+			{ redeemed: true },
+			{ where: { id: lunch_id } }
+		);
 
-    // create a withdrawal table
-    const withdrawal = await Withdrawals.create({
-      id: lunchID,
-      user_id: id,
-      status: "completed",
-      amount: amount,
-    });
-
-    // update lunch status
-    await Lunches.update({ redeemed: true }, { where: { id: lunch_id } });
-
-    res.status(200).json({
-      status: "success",
-      message: "Lunch redeemed successfully",
-      data: withdrawal,
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "Something went wrong",
-      data: err,
-    });
-  }
+		res.status(200).json({
+			status: 'success',
+			message: 'Lunch redeemed successfully',
+			data: withdrawal,
+		});
+	} catch (err) {
+		res.status(500).json({
+			status: 'error',
+			message: 'Something went wrong',
+			data: err,
+		});
+	}
 });
+
+const getAllLunches = asyncHandler(async (req, res) => {
+	const { id, firstName, lastName } = req.user;
+	if (!id) {
+		res.status(400);
+		throw new Error('Please provide an id.');
+	}
+	try {
+		const lunches = await db.lunches.findAll({ where: { receiverId: id } });
+		return res
+			.status(200)
+			.json({
+				status: 'success',
+				data: { count: lunches.length, lunches },
+			});
+		// console.log('I got here');
+	} catch (error) {
+		res.status(404);
+		const user = `{id:${id}, username:${firstName} ${lastName}`;
+		throw new Error(`No lunch found for ${user}}`);
+	}
+});
+
 module.exports = {
-  createLunch,
-  getLunch,
-  redeemUserLunch,
-  // getAllLunches,
+	createLunch,
+	getLunch,
+	redeemUserLunch,
+	getAllLunches,
 };
