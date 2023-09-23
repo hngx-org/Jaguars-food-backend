@@ -1,6 +1,5 @@
 const asyncHandler = require('express-async-handler');
 const db = require('../models');
-const { hashPassword, verifyPassword } = require('../utils/utils');
 const { Op } = require('sequelize');
 
 //GET USER PROFILE
