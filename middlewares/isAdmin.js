@@ -1,17 +1,21 @@
-import asyncHandler from "express-async-handler";
-import { User } from "../models/user.model";
+const asyncHandler = require('express-async-handler');
+const { user } = require('../models');
 
 const isAdmin = asyncHandler(async (req, res, next) => {
-  try {
-    const { id } = req.user;
+	try {
+		const { id } = req.user;
 
-    const getUser = await User.findOne({ id });
+		const getUser = await user.findOne({ id });
+		// console.log(getUser);
 
-    if (!getUser.isAdmin) throw new Error("You lack admin priviledges");
-    next();
-  } catch (error) {
-    throw new Error(error);
-  }
+		if (!getUser.isAdmin) {
+			res.status(403);
+			throw new Error('You lack admin priviledges');
+		}
+		next();
+	} catch (error) {
+		throw new Error(error);
+	}
 });
 
-export default isAdmin;
+module.exports = isAdmin;
