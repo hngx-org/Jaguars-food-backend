@@ -2,12 +2,12 @@ const asyncHandler = require('express-async-handler');
 const db = require('../../models');
 const { hashPassword } = require('../../utils/utils');
 const { getToken, verifyToken } = require('../../utils/tokens');
-const { APP_URL } = require('../../utils/constants');
-const transporter = require('../../config/mailConfig');
+
 const {
 	generateInvitationToken,
 	sendInvitationEmail,
 } = require('../../utils/utils');
+const { Op } = require('sequelize');
 //Admin or organization
 
 // Courtesy @26thavenue
@@ -82,7 +82,24 @@ const createInvite = asyncHandler(async (req, res) => {
 	}
 });
 
+const searchOrg = asyncHandler(async (req, res) => {
+	const name = req.params.name;
+	const orgs = await db.organization.findAll({
+		where: {
+			name: name,
+		},
+	});
+	// console.log(orgs);
+	if (orgs.length > 0) {
+		res.status(409);
+		return res.json({ error: `${name} is taken !!!` });
+	} else {
+		res.send();
+	}
+});
+
 module.exports = {
 	createInvite,
 	createAdmin,
+	searchOrg,
 };
