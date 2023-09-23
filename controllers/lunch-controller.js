@@ -9,22 +9,22 @@ const createLunch = asyncHandler(async (req, res) => {
 		const { id, orgId } = req.user; // user not present
 		// console.log({ id, orgId });
 		const { receivers, quantity, note } = req.body;
-		console.log({
-			senderId: id,
-			receiverId: receivers[0],
-			quantity,
-			note,
-			org_id: orgId,
-		});
-		// await receivers.map(async (receiver) => {
-		const lunch = await db.lunches.create({
-			senderId: id,
-			receiverId: receivers[0],
-			quantity,
-			note,
-			org_id: orgId,
-		});
+		// console.log({
+		// 	senderId: id,
+		// 	receiverId: receivers[0],
+		// 	quantity,
+		// 	note,
+		// 	org_id: orgId,
 		// });
+		const lunch = await receivers.map(async (receiver) => {
+		await db.lunches.create({
+			senderId: id,
+			receiverId: receiver,
+			quantity,
+			note,
+			org_id: orgId,
+		});
+		});
 		return res.json({ status: 'successful', message: 'Lunch(es) sent' });
 	} catch (error) {
 		throw new Error('Internal Server Error');
@@ -144,6 +144,22 @@ const redeemUserLunch = asyncHandler(async (req, res) => {
 		});
 	}
 });
+
+const getAllLunches = asyncHandler(async (req, res) => {
+	const { id, firstName, lastName } = req.user;
+	if (!id) { res.status(400); throw new Error('Please provide an id.'); }
+	try {
+		const lunches = await db.lunches.findAll({ where: { receiverId: id } });
+		return res.status(200).json(lunches);
+		// console.log('I got here');
+
+	} catch (error) {
+		res.status(404)
+		const user = `{id:${id}, username:${firstName} ${lastName}`
+		throw new Error(`No lunch found for ${user}}`);
+	}
+});
+
 module.exports = {
 	createLunch,
 	getLunch,

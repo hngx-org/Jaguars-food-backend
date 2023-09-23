@@ -78,11 +78,13 @@ const getAllUsers = asyncHandler(async (req, res) => {
 			message: 'Successfully gotten all users',
 			statusCode: 200,
 			data: users.map((user) => ({
-				firstName: user.name,
+				firstName: user.firstName,
+				lastName: user.lastName,
 				email: user.email,
 				profilePicture:
 					user.profile_picture || 'user-profile-picture-url', // Replace with the actual profile picture URL or a default value
-				_id: user._id, // Assuming "_id" is the user identifier in your model
+				id: user.id,
+				orgId: user.orgId,
 			})),
 		};
 		res.status(200).json(responseData);

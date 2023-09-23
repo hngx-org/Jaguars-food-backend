@@ -16,10 +16,10 @@ router.post('/send', authMiddleware, createLunch);
 router.get('/:id', authMiddleware, getLunch);
 
 // Get all Lunches
-router.get('/all', getAllLunches);
+router.get('/', authMiddleware, getAllLunches);
 
 // Redeem a lunch
-router.put('/redeem/:id', redeemUserLunch);
+router.put('/redeem/:id', authMiddleware, redeemUserLunch);
 //no need for this endpoint again
 
 module.exports = router;
