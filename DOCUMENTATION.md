@@ -15,7 +15,7 @@ baseURL = `to-be-added`
 | Endpoint | Method | Headers | Data | Description |
 | ------  | ------- | ------- | ------ | -------- |
 | /api/v1/auth/user/sugnup | POST |  |**first_name**, **last_name**, **email**, **passwrod**, **phone_number**,  **organization_name**, **lunch_price**, **currency** and **currency_code**   | user signup as admin, creates organization simultaneously |
-| /api/v1/organization/invite | POST| | **email** | send invite to user |
+| /api/v1/auth/organization/invite | POST| Authorization: `Bearer <auth-token>` | **email** | send invite to user |
 | /api/v1/auth/organization/staff/sugnup | POST | |**first_name**, **last_name**, **email**, **passwrod**, **phone_number**,  and **otp_token**   | user signup using invitation token |
 | /api/v1/auth/login | POST | | **email** and **password** | Login to user account |
 | /api/v1/user/profile | GET | Authorization: `Bearer <auth-token>` | |retrieve a user's details |
@@ -26,8 +26,11 @@ baseURL = `to-be-added`
 | /api/v1/auth/forgot-password | POST | | **email**| request for password reset OTP |
 | /api/v1/auth/resend-otp | POST | | **email** | request for password reset OTP |
 | /api/v1/auth/reset-password | POST | | **email**, **password** and **otp_token** | update user password |
+| /api/v1/lunch/send | POST | Authorization: `Bearer <auth-token>` | **receiverId**, **seb=nderId** and **quantity** | send lunch to user |
+| /api/v1/lunch/:id | GET | Authorization: `Bearer <auth-token>` | | get details of lunch by id |
+| /api/v1/withdrawal/request | POST | Authorization: `Bearer <auth-token>` | | withdraw lunch credit |
 
-
+<br>
 
 ## Details
 

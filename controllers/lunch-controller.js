@@ -7,18 +7,31 @@ const joi = require("joi");
 const createLunch = asyncHandler(async (req, res) => {
   try {
     const { id, orgId } = req.user;
+    const { receiver, quantity, note } = req.body;
     const { error } = joi
       .object({
         receiver: joi.number().integer().required(),
         quantity: joi.number().integer().required(),
-        note: joi.string(),
       })
-      .validate(req.body);
+      .validate({
+        receiver: Number(receiver),
+        quantity: Number(quantity),
+      });
 
     if (error) {
       throw new Error(error);
     }
-    const { receiver, quantity, note } = req.body;
+    if (note) {
+      const { error } = joi
+        .object({
+          note: joi.string(),
+        })
+        .validate({ note });
+
+      if (error) {
+        throw new Error(error);
+      }
+    }
 
     // await receivers.map(async (receiver) => {
     await db.lunches.create({
@@ -38,8 +51,6 @@ const createLunch = asyncHandler(async (req, res) => {
 //GET A LUNCH
 const getLunch = asyncHandler(async (req, res) => {
   const { id } = req.params;
-
-  // console.log(req.params);
   if (id) {
     const lunch = await db.lunches.findOne({ where: { id } });
     if (!lunch) {

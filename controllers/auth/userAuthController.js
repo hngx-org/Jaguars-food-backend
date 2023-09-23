@@ -33,24 +33,30 @@ const staffSignUp = asyncHandler(async (req, res) => {
     const jwtToken = await db.organizationInvites.findOne({
       where: { email: sentEmail },
     });
-
-    if (!jwtToken.dataValues.token) {
+    
+    if (!jwtToken) {
       return res.status(403).json({
         message: "Impersonation warning!",
         error: "Unauthorized Access",
       });
     }
+    console.log(3);
     const decodedToken = await verifyToken(jwtToken.dataValues.token);
-
+    console.log(4);
+    
     if (decodedToken?.otp?.toString() !== otp_token) {
       return res.status(400).json({ error: "Invalid token" });
     }
-
+    console.log(5);
+    
     const hashedPassword = hashPassword(sentPassword);
+    console.log(6);
     const duplicate = await db.user.findOne({ where: { email: sentEmail } });
+    console.log(7);
     if (duplicate) {
       return res.status(409).json({ error: "Staff already Exist" });
     }
+    console.log(8);
 
     const signUp = await db.user.create({
       email: sentEmail,

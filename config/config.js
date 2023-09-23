@@ -3,10 +3,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const router = require('../routes/router.js');
-
 // ROUTES
-const lunchRouter = require('../routes/lunchRoute.js');
-const withdrawalRouter = require('../routes/withdrawalRoute.js');
 const lunchRoute = require('../routes/lunchRoute.js');
 const withdrawalRoute = require('../routes/withdrawalRoute.js');
 const authenticationRoute = require('../routes/authenticationRoute.js');
@@ -24,10 +21,10 @@ app.use(router);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-app.use('/api/lunch', lunchRoute);
-app.use('/api/withdrawal', withdrawalRoute);
-app.use('/api', userRoute);
-app.use('/api/auth', authenticationRoute);
+app.use('/api/v1/lunch', lunchRoute);
+app.use('/api/v1/withdrawal', withdrawalRoute);
+app.use('/api/v1', userRoute);
+app.use('/api/v1/auth', authenticationRoute);
 
 app.use(notFound);
 app.use(errHandler);
