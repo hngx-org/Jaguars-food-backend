@@ -12,14 +12,29 @@ const {
 const { validateSchema } = require("../middlewares/input-validator");
 const { CreateAdminSignUp } = require("../schema/admin-schema");
 const { Login, StaffSignUp, CreateInvite } = require("../schema/user-schema");
+const {
+  staffSignUp,
+  login,
+} = require("../controllers/auth/userAuthController");
 
 const router = express.Router();
 
 //ADMIN SIGN UP ROUTE
-router.post("/user/signup", createAdmin);
-router.post("/organization/invite", authMiddleware, isAdmin, createInvite);
+router.post("/user/signup", validateSchema(CreateAdminSignUp), createAdmin);
+router.post(
+  "/organization/invite",
+  authMiddleware,
+  isAdmin,
+  validateSchema(CreateInvite),
+  createInvite
+);
+
 router.get("/organization/:name", searchOrg);
-router.post("/organization/staff/signup", staffSignUp);
+router.post(
+  "/organization/staff/signup",
+  validateSchema(StaffSignUp),
+  staffSignUp
+);
 // router.post('/organization/staff/signup', authMiddleware, createInvite);
 
 router.post("/login", validateSchema(Login), login);

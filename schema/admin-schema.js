@@ -13,6 +13,10 @@ const CreateAdminSignUp = Joi.object({
   first_name: RequiredString,
   last_name: RequiredString,
   phoneNumber: RequiredString,
+  organization_name: RequiredString,
+  lunch_price: RequiredString,
+  currency: RequiredString,
+  currency_code: RequiredString,
 });
 
 const CreateInviteOrg = Joi.object({
