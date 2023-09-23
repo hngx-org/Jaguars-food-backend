@@ -14,15 +14,17 @@ const {
   staffSignUp,
 } = require("../controllers/auth/userAuthController");
 
+const {validateAdminRequestBody, validateLoginRequestBody, validateStaffSignUpRequest} = require("../middlewares/validation/")
+
 const authRouter = express.Router();
 const orgRouter = express.Router();
 // const orgRouter = express.Router();
 
 //ADMIN SIGN UP ROUTE
-authRouter.post("/user/signup", createAdmin);
+authRouter.post("/user/signup", validateAdminRequestBody, createAdmin);
 authRouter.get("/organization/:name", searchOrg);
-authRouter.post("/staff/signup", staffSignUp);
-authRouter.post("/login", Login);
+authRouter.post("/staff/signup", validateStaffSignUpRequest,  staffSignUp);
+authRouter.post("/login", validateLoginRequestBody, Login);
 
 // ORG ACTIVITIES
 orgRouter.post("/invite", authMiddleware, isAdmin, createInvite);
