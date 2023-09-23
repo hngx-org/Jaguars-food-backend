@@ -37,29 +37,38 @@ const editUserProfile = asyncHandler(async (req, res) => {
 	}
 });
 
-// TODO
-//ADD USER BANK ACCOUNT
+// ADD USER BANK ACCOUNT
 const addUserBank = asyncHandler(async (req, res) => {
-	const user = req.user;
-	if (user) {
-		user.bank = {
-			bankName: req.body.bankName,
-			accountNumber: req.body.accountNumber,
-			accountName: req.body.accountName,
-		};
-		const updatedUser = await db.user.save();
-		res.json({
-			_id: updatedUser._id,
-			name: updatedUser.name,
-			email: updatedUser.email,
-			isAdmin: updatedUser.isAdmin,
-			bank: updatedUser.bank,
+	try {
+	  const user = req.user;
+	  
+	  if (user) {
+		// Update the user record with the provided data
+		const updatedUser = await user.update({
+		  bankNumber: req.body.bankNumber,
+		  bankCode: req.body.bankCode,
+		  bankName: req.body.bankName,
+		  bankRegion: req.body.bankRegion,
+		  currencyCode: req.body.currencyCode,
 		});
-	} else {
+		
+		res.json({
+		  success: true,
+		  message: 'User bank created successfully',
+		  user: {
+			email: updatedUser.email,
+			bankNumber: updatedUser.bankNumber,
+			bankName: updatedUser.bankName,
+		  },
+		});
+	  } else {
 		res.status(404);
 		throw new Error('User not found');
+	  }
+	} catch (error) {
+	  res.status(500).json({ error: 'Internal Server Error' });
 	}
-});
+  });
 
 //GET ALL USERS
 /**
