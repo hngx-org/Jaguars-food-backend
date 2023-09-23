@@ -36,6 +36,7 @@ db.lunches.belongsTo(db.user, { foreignKey: 'senderId' });
 db.lunches.belongsTo(db.user, { foreignKey: 'receiverId' });
 db.lunches.belongsTo(db.organization, { foreignKey: 'org_id' });
 db.withdrawals.belongsTo(db.user, { foreignKey: 'user_id' });
+db.organizationLunchWallet.belongsTo(db.organization, { foreignKey: 'org_id' });
 db.organizationInvites.belongsTo(db.organization, {
 	foreignKey: 'org_id',
 	as: 'organization',
