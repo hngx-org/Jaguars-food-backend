@@ -57,7 +57,7 @@ const addUserBank = asyncHandler(async (req, res) => {
 
 	res.status(200).json({
 		statusCode: 200,
-		message: "Bank details successfully updated"
+		message: "Bank account successfully added"
 	});
 });
 
