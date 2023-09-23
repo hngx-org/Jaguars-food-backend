@@ -68,30 +68,6 @@ const staffSignUp = asyncHandler(async (req, res) => {
 	}
 });
 
-const signUp = asyncHandler(async (req, res) => {
-	const { email, password, first_name, last_name, phone_number } = req.body;
-	const checkUser = await db.user.findOne({ where: { email } });
-	if (req.user.email !== email) {
-		res.status(403);
-		throw new Error('Unauthorized');
-	} else if (checkUser) {
-		res.status(400);
-		throw new Error('User already exists. Try login');
-	}
-	const newUser = await db.user.create({
-		email,
-		firstName: first_name,
-		lastName: last_name,
-		phoneNumber: phone_number,
-		orgId: req.user.orgId,
-		passwordHash: hashPassword(password),
-	});
-	// console.log(newUser);
-	const { firstName, lastName, phoneNumber, isAdmin, orgId } = newUser;
-	const data = { firstName, lastName, phoneNumber, isAdmin, orgId };
-	return res.send({ message: 'Account created', data });
-});
-
 const Login = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
 	const checkUser = await db.user.findOne({ where: { email } });
@@ -122,6 +98,7 @@ const Login = asyncHandler(async (req, res) => {
 			currency,
 			currencyCode,
 		} = checkUser;
+
 		const user = {
 			id,
 			orgId,
@@ -145,4 +122,4 @@ const Login = asyncHandler(async (req, res) => {
 	}
 });
 
-module.exports = { Login, signUp, staffSignUp };
+module.exports = { Login, staffSignUp };
