@@ -1,7 +1,12 @@
 const asyncHandler = require("express-async-handler");
 const joi = require("joi");
+const crypto = require("crypto");
 const db = require("../../models");
-const { hashPassword, verifyPassword } = require("../../utils/utils");
+const {
+  hashPassword,
+  verifyPassword,
+  sendPasswordResetOTPEmail,
+} = require("../../utils/utils");
 const { getToken, verifyToken } = require("../../utils/tokens");
 
 const staffSignUp = asyncHandler(async (req, res) => {
@@ -152,4 +157,92 @@ const Login = asyncHandler(async (req, res) => {
   return res.json({ token });
 });
 
-module.exports = { Login, staffSignUp };
+const forgotPassword = asyncHandler(async (req, res) => {
+  try {
+    const { error } = joi
+      .string()
+      .email({ minDomainSegments: 2 })
+      .required()
+      .validate(req.body.email);
+
+    if (error) {
+      res.status(400);
+      throw new Error(error);
+    }
+
+    const { email } = req.body;
+
+    const user = await db.user.findOne({ where: { email } });
+    if (!user) {
+      res.status(404);
+      throw new Error("User does not exist");
+    }
+    // generate token
+    const generatedToken = crypto.randomInt(100000, 1000000).toString();
+    const jwt_token = await getToken({ otpToken: generatedToken });
+
+    const org = await db.organization.findOne({
+      where: { id: user.dataValues.org_id },
+    });
+
+    const adminUser = await db.user.findOne({
+      where: { org_id: user.dataValues.org_id, isAdmin: true },
+    });
+
+    await db.user.update({ otpToken: jwt_token }, { where: { email: email } });
+
+    await sendPasswordResetOTPEmail(
+      {
+        email,
+        orgName: org.dataValues.name,
+        orgEmail: adminUser.dataValues.email,
+      },
+      generatedToken
+    );
+
+    return res.json({ message: "OTP sent to user email" });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+  const schema = joi.object({
+    email: joi.string().email({ minDomainSegments: 2 }).required(),
+    otp_token: joi.string().required(),
+    password: joi.string().required(),
+  });
+
+  const { error } = schema.validate(req.body);
+
+  if (error) {
+    throw new Error(error);
+  }
+  const { email, otp_token, password } = req.body;
+
+  const user = await db.user.findOne({ where: { email } });
+
+  if (!user) {
+    return res.status(404).json({
+      message: `User with email ${email} not found`,
+      error: "404 Not found",
+    });
+  }
+  const decodedToken = await verifyToken(user.dataValues.otpToken);
+
+  if (decodedToken?.otpToken.toString() !== otp_token) {
+    return res.status(400).json({ error: "Invalid token" });
+  }
+
+  const hashedPassword = hashPassword(password);
+
+  await db.user.update(
+    { passwordHash: hashedPassword },
+    { where: { email: email } }
+  );
+
+  return res.json({ message: "password updated successfully" });
+});
+
+module.exports = { Login, staffSignUp, forgotPassword, resetPassword };

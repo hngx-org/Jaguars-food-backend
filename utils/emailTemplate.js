@@ -59,4 +59,63 @@ const getInviteTemplate = (otp, organization, subject) => {
   </html>
   `;
 };
-module.exports = { getInviteTemplate };
+const getOtpTemplate = (otp, organization, subject) => {
+  return `
+    <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;1,700&display=swap");
+        div,h1,p {
+          padding: 0;
+          margin: 0;
+          font-family: "Nunito", sans-serif;
+          font-weight: 400;
+          margin-bottom: 12px;
+        }
+        .body {
+          width: 100%;
+          height: 100%;
+          /*background-color: #f1f1f1;*/
+        }
+        h1 {
+          font-style: italic;
+          font-weight: 700;
+        }
+        .center {
+          text-align: center;
+          font-size: 24px;
+        }
+        .container {
+          margin: 0 auto;
+          padding-top: 24px;
+          padding-bottom: 24px;
+          max-width: 600px;
+        }
+        .child {
+          background-color: white;
+          padding: 28px;
+        }
+      </style>
+    </head>
+    <div>
+      <div class="body">
+        <div class="container">
+          <h1>${organization}</h1>
+            <h2>${subject}</h2>
+            <p>
+              You are getting this mail because you requested for a password reset.
+              <br/>Use the token below to verify you password reset your account..
+            </p>
+            <p class="center">${otp}</p>
+          </div>
+      </div>
+    </div>
+  </html>
+  `;
+};
+
+module.exports = { getInviteTemplate, getOtpTemplate };

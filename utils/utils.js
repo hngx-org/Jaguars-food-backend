@@ -3,7 +3,7 @@ const crypto = require("crypto");
 const { getToken } = require("../utils/tokens.js");
 const db = require("../models/index");
 const transporter = require("../config/mailConfig");
-const { getInviteTemplate } = require("./emailTemplate");
+const { getInviteTemplate, getOtpTemplate } = require("./emailTemplate");
 
 const hashPassword = (password) => {
   return bcrypt.hashSync(password, 10);
@@ -49,18 +49,49 @@ function sendInvitationEmail(data, invitationToken) {
     ),
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log("Error sending email:", error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error sending email:", error);
+        reject(error);
+      } else {
+        console.log("Email sent: " + info.response);
+        resolve(info);
+      }
+    });
   });
 }
+
+// function to send the invitation email
+const sendPasswordResetOTPEmail = (data, invitationToken) => {
+  const mailOptions = {
+    from: `${data?.orgName} <${data.orgEmail}>`,
+    to: data.email,
+    subject: "Password Reset One time Verification",
+    html: getOtpTemplate(
+      invitationToken,
+      data.orgName,
+      "Password Reset One-time Verification"
+    ),
+  };
+
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error sending email:", error);
+        reject(error);
+      } else {
+        console.log("Email sent: " + info.response);
+        resolve(info);
+      }
+    });
+  });
+};
 
 module.exports = {
   hashPassword,
   verifyPassword,
   generateInvitationToken,
   sendInvitationEmail,
+  sendPasswordResetOTPEmail,
 };

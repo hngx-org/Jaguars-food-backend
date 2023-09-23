@@ -97,7 +97,7 @@ const createInvite = asyncHandler(async (req, res) => {
     // Generate a unique invitation token
     const invitationToken = await generateInvitationToken(email, orgId);
     // Send the invitation email
-    sendInvitationEmail({ email, orgName, orgEmail }, invitationToken);
+    await sendInvitationEmail({ email, orgName, orgEmail }, invitationToken);
     res.json({ message: "Invitation sent successfully", statusCode: 200 });
   } else {
     res.status(403);
