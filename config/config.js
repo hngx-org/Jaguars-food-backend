@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const router = require('../routes/router.js');
 
-// ROUTES
+// ROUTE
 const lunchRouter = require('../routes/lunchRoute.js');
 const withdrawalRouter = require('../routes/withdrawalRoute.js');
 // const lunchRoute = require('../routes/lunchRoute.js');
