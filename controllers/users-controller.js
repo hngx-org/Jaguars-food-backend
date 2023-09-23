@@ -37,27 +37,36 @@ const editUserProfile = asyncHandler(async (req, res) => {
 	}
 });
 
-// TODO
+
 //ADD USER BANK ACCOUNT
 const addUserBank = asyncHandler(async (req, res) => {
 	const user = req.user;
-	if (user) {
-		user.bank = {
-			bankName: req.body.bankName,
-			accountNumber: req.body.accountNumber,
-			accountName: req.body.accountName,
-		};
-		const updatedUser = await db.user.save();
-		res.json({
-			_id: updatedUser._id,
-			name: updatedUser.name,
-			email: updatedUser.email,
-			isAdmin: updatedUser.isAdmin,
-			bank: updatedUser.bank,
-		});
-	} else {
-		res.status(404);
-		throw new Error('User not found');
+	const email = req.user.email;
+	try {
+		if (user) {
+			const updatedUser = await db.user.findOne({ where: { email } })
+			if (updatedUser) {
+				updatedUser.bankName = req.body.bankName;
+				updatedUser.bankNumber = req.body.bankNumber;
+				updatedUser.bankCode = req.body.bankCode;
+				updatedUser.save();
+			}
+			res.json({
+				message: "Bank account added successfully",
+				statusCode: 200,
+				data: {
+					email: updatedUser.email,
+					bankName: updatedUser.bankName,
+					bankNumber: updatedUser.bankNumber,
+					bankCode: updatedUser.bankCode,
+				}
+			});
+		} else {
+			res.status(404);
+			throw new Error('User not found');
+		}
+	} catch (error) {
+		throw new Error(error);
 	}
 });
 
@@ -118,7 +127,7 @@ const createWithdrawal = asyncHandler(async (req, res) => {
 	if (user) {
 		const withdrawal = {
 			amount: req.body.amount,
-			bankName: req.body.bankName,
+			bank_name: req.body.bank_name,
 			accountNumber: req.body.accountNumber,
 			accountName: req.body.accountName,
 		};
