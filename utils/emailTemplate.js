@@ -105,7 +105,7 @@ const getOtpTemplate = (otp, organization, subject) => {
             You are getting this mail because you requested for a password reset.
             <br />Use the token below to verify you password reset your account..
           </p>
-          <p>
+          <!--<p>
             <a
               style="
                 padding: 4px 16px;
@@ -119,7 +119,7 @@ const getOtpTemplate = (otp, organization, subject) => {
               target="_blank"
               >Click here</a
             >
-          </p>
+          </p>-->
   
           <p>Or you can copy this code to your app</p>
           <p>${String(otp)}</p>
