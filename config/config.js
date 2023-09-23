@@ -3,18 +3,12 @@ const cors = require('cors');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const router = require('../routes/router.js');
-
-// ROUTES
-import lunchRouter from '../routes/lunchRoute.js';
-import withdrawalRouter from '../routes/withdrawalRoute.js';
-import lunchRoute from '../routes/lunchRoute.js';
-import withdrawalRoute from '../routes/withdrawalRoute.js';
-import authenticationRoute from '../routes/authenticationRoute.js';
-import organizationRoute from '../routes/organizationRoute.js';
-import userRoute from '../routes/userRoute.js';
-
-
-// MIDDLEWARES
+const lunchRouter = require('../routes/lunchRoute.js');
+const withdrawalRouter = require('../routes/withdrawalRoute.js');
+const lunchRoute = require('../routes/lunchRoute.js');
+const withdrawalRoute = require('../routes/withdrawalRoute.js');
+const { authRouter, orgRouter } = require('../routes/authenticationRoute.js');
+const userRoute = require('../routes/userRoute.js');
 const errHandler = require('../middlewares/errHandler.js');
 const notFound = require('../middlewares/notFound.js');
 
@@ -27,19 +21,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
+// ROUTES
 app.use('/api/lunch', lunchRouter);
 app.use('/api/withdrawal', withdrawalRouter);
-
 app.use('/api/lunch', lunchRoute);
 app.use('/api/withdrawal', withdrawalRoute);
 app.use('/api', userRoute);
-app.use('/api/organization', organizationRoute);
-app.use('/api/auth', authenticationRoute)
+app.use('/api/auth', authRouter);
+app.use('/api/orgs', orgRouter);
 
-
+// MIDDLEWARES
 app.use(notFound);
 app.use(errHandler);
 
+// CONSTANTS
 const PORT = process.env.PORT || 4000;
 
 module.exports = { app, PORT };

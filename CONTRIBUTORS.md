@@ -13,9 +13,12 @@ To get started, follow these steps:
    ```bash
    git clone https://github.com/<your-username>/<repository-name>.git
 
-## Names of contibutors 
 
-1.Oni Oluwatomiwa : [26thavenue](https://github.com/26thavenue) Slack Name: Oluwatomiwa Oni
-2. Ejiofor Emmanuel Whyte : [kalwhyte](https://github.com/kalwhyte) Slack name: Ejiofor Emmanuel Whyte
-3. Samuel Ademujimi : [sam-shot](https://github.com/sam-shot) Slack name: samshot_01
-4. Praise Izuagie: [Izugance](https://github.com/Izugance) Slack Name: Izugance
+
+|S/N| Slack Names | Profile                                                      |
+|---|------------|---------------------------------------------------------------|
+| 1.| Oluwatomiwa Oni| [26thavenue](https://github.com/26thavenue)               |
+| 2.| Ejiofor Emmanuel Whyte|  [kalwhyte](https://github.com/kalwhyte)           |
+| 3.| Emmanuel Fasogba|[fashemma007](https://github.com/fashemma007)             |
+| 4.| Izugance      |  [Izugance](https://github.com/Izugance)                   |
+| 5.| CECIL-CYRUS-11|  [Cyrus-11](https://github.com/Cyrus-11)                   |

@@ -3,7 +3,6 @@ const {
 	MAIL_USERNAME,
 	MAIL_HOST,
 	MAIL_PASSWORD,
-	MAIL_FROM_ADDRESS,
 } = require('../utils//constants');
 
 // Configure nodemailer
