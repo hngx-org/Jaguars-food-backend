@@ -10,6 +10,7 @@ const {
 } = require('../../utils/utils');
 //Admin or organization
 
+// Courtesy @26thavenue
 const createAdmin = asyncHandler(async (req, res) => {
 	const {
 		email,
