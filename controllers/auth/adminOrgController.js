@@ -41,6 +41,10 @@ const createAdmin = asyncHandler(async (req, res) => {
 		currency_code,
 	});
 
+	await db.organizationLunchWallet.create({
+		org_id: newOrg.id,
+	});
+
 	// console.log(newOrg);
 
 	const newUser = await db.user.create({
@@ -102,4 +106,6 @@ module.exports = {
 	createInvite,
 	createAdmin,
 	searchOrg,
+	update0rgFoodPrice,
+	update0rgWalletBalance,
 };
