@@ -87,3 +87,4 @@ Link to database schema
   9. add bank details
 
      `/api/user/bank` - `POST` (could be `/api/users/:user_id/bank`)
+

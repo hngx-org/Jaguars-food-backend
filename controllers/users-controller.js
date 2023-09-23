@@ -1,13 +1,49 @@
 const asyncHandler = require('express-async-handler');
 const db = require('../models');
 const { Op } = require('sequelize');
+const joi = require('joi');
 
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
-  const id = req.user.id;
-  const user = await db.user.findOne({ where: { id } });
+  const user_id = req.user.id;
+  const user = await db.user.findOne({ where: { id: user_id } });
+
+  const {
+    id,
+    orgId,
+    firstName,
+    lastName,
+    profilePicture,
+    email,
+    phoneNumber,
+    launchCreditBalance,
+    bankNumber,
+    bankCode,
+    bankName,
+    bankRegion,
+    currency,
+    currencyCode,
+    isAdmin,
+  } = user;
+
   if (user) {
-    res.json(user);
+    res.json({
+      id,
+      orgId,
+      firstName,
+      lastName,
+      profilePicture,
+      email,
+      isAdmin,
+      phoneNumber,
+      launchCreditBalance,
+      bankNumber,
+      bankCode,
+      bankName,
+      bankRegion,
+      currency,
+      currencyCode,
+    });
   } else {
     res.status(404);
     throw new Error('User not found');
@@ -17,19 +53,35 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // TODO:: Check ctrls to be sure db was queried
 //EDIT USER PROFILE
 const editUserProfile = asyncHandler(async (req, res) => {
-  const user = req.user;
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    if (req.body.password) {
-      user.password = req.body.password;
+  if (req.user.id) {
+    const user = await db.user.findByPk(req.user.id);
+    if (req.body.firstName) {
+      const { error } = joi.string().validate(req.body.firstName);
+      if (error) throw new Error('firstName must be a string');
+      user.firstName = req.body.firstName;
     }
-    const updatedUser = await db.user.save();
+    if (req.body.lastName) {
+      const { error } = joi.string().validate(req.body.lastName);
+      if (error) throw new Error('lastName must be a string');
+      user.lastName = req.body.lastName;
+    }
+    if (req.body.email) {
+      const { error } = joi.string().email().validate(req.body.email);
+      if (error) throw new Error(error);
+      user.email = req.body.email;
+    }
+    if (req.body.password) {
+      const { error } = joi.string().validate(req.body.password);
+      if (error) throw new Error(error);
+      const hashedPassword = hashPassword(req.body.password);
+      user.passwordHash = hashedPassword;
+    }
+
+    const updatedUser = await user.save();
     res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
+      id: updatedUser.id,
+      name: updatedUser.firstName + ' ' + updatedUser.lastName,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
     });
   } else {
     res.status(404);
@@ -37,27 +89,42 @@ const editUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-// TODO
 //ADD USER BANK ACCOUNT
 const addUserBank = asyncHandler(async (req, res) => {
-  const { bank_number, bank_code, bank_name } = req.body;
-  await db.user.update(
-    {
-      bankNumber: bank_number,
-      bankCode: bank_code,
-      bankName: bank_name,
-    },
-    {
-      where: {
-        id: req.user.id,
-      },
-    }
-  );
+  const user = await db.user.findOne({ where: { email: req.user.email } });
+  if (user) {
+    const { error } = joi
+      .object({
+        bank_name: joi.string().required(),
+        bank_number: joi.string().required(),
+        bank_region: joi.string().required(),
+        bank_code: joi.string().required(),
+      })
+      .validate(req.body);
 
-	res.status(200).json({
-		statusCode: 200,
-		message: "Bank account successfully added"
-	});
+    if (error) {
+      throw new Error(error);
+    }
+
+    user.bankName = req.body.bank_name;
+    user.bankNumber = req.body.bank_number;
+    user.bankRegion = req.body.bank_region;
+    user.bankCode = req.body.bank_code;
+
+    await user.save();
+    res.json({
+      id: user.id,
+      name: user.firstName + ' ' + user.lastName,
+      email: user.email,
+      bank_number: user.bankNumber,
+      bank_name: user.bankName,
+      bank_code: user.bankCode,
+      bank_region: user.bankRegion,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
 });
 
 //GET ALL USERS
@@ -75,7 +142,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
     const responseData = {
       message: 'Successfully gotten all users',
       statusCode: 200,
-      data: users.map(user => ({
+      data: users.map((user) => ({
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
@@ -95,9 +162,9 @@ const getAllUsers = asyncHandler(async (req, res) => {
 //GET(SEARCH) USER BY NAME OR MAIL
 const searchUser = asyncHandler(async (req, res) => {
   const nameOrEmail = req.params.nameoremail;
-  // console.log(nameOrEmail);
   const users = await db.user.findAll({
     where: {
+      org_id: req.user.orgId,
       [Op.or]: [
         { firstName: { [Op.like]: '%' + nameOrEmail + '%' } },
         { lastName: { [Op.like]: '%' + nameOrEmail + '%' } },
@@ -105,7 +172,14 @@ const searchUser = asyncHandler(async (req, res) => {
       ],
     },
   });
-  res.json(users);
+  res.json({
+    users: users.map((user) => ({
+      name: user.firstName + ' ' + user.lastName,
+      email: user.email,
+      profilePicture: user.profilePicture,
+      id: user.id,
+    })),
+  });
 });
 
 // TODO
@@ -123,7 +197,10 @@ const createWithdrawal = asyncHandler(async (req, res) => {
     const lunchId = req.body.lunchId;
     if (lunchId) {
       // Update the status of the lunch from 'redeemed: false' to 'redeemed: true'
-      await Lunches.update({ redeemed: true }, { where: { id: lunchId, redeemed: false } });
+      await Lunches.update(
+        { redeemed: true },
+        { where: { id: lunchId, redeemed: false } }
+      );
     }
     user.withdrawals.push(withdrawal);
     const updatedUser = await db.user.save();
