@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const { getToken } = require('../utils/tokens.js');
 const db = require('../models/index');
+const templates = require('../utils/emailTemplate.js');
 const transporter = require('../config/mailConfig');
 
 const hashPassword = (password) => {
@@ -40,13 +41,12 @@ async function generateInvitationToken(email, orgId) {
 // function to send the invitation email
 function sendInvitationEmail(data, invitationToken) {
 	// console.log('Token:', invitationToken);
+	const subject = "Free Lunch Invitation 😋🍽️"
 	const mailOptions = {
 		from: process.env.MAIL_FROM_ADDRESS,
 		to: data.email,
 		subject: 'Free Lunch App Invitation',
-		html: `<p>You have been invited by ${data.orgName} to join it's organization on Free Lunch App.<br/>Use the token below to create your account.</p>
-				<p>Token: ${invitationToken}</p>
-				`,
+		html: templates.getInvite(invitationToken,data.orgName,subject)
 	};
 
 	transporter.sendMail(mailOptions, (error, info) => {

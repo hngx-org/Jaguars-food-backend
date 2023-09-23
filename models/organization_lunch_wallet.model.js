@@ -3,11 +3,12 @@ module.exports = (sequelize, DataTypes) => {
 		org_id: {
 			allowNull: false,
 			type: DataTypes.INTEGER,
+			unique: true,
 		},
 		balance: {
 			type: DataTypes.DOUBLE(10, 2),
 			allowNull: false,
-			defaultValue: 1000000,
+			defaultValue: 0,
 		},
 		isDeleted: {
 			type: DataTypes.BOOLEAN,
