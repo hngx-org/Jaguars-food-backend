@@ -1,14 +1,13 @@
 const asyncHandler = require("express-async-handler");
-const db = require("../models/index");
-const User = db.user;
-const Launches = db.lunches;
+const db = require("../models");
 const { hashPassword, verifyPassword } = require("../utils/utils");
+const { Op } = require("sequelize");
 
-//user is employee
 //GET USER PROFILE
 
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = req.user;
+  const id = req.user.id;
+  const user = await db.user.findOne({ where: { id } });
   if (user) {
     res.json(user);
   } else {
@@ -17,6 +16,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
+// TODO:: Check ctrls to be sure db was queried
 //EDIT USER PROFILE
 const editUserProfile = asyncHandler(async (req, res) => {
   const user = req.user;
@@ -26,7 +26,7 @@ const editUserProfile = asyncHandler(async (req, res) => {
     if (req.body.password) {
       user.password = req.body.password;
     }
-    const updatedUser = await user.save();
+    const updatedUser = await db.user.save();
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
@@ -39,6 +39,7 @@ const editUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
+// TODO
 //ADD USER BANK ACCOUNT
 const addUserBank = asyncHandler(async (req, res) => {
   const user = req.user;
@@ -48,7 +49,7 @@ const addUserBank = asyncHandler(async (req, res) => {
       accountNumber: req.body.accountNumber,
       accountName: req.body.accountName,
     };
-    const updatedUser = await user.save();
+    const updatedUser = await db.user.save();
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
@@ -63,23 +64,54 @@ const addUserBank = asyncHandler(async (req, res) => {
 });
 
 //GET ALL USERS
+/**
+ * @desc Get all Users
+ * @route GET /api
+ * @access Public
+ * @description Retrieve a list of all User or filter by 'name' query parameter.
+ */
 const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
-  res.json(users);
+  try {
+    // Assuming you retrieve all users from the database
+    const users = await db.user.findAll({});
+    // Response data
+    const responseData = {
+      message: "Successfully gotten all users",
+      statusCode: 200,
+      data: users.map((user) => ({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        profilePicture: user.profile_picture || "user-profile-picture-url", // Replace with the actual profile picture URL or a default value
+        id: user.id,
+        orgId: user.orgId,
+      })),
+    };
+    res.status(200).json(responseData);
+  } catch (error) {
+    // Handle errors and send an error response
+    console.error(error);
+    throw new Error(error);
+  }
 });
 
 //GET(SEARCH) USER BY NAME OR MAIL
 const searchUser = asyncHandler(async (req, res) => {
   const nameOrEmail = req.params.nameoremail;
-  const users = await User.find({
-    $or: [
-      { name: { $regex: nameOrEmail, $options: "i" } },
-      { email: { $regex: nameOrEmail, $options: "i" } },
-    ],
+  // console.log(nameOrEmail);
+  const users = await db.user.findAll({
+    where: {
+      [Op.or]: [
+        { firstName: { [Op.like]: "%" + nameOrEmail + "%" } },
+        { lastName: { [Op.like]: "%" + nameOrEmail + "%" } },
+        { email: { [Op.like]: "%" + nameOrEmail + "%" } },
+      ],
+    },
   });
   res.json(users);
 });
 
+// TODO
 //CREATE WITHDRAWAL REQUEST
 const createWithdrawal = asyncHandler(async (req, res) => {
   const user = req.user;
@@ -100,7 +132,7 @@ const createWithdrawal = asyncHandler(async (req, res) => {
       );
     }
     user.withdrawals.push(withdrawal);
-    const updatedUser = await user.save();
+    const updatedUser = await db.user.save();
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,

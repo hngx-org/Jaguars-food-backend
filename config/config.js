@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const dotenv = require("dotenv");
 const router = require("../routes/router.js");
 
+<<<<<<< HEAD
 // ROUTES
 const lunchRouter = require("../routes/lunchRoute.js");
 const withdrawalRouter = require("../routes/withdrawalRoute.js");
@@ -12,6 +13,15 @@ const lunchRoute = require("../routes/lunchRoute.js");
 const withdrawalRoute = require("../routes/withdrawalRoute.js");
 const authenticationRoute = require("../routes/authenticationRoute.js");
 const userRoute = require("../routes/userRoute.js");
+=======
+// ROUTE
+const lunchRouter = require('../routes/lunchRoute.js');
+const withdrawalRouter = require('../routes/withdrawalRoute.js');
+const lunchRoute = require('../routes/lunchRoute.js');
+const withdrawalRoute = require('../routes/withdrawalRoute.js');
+const authenticationRoute = require('../routes/authenticationRoute.js');
+const userRoute = require('../routes/userRoute.js');
+>>>>>>> 86f7aa43472c14a24f420e7d817a2e87f999d15e
 
 // MIDDLEWARES
 const errHandler = require("../middlewares/errHandler.js");
@@ -30,11 +40,18 @@ app.use("/api/lunch", lunchRouter);
 app.use("/api/withdrawal", withdrawalRouter);
 app.use("/api/", inviteRouter);
 
+<<<<<<< HEAD
 app.use("/api/lunch", lunchRoute);
 app.use("/api/withdrawal", withdrawalRoute);
 app.use("/api", userRoute);
 app.use("/api/auth", authenticationRoute);
 // app.use("/api/organization", staffSignUpRoute);
+=======
+app.use('/api/lunch', lunchRoute);
+app.use('/api/withdrawal', withdrawalRoute);
+app.use('/api', userRoute);
+app.use('/api/auth', authenticationRoute);
+>>>>>>> 86f7aa43472c14a24f420e7d817a2e87f999d15e
 
 app.use(notFound);
 app.use(errHandler);

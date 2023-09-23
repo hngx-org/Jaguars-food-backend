@@ -20,7 +20,7 @@ const {
 router.get("/user/profile", authMiddleware, getUserProfile);
 
 // Edit the user profile
-router.put("/user/profile", validateSchema(EditUserProfile), editUserProfile);
+router.put("/user/profile", authMiddleware, editUserProfile);
 
 // Add bank account
 router.post(
@@ -31,16 +31,12 @@ router.post(
 );
 
 // Get all users
-router.get("/users", getAllUsers);
+router.get("/users", authMiddleware, getAllUsers);
 
 // Get user by name or email
-router.get("/search/:nameoremail", searchUser);
+router.get("/search/:nameoremail", authMiddleware, searchUser);
 
 // Create withdrawal request
-router.post(
-  "/user/withdrawal",
-  validateSchema(CreateWithdrawal),
-  createWithdrawal
-);
+router.post("/user/withdrawal", authMiddleware, createWithdrawal);
 
 module.exports = router;
