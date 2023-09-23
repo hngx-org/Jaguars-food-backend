@@ -1,9 +1,12 @@
 const asyncHandler = require("express-async-handler");
-const { lunches, user } = require("../models");
+const db = require("../models/index");
+const User = db.user;
+const Launches = db.lunches;
 const { hashPassword, verifyPassword } = require("../utils/utils");
 
 //user is employee
 //GET USER PROFILE
+
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = req.user;
   if (user) {

@@ -4,8 +4,8 @@ const asyncHandler = require("express-async-handler");
 
 const bcrypt = require("bcrypt");
 
-const db = require("../../models/index.js"); // Update the path accordingly
-const User = db.user; // Assuming the user model is exported as 'user' from user.model.js
+const db = require("../../models/index.js");
+const User = db.user;
 
 const createAdminSignUp = asyncHandler(async (req, res) => {
   const { email, password, first_name, last_name, phoneNumber } = req.body;

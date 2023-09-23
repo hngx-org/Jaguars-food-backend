@@ -5,10 +5,27 @@ const UnrequiredString = Joi.string().allow("");
 
 const RequiredNumber = Joi.number().required();
 
+const StaffSignUp = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+  otp_token: RequiredString, // 6-digit token sent to inbox
+  first_name: RequiredString,
+  last_name: RequiredString,
+  phone_number: RequiredString,
+});
+
+const UserSignUp = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+  first_name: RequiredString,
+  last_name: RequiredString,
+  phone_number: RequiredString,
+});
+
 const EditUserProfile = Joi.object({
   name: Joi.string(),
-  email: Joi.string().email(),
-  password: Joi.string().min(6),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
 });
 
 const AddUserBank = Joi.object({
@@ -25,4 +42,21 @@ const CreateWithdrawal = Joi.object({
   lunchId: RequiredNumber,
 });
 
-module.exports = { CreateWithdrawal, AddUserBank, EditUserProfile };
+const Login = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+});
+
+const CreateInvite = Joi.object({
+  email: Joi.string().email().required(),
+});
+
+module.exports = {
+  CreateWithdrawal,
+  AddUserBank,
+  EditUserProfile,
+  Login,
+  StaffSignUp,
+  CreateInvite,
+  UserSignUp,
+};
