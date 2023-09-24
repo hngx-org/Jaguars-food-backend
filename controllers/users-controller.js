@@ -208,38 +208,39 @@ const searchUser = asyncHandler(async (req, res) => {
   });
 });
 
-// TODO:: withdrawal shld withdraw from user's wallet not lunch
 //CREATE WITHDRAWAL REQUEST
 const createWithdrawal = asyncHandler(async (req, res) => {
-  const user = req.user;
+  const id = req.user.id;
+  // console.log(id);
 
-  if (user) {
-    const withdrawal = {
-      amount: req.body.amount,
-      bankName: req.body.bankName,
-      accountNumber: req.body.accountNumber,
-      accountName: req.body.accountName,
-    };
-    const lunchId = req.body.lunchId;
-    if (lunchId) {
-      // Update the status of the lunch from 'redeemed: false' to 'redeemed: true'
-      await Lunches.update(
-        { redeemed: true },
-        { where: { id: lunchId, redeemed: false } }
+  if (id) {
+    const user = await db.user.findOne({ where: { id } });
+    if (!user) {
+      res.status(404);
+      throw new Error('User not found');
+    }
+    if (+user.lunchCreditBalance < +req.body.amount) {
+      res.status(400);
+      throw new Error(
+        `Insufficient fund! Current balance ${user.lunchCreditBalance}`
       );
     }
-    user.withdrawals.push(withdrawal);
-    const updatedUser = await db.user.save();
+
+    await db.withdrawals.create({
+      amount: req.body.amount,
+      user_id: user.id,
+    });
+    user.lunchCreditBalance -= req.body.amount;
+    user.save();
     res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
-      bank: updatedUser.bank,
-      withdrawals: updatedUser.withdrawals,
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      bank: user.bank,
+      lunchCreditBalance: user.lunchCreditBalance,
     });
   } else {
-    // If user is not found (unauthenticated), return a 404 response with an error message
     res.status(404);
     throw new Error('User not found');
   }
