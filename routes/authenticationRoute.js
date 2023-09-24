@@ -45,11 +45,6 @@ orgRouter.patch(
 
 orgRouter.patch('/lunch/update', authMiddleware, isAdmin, update0rgFoodPrice);
 
-orgRouter.get(
-  '/organization/wallet',
-  authMiddleware,
-  isAdmin,
-  orgWalletBalance
-);
+orgRouter.get('/organization/wallet', authMiddleware, orgWalletBalance);
 
 module.exports = { orgRouter, authRouter };
