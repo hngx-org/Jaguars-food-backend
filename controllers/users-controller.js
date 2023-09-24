@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const db = require('../models');
 const { Op } = require('sequelize');
 const joi = require('joi');
+const { hashPassword } = require('../utils/utils'); // Import your hashPassword function
 
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -50,11 +51,20 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-// TODO:: Check ctrls to be sure db was queried
-//EDIT USER PROFILE
+// EDIT USER PROFILE
 const editUserProfile = asyncHandler(async (req, res) => {
-  if (req.user.id) {
-    const user = await db.user.findByPk(req.user.id);
+  const userId = req.user.id;
+console.log(userId);
+  try {
+    // Find the user by ID in the database
+    const user = await db.user.findByPk(userId);
+    
+    if (!user) {
+      res.status(404);
+      throw new Error('User not found');
+    }
+
+    // Update user information based on the request body
     if (req.body.firstName) {
       const { error } = joi.string().validate(req.body.firstName);
       if (error) throw new Error('firstName must be a string');
@@ -65,27 +75,38 @@ const editUserProfile = asyncHandler(async (req, res) => {
       if (error) throw new Error('lastName must be a string');
       user.lastName = req.body.lastName;
     }
-    if (req.body.email) {
-      const { error } = joi.string().email().validate(req.body.email);
-      if (error) throw new Error(error);
-      user.email = req.body.email;
-    }
     if (req.body.password) {
       const { error } = joi.string().validate(req.body.password);
       if (error) throw new Error(error);
       const hashedPassword = hashPassword(req.body.password);
-      user.passwordHash = hashedPassword;
+      user.password = hashedPassword;
     }
-
-    const updatedUser = await user.save();
+	if (req.body.profilePicture) {
+		const { error } = joi.string().validate(req.body.profilePicture);
+		if (error) throw new Error(error);
+		user.profilePicture = req.body.profilePicture;
+	  }
+	  if (req.body.phoneNumber) {
+		const { error } = joi.string().validate(req.body.phoneNumber);
+		if (error) throw new Error(error);
+		user.phoneNumber = req.body.phoneNumber;
+	  }
+    // Save the updated user information to the database
+    await user.save();
+    // Respond with the updated user information
     res.json({
-      id: updatedUser.id,
-      name: updatedUser.firstName + ' ' + updatedUser.lastName,
-      email: updatedUser.email,
-    });
-  } else {
-    res.status(404);
-    throw new Error('User not found');
+		message: 'User profile updated successfully',
+		data :{
+      id: user.id,
+      name: user.firstName + ' ' + user.lastName,
+      email: user.email,
+	  profilePicture: user.profilePicture,
+	  phoneNumber: user.phoneNumber
+    }});
+  } catch (error) {
+    // Handle errors and send an error response
+    console.error(error);
+    res.status(400).json({ error: "User not found" });
   }
 });
 
