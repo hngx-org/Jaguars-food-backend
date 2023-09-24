@@ -1,5 +1,5 @@
 const mysql2 = require('mysql2');
-const { Sequelize} = require('sequelize');
+const { Sequelize } = require('sequelize');
 const { HOST, USER, PASSWORD, DB } = require('../utils/constants');
 require('dotenv').config({ path: '.env' });
 

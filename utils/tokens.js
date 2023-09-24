@@ -47,9 +47,9 @@ const jwt = require('jsonwebtoken');
 let JWT_SECRET = process.env.JWT_SECRET || 'JAGUARJAGUARJAGUAR';
 
 //GetToken
-const getToken = (data) => {
+const getToken = (data, duration = '1d') => {
 	return new Promise((accept, reject) => {
-		jwt.sign(data, JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
+		jwt.sign(data, JWT_SECRET, { expiresIn: duration }, (err, token) => {
 			if (err) {
 				console.error(err);
 				reject(err);

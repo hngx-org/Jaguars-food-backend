@@ -14,12 +14,12 @@ const app = express();
 dotenv.config();
 
 app.use(cors());
-app.use(router);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 // ROUTES
+app.use(router);
 app.use('/api/lunch', lunchRouter);
 app.use('/api/withdrawal', withdrawalRouter);
 app.use('/api', userRoute);
