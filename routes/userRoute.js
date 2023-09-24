@@ -1,12 +1,13 @@
 const { Router } = require('express');
 const router = Router();
 const {
-  getUserProfile,
-  editUserProfile,
-  getAllUsers,
-  addUserBank,
-  searchUser,
-  createWithdrawal,
+	getUserProfile,
+	editUserProfile,
+	getAllUsers,
+	addUserBank,
+	searchUser,
+	createWithdrawal,
+	redeemLunch,
 } = require('../controllers/users-controller.js');
 const authMiddleware = require('../middlewares/authMiddleware');
 
@@ -24,5 +25,10 @@ router.get('/users', authMiddleware, getAllUsers);
 
 // Get user by name or email
 router.get('/search/:nameoremail', authMiddleware, searchUser);
+
+// Create withdrawal request
+router.post('/user/withdrawal', authMiddleware, createWithdrawal);
+// redeem lunch
+router.post('/user/redeem', authMiddleware, redeemLunch);
 
 module.exports = router;
