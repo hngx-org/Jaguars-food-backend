@@ -1,8 +1,8 @@
-const asyncHandler = require('express-async-handler');
-const db = require('../models');
-const { Op } = require('sequelize');
-const joi = require('joi');
-const { hashPassword } = require('../utils/utils');
+const asyncHandler = require("express-async-handler");
+const db = require("../models");
+const { Op } = require("sequelize");
+const joi = require("joi");
+const { hashPassword } = require("../utils/utils");
 
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -47,7 +47,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -58,12 +58,12 @@ const editUserProfile = asyncHandler(async (req, res) => {
     const user = await db.user.findByPk(req.user.id);
     if (req.body.firstName) {
       const { error } = joi.string().validate(req.body.firstName);
-      if (error) throw new Error('firstName must be a string');
+      if (error) throw new Error("firstName must be a string");
       user.firstName = req.body.firstName;
     }
     if (req.body.lastName) {
       const { error } = joi.string().validate(req.body.lastName);
-      if (error) throw new Error('lastName must be a string');
+      if (error) throw new Error("lastName must be a string");
       user.lastName = req.body.lastName;
     }
     // if (req.body.email) {
@@ -81,12 +81,12 @@ const editUserProfile = asyncHandler(async (req, res) => {
     const updatedUser = await user.save();
     res.json({
       id: updatedUser.id,
-      name: updatedUser.firstName + ' ' + updatedUser.lastName,
+      name: updatedUser.firstName + " " + updatedUser.lastName,
       email: updatedUser.email,
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -115,7 +115,7 @@ const addUserBank = asyncHandler(async (req, res) => {
     await user.save();
     res.json({
       id: user.id,
-      name: user.firstName + ' ' + user.lastName,
+      name: user.firstName + " " + user.lastName,
       email: user.email,
       bank_number: user.bankNumber,
       bank_name: user.bankName,
@@ -124,7 +124,7 @@ const addUserBank = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -141,7 +141,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
     const users = await db.user.findAll({ where: { orgId: req.user.orgId } });
     // Response data
     const responseData = {
-      message: 'Successfully gotten all users',
+      message: "Successfully gotten all users",
       statusCode: 200,
       data: users.map((user) => ({
         firstName: user.firstName,
@@ -167,15 +167,15 @@ const searchUser = asyncHandler(async (req, res) => {
     where: {
       org_id: req.user.orgId,
       [Op.or]: [
-        { firstName: { [Op.like]: '%' + nameOrEmail + '%' } },
-        { lastName: { [Op.like]: '%' + nameOrEmail + '%' } },
-        { email: { [Op.like]: '%' + nameOrEmail + '%' } },
+        { firstName: { [Op.like]: "%" + nameOrEmail + "%" } },
+        { lastName: { [Op.like]: "%" + nameOrEmail + "%" } },
+        { email: { [Op.like]: "%" + nameOrEmail + "%" } },
       ],
     },
   });
   res.json({
     users: users.map((user) => ({
-      name: user.firstName + ' ' + user.lastName,
+      name: user.firstName + " " + user.lastName,
       email: user.email,
       profilePicture: user.profilePicture,
       id: user.id,
@@ -216,7 +216,54 @@ const createWithdrawal = asyncHandler(async (req, res) => {
   } else {
     // If user is not found (unauthenticated), return a 404 response with an error message
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
+  }
+});
+
+const redeemLunch = asyncHandler(async (req, res) => {
+  const user = req.user;
+  if (user) {
+    const { lunchId } = req.body;
+    if (lunchId) {
+      const findLunch = await db.lunches.findByPk(lunchId);
+      if (findLunch) {
+        if (findLunch.receiverId != user.id) {
+          res.status(401);
+          throw new Error("invalid lunch id");
+        }
+        if (findLunch.redeemed) {
+          res.status(403);
+          throw new Error("lunch already redeemed");
+        }
+
+        const { quantity } = findLunch;
+        const { lunch_price } = await db.organization.findByPk(
+          findLunch.org_id
+        );
+        let amount = quantity * lunch_price;
+        amount = Number(amount);
+        const findUser = await db.user.findByPk(user.id);
+        findUser.lunchCreditBalance += amount;
+        await findUser.save();
+        return res.status(200).json({
+          message: "success",
+          statusCode: 200,
+          data: {
+            user: findUser,
+          },
+        });
+      } else {
+        res.status(400);
+        throw new Error(`lunch with id ${lunchId} not found`);
+      }
+    } else {
+      res.status(400);
+      throw new Error("please enter lunch id");
+    }
+  } else {
+    // If user is not found (unauthenticated), return a 404 response with an error message
+    res.status(404);
+    throw new Error("User not found");
   }
 });
 
@@ -227,4 +274,5 @@ module.exports = {
   addUserBank,
   searchUser,
   createWithdrawal,
+  redeemLunch
 };
