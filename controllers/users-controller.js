@@ -9,33 +9,14 @@ const getUserProfile = asyncHandler(async (req, res) => {
   const user_id = req.user.id;
   const user = await db.user.findOne({ where: { id: user_id } });
 
-  const {
-    id,
-    orgId,
-    firstName,
-    lastName,
-    profilePicture,
-    email,
-    phoneNumber,
-    lunchCreditBalance,
-    bankNumber,
-    bankCode,
-    bankName,
-    bankRegion,
-    currency,
-    currencyCode,
-    isAdmin,
-  } = user;
-
-  if (user) {
-    res.json({
+  try {
+    const {
       id,
       orgId,
       firstName,
       lastName,
       profilePicture,
       email,
-      isAdmin,
       phoneNumber,
       lunchCreditBalance,
       bankNumber,
@@ -44,18 +25,49 @@ const getUserProfile = asyncHandler(async (req, res) => {
       bankRegion,
       currency,
       currencyCode,
-    });
-  } else {
-    res.status(404);
-    throw new Error("User not found");
+      isAdmin,
+    } = user;
+    if (user) {
+      res.json({
+        id,
+        orgId,
+        firstName,
+        lastName,
+        profilePicture,
+        email,
+        isAdmin,
+        phoneNumber,
+        lunchCreditBalance,
+        bankNumber,
+        bankCode,
+        bankName,
+        bankRegion,
+        currency,
+        currencyCode,
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
+  } catch {
+    res.status(400);
+    throw new Error('Invalid / expired user token. Please login!!!');
   }
 });
 
-// TODO:: Check ctrls to be sure db was queried
 //EDIT USER PROFILE
 const editUserProfile = asyncHandler(async (req, res) => {
-  if (req.user.id) {
-    const user = await db.user.findByPk(req.user.id);
+  const { id } = req.user;
+  try {
+    // Find the user by ID in the database
+    const user = await db.user.findByPk(id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error('User not found');
+    }
+
+    // Update user information based on the request body
     if (req.body.firstName) {
       const { error } = joi.string().validate(req.body.firstName);
       if (error) throw new Error("firstName must be a string");
@@ -66,27 +78,39 @@ const editUserProfile = asyncHandler(async (req, res) => {
       if (error) throw new Error("lastName must be a string");
       user.lastName = req.body.lastName;
     }
-    // if (req.body.email) {
-    //   const { error } = joi.string().email().validate(req.body.email);
-    //   if (error) throw new Error(error);
-    //   user.email = req.body.email;
-    // }
     if (req.body.password) {
       const { error } = joi.string().validate(req.body.password);
       if (error) throw new Error(error);
       const hashedPassword = hashPassword(req.body.password);
-      user.passwordHash = hashedPassword;
+      user.password = hashedPassword;
     }
-
-    const updatedUser = await user.save();
+    if (req.body.profilePicture) {
+      const { error } = joi.string().validate(req.body.profilePicture);
+      if (error) throw new Error(error);
+      user.profilePicture = req.body.profilePicture;
+    }
+    if (req.body.phoneNumber) {
+      const { error } = joi.string().validate(req.body.phoneNumber);
+      if (error) throw new Error(error);
+      user.phoneNumber = req.body.phoneNumber;
+    }
+    // Save the updated user information to the database
+    await user.save();
+    // Respond with the updated user information
     res.json({
-      id: updatedUser.id,
-      name: updatedUser.firstName + " " + updatedUser.lastName,
-      email: updatedUser.email,
+      message: 'User profile updated successfully',
+      data: {
+        id: user.id,
+        name: user.firstName + ' ' + user.lastName,
+        email: user.email,
+        profilePicture: user.profilePicture,
+        phoneNumber: user.phoneNumber,
+      },
     });
-  } else {
-    res.status(404);
-    throw new Error("User not found");
+  } catch (error) {
+    // Handle errors and send an error response
+    console.error(error);
+    res.status(400).json({ error: 'User not found' });
   }
 });
 
@@ -167,9 +191,10 @@ const searchUser = asyncHandler(async (req, res) => {
     where: {
       org_id: req.user.orgId,
       [Op.or]: [
-        { firstName: { [Op.like]: "%" + nameOrEmail + "%" } },
-        { lastName: { [Op.like]: "%" + nameOrEmail + "%" } },
-        { email: { [Op.like]: "%" + nameOrEmail + "%" } },
+        { firstName: { [Op.like]: '%' + nameOrEmail + '%' } },
+        { lastName: { [Op.like]: '%' + nameOrEmail + '%' } },
+        { email: { [Op.like]: '%' + nameOrEmail + '%' } },
+        { id: { [Op.like]: nameOrEmail } },
       ],
     },
   });
