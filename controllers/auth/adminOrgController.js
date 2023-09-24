@@ -34,13 +34,6 @@ const createAdmin = asyncHandler(async (req, res) => {
     throw new Error('User already exists. Try login');
   }
 
-  // =======
-
-  if (checkOrg) {
-    res.status(400);
-    throw new Error('Organization already exists.');
-  }
-
   const newOrg = await db.organization.create({
     name: organization_name,
     lunch_price,
@@ -50,8 +43,6 @@ const createAdmin = asyncHandler(async (req, res) => {
   await db.organizationLunchWallet.create({
     org_id: newOrg.id,
   });
-
-  // console.log(newOrg);
 
   const newUser = await db.user.create({
     email,
@@ -65,7 +56,7 @@ const createAdmin = asyncHandler(async (req, res) => {
     currency_code,
   });
   const { firstName, lastName, phoneNumber, isAdmin, orgId } = newUser;
-  // console.log(newUser);
+
   const data = { firstName, lastName, phoneNumber, isAdmin, orgId };
 
   return res.json({ message: 'Account created', data });
@@ -78,7 +69,7 @@ const createInvite = asyncHandler(async (req, res) => {
   const organization = await db.organization.findOne({
     where: { id: orgId },
   });
-  const orgName = organization.dataValues.name;
+  const orgName = organization?.dataValues?.name || '';
   if (req.user.isAdmin) {
     // Generate a unique invitation token
     const invitationToken = await generateInvitationToken(email, orgId);

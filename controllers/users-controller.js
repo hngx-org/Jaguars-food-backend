@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const db = require('../models');
 const { Op } = require('sequelize');
 const joi = require('joi');
-const { hashPassword } = require('../utils/utils'); // Import your hashPassword function
+const { hashPassword } = require('../utils/utils');
 
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -17,7 +17,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     profilePicture,
     email,
     phoneNumber,
-    launchCreditBalance,
+    lunchCreditBalance,
     bankNumber,
     bankCode,
     bankName,
@@ -37,7 +37,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       email,
       isAdmin,
       phoneNumber,
-      launchCreditBalance,
+      lunchCreditBalance,
       bankNumber,
       bankCode,
       bankName,
@@ -74,6 +74,11 @@ console.log(userId);
       const { error } = joi.string().validate(req.body.lastName);
       if (error) throw new Error('lastName must be a string');
       user.lastName = req.body.lastName;
+    }
+    if (req.body.email) {
+      const { error } = joi.string().email().validate(req.body.email);
+      if (error) throw new Error(error);
+      user.email = req.body.email;
     }
     if (req.body.password) {
       const { error } = joi.string().validate(req.body.password);
@@ -158,7 +163,7 @@ const addUserBank = asyncHandler(async (req, res) => {
 const getAllUsers = asyncHandler(async (req, res) => {
   try {
     // Assuming you retrieve all users from the database
-    const users = await db.user.findAll({});
+    const users = await db.user.findAll({ where: { orgId: req.user.orgId } });
     // Response data
     const responseData = {
       message: 'Successfully gotten all users',
@@ -167,7 +172,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        profilePicture: user.profile_picture || 'user-profile-picture-url', // Replace with the actual profile picture URL or a default value
+        profilePicture: user.profile_picture,
         id: user.id,
         orgId: user.orgId,
       })),

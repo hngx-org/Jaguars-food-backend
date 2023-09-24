@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       defaultValue: false,
     },
-    launchCreditBalance: {
+    lunchCreditBalance: {
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: 0,

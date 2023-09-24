@@ -40,24 +40,15 @@ const staffSignUp = asyncHandler(async (req, res) => {
         error: 'Unauthorized Access',
       });
     }
-    console.log(3);
     const decodedToken = await verifyToken(jwtToken.dataValues.token);
-    console.log(4);
-
     if (decodedToken?.otp?.toString() !== otp_token) {
       return res.status(400).json({ error: 'Invalid token' });
     }
-    console.log(5);
-
     const hashedPassword = hashPassword(sentPassword);
-    console.log(6);
     const duplicate = await db.user.findOne({ where: { email: sentEmail } });
-    console.log(7);
     if (duplicate) {
       return res.status(409).json({ error: 'Staff already Exist' });
     }
-    console.log(8);
-
     const signUp = await db.user.create({
       email: sentEmail,
       passwordHash: hashedPassword,
@@ -101,7 +92,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     const jwt_token = await getToken({ generatedToken, email }, '10m');
 
     user.refreshToken = jwt_token;
-    user.save();
+    await user.save();
 
     const org = await db.organization.findOne({
       where: { id: user.org_id },
@@ -158,7 +149,7 @@ const resetPassword = asyncHandler(async (req, res) => {
       user.refreshToken = '';
       const hashedPassword = hashPassword(password);
       user.passwordHash = hashedPassword;
-      user.save();
+      await user.save();
       res.status(201);
       return res.json({ status: 'success', message: 'Kindly login' });
     } else {
@@ -191,7 +182,7 @@ const Login = asyncHandler(async (req, res) => {
       email,
       phoneNumber,
       isAdmin,
-      launchCreditBalance,
+      lunchCreditBalance,
       refreshToken,
       bankNumber,
       bankCode,
@@ -210,7 +201,7 @@ const Login = asyncHandler(async (req, res) => {
       email,
       phoneNumber,
       isAdmin,
-      launchCreditBalance,
+      lunchCreditBalance,
       refreshToken,
       bankNumber,
       bankCode,
