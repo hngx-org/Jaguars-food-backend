@@ -145,15 +145,16 @@ const resetPassword = asyncHandler(async (req, res) => {
         error: '404 Not found',
       });
     }
+    let decodedToken;
     try {
-      const decodedToken = await verifyToken(user.refreshToken);
+      decodedToken = await verifyToken(user.refreshToken);
     } catch {
       res.status(400);
       res.json({ status: 'error', message: 'invalid/expired token' });
     }
     // console.log(user.refreshToken);
 
-    if (decodedToken.generatedToken === otp.toString()) {
+    if (decodedToken?.generatedToken === otp.toString()) {
       user.refreshToken = '';
       const hashedPassword = hashPassword(password);
       user.passwordHash = hashedPassword;
