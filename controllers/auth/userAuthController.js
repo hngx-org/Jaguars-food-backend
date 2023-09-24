@@ -13,10 +13,10 @@ const staffSignUp = asyncHandler(async (req, res) => {
   try {
     const schema = joi.object({
       email: joi.string().email({ minDomainSegments: 2 }).required(),
-      password: joi.string().required(),
+      password: joi.string().min(6).required(),
       first_name: joi.string().required(),
       last_name: joi.string().required(),
-      phone_number: joi.string().required(),
+      phone_number: joi.string(),
       otp_token: joi.string().required(),
     });
 
@@ -98,9 +98,9 @@ const forgotPassword = asyncHandler(async (req, res) => {
     }
     // generate token
     const generatedToken = crypto.randomInt(100000, 1000000).toString();
-    // const jwt_token = await getToken({  generatedToken, email }, '5m');
+    const jwt_token = await getToken({ generatedToken, email }, '10m');
 
-    user.refreshToken = generatedToken;
+    user.refreshToken = jwt_token;
     user.save();
 
     const org = await db.organization.findOne({
@@ -127,7 +127,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     const schema = joi.object({
       email: joi.string().email({ minDomainSegments: 2 }).required(),
       otp: joi.number().required(),
-      password: joi.string().required(),
+      password: joi.string().min(6).required(),
     });
 
     const { error } = schema.validate(req.body);
@@ -145,14 +145,21 @@ const resetPassword = asyncHandler(async (req, res) => {
         error: '404 Not found',
       });
     }
+    try {
+      const decodedToken = await verifyToken(user.refreshToken);
+    } catch {
+      res.status(400);
+      res.json({ status: 'error', message: 'invalid/expired token' });
+    }
+    // console.log(user.refreshToken);
 
-    if (user.refreshToken === otp.toString()) {
+    if (decodedToken.generatedToken === otp.toString()) {
       user.refreshToken = '';
       const hashedPassword = hashPassword(password);
       user.passwordHash = hashedPassword;
       user.save();
       res.status(201);
-      return res.json({ message: 'password updated successfully' });
+      return res.json({ status: 'success', message: 'Kindly login' });
     } else {
       throw new Error('Invalid OTP');
     }

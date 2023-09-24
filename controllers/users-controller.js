@@ -182,7 +182,7 @@ const searchUser = asyncHandler(async (req, res) => {
   });
 });
 
-// TODO
+// TODO:: withdrawal shld withdraw from user's wallet not lunch
 //CREATE WITHDRAWAL REQUEST
 const createWithdrawal = asyncHandler(async (req, res) => {
   const user = req.user;
