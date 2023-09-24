@@ -1,8 +1,8 @@
-const asyncHandler = require("express-async-handler");
-const db = require("../models");
-const { Op } = require("sequelize");
-const joi = require("joi");
-const { hashPassword } = require("../utils/utils");
+const asyncHandler = require('express-async-handler');
+const db = require('../models');
+const { Op } = require('sequelize');
+const joi = require('joi');
+const { hashPassword } = require('../utils/utils');
 
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -17,7 +17,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     profilePicture,
     email,
     phoneNumber,
-    launchCreditBalance,
+    lunchCreditBalance,
     bankNumber,
     bankCode,
     bankName,
@@ -37,7 +37,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       email,
       isAdmin,
       phoneNumber,
-      launchCreditBalance,
+      lunchCreditBalance,
       bankNumber,
       bankCode,
       bankName,
@@ -47,7 +47,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 });
 
@@ -58,12 +58,12 @@ const editUserProfile = asyncHandler(async (req, res) => {
     const user = await db.user.findByPk(req.user.id);
     if (req.body.firstName) {
       const { error } = joi.string().validate(req.body.firstName);
-      if (error) throw new Error("firstName must be a string");
+      if (error) throw new Error('firstName must be a string');
       user.firstName = req.body.firstName;
     }
     if (req.body.lastName) {
       const { error } = joi.string().validate(req.body.lastName);
-      if (error) throw new Error("lastName must be a string");
+      if (error) throw new Error('lastName must be a string');
       user.lastName = req.body.lastName;
     }
     // if (req.body.email) {
@@ -81,12 +81,12 @@ const editUserProfile = asyncHandler(async (req, res) => {
     const updatedUser = await user.save();
     res.json({
       id: updatedUser.id,
-      name: updatedUser.firstName + " " + updatedUser.lastName,
+      name: updatedUser.firstName + ' ' + updatedUser.lastName,
       email: updatedUser.email,
     });
   } else {
     res.status(404);
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 });
 
@@ -115,7 +115,7 @@ const addUserBank = asyncHandler(async (req, res) => {
     await user.save();
     res.json({
       id: user.id,
-      name: user.firstName + " " + user.lastName,
+      name: user.firstName + ' ' + user.lastName,
       email: user.email,
       bank_number: user.bankNumber,
       bank_name: user.bankName,
@@ -124,7 +124,7 @@ const addUserBank = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 });
 
@@ -141,7 +141,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
     const users = await db.user.findAll({ where: { orgId: req.user.orgId } });
     // Response data
     const responseData = {
-      message: "Successfully gotten all users",
+      message: 'Successfully gotten all users',
       statusCode: 200,
       data: users.map((user) => ({
         firstName: user.firstName,
@@ -167,15 +167,15 @@ const searchUser = asyncHandler(async (req, res) => {
     where: {
       org_id: req.user.orgId,
       [Op.or]: [
-        { firstName: { [Op.like]: "%" + nameOrEmail + "%" } },
-        { lastName: { [Op.like]: "%" + nameOrEmail + "%" } },
-        { email: { [Op.like]: "%" + nameOrEmail + "%" } },
+        { firstName: { [Op.like]: '%' + nameOrEmail + '%' } },
+        { lastName: { [Op.like]: '%' + nameOrEmail + '%' } },
+        { email: { [Op.like]: '%' + nameOrEmail + '%' } },
       ],
     },
   });
   res.json({
     users: users.map((user) => ({
-      name: user.firstName + " " + user.lastName,
+      name: user.firstName + ' ' + user.lastName,
       email: user.email,
       profilePicture: user.profilePicture,
       id: user.id,
@@ -216,7 +216,7 @@ const createWithdrawal = asyncHandler(async (req, res) => {
   } else {
     // If user is not found (unauthenticated), return a 404 response with an error message
     res.status(404);
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
 });
 
