@@ -48,16 +48,16 @@ const createAdmin = asyncHandler(async (req, res) => {
     email,
     firstName: first_name,
     lastName: last_name,
-    phoneNumber: phone_number,
+    phone: phone_number,
     isAdmin: true,
     orgId: newOrg.id,
     passwordHash: hashPassword(password),
     currency,
     currency_code,
   });
-  const { firstName, lastName, phoneNumber, isAdmin, orgId } = newUser;
+  const { firstName, lastName, phone, isAdmin, orgId } = newUser;
 
-  const data = { firstName, lastName, phoneNumber, isAdmin, orgId };
+  const data = { firstName, lastName, phone, isAdmin, orgId };
 
   return res.json({ message: 'Account created', data });
 });

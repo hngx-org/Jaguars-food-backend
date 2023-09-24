@@ -15,9 +15,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
       orgId,
       firstName,
       lastName,
-      profilePicture,
+      profilePic,
       email,
-      phoneNumber,
+      phone,
       lunchCreditBalance,
       bankNumber,
       bankCode,
@@ -33,10 +33,10 @@ const getUserProfile = asyncHandler(async (req, res) => {
         orgId,
         firstName,
         lastName,
-        profilePicture,
+        profilePic,
         email,
         isAdmin,
-        phoneNumber,
+        phone,
         lunchCreditBalance,
         bankNumber,
         bankCode,
@@ -84,15 +84,15 @@ const editUserProfile = asyncHandler(async (req, res) => {
       const hashedPassword = hashPassword(req.body.password);
       user.password = hashedPassword;
     }
-    if (req.body.profilePicture) {
-      const { error } = joi.string().validate(req.body.profilePicture);
+    if (req.body.profilePic) {
+      const { error } = joi.string().validate(req.body.profilePic);
       if (error) throw new Error(error);
-      user.profilePicture = req.body.profilePicture;
+      user.profilePic = req.body.profilePic;
     }
-    if (req.body.phoneNumber) {
-      const { error } = joi.string().validate(req.body.phoneNumber);
+    if (req.body.phone) {
+      const { error } = joi.string().validate(req.body.phone);
       if (error) throw new Error(error);
-      user.phoneNumber = req.body.phoneNumber;
+      user.phone = req.body.phone;
     }
     // Save the updated user information to the database
     await user.save();
@@ -103,8 +103,8 @@ const editUserProfile = asyncHandler(async (req, res) => {
         id: user.id,
         name: user.firstName + ' ' + user.lastName,
         email: user.email,
-        profilePicture: user.profilePicture,
-        phoneNumber: user.phoneNumber,
+        profilePic: user.profilePic,
+        phone: user.phone,
       },
     });
   } catch (error) {
@@ -171,7 +171,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        profilePicture: user.profile_picture,
+        profilePic: user.profile_picture,
         id: user.id,
         orgId: user.orgId,
       })),
@@ -202,7 +202,7 @@ const searchUser = asyncHandler(async (req, res) => {
     users: users.map((user) => ({
       name: user.firstName + ' ' + user.lastName,
       email: user.email,
-      profilePicture: user.profilePicture,
+      profilePic: user.profilePic,
       id: user.id,
     })),
   });

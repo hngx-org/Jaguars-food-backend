@@ -54,12 +54,12 @@ const staffSignUp = asyncHandler(async (req, res) => {
       passwordHash: hashedPassword,
       firstName: sentFirstName,
       lastName: sentLastName,
-      phoneNumber: sentPhone_number,
+      phone: sentPhone_number,
       orgId: decodedToken?.orgId,
     });
 
-    const { email, id, firstName, lastName, phoneNumber, orgId } = signUp;
-    const data = { email, id, firstName, lastName, phoneNumber, orgId };
+    const { email, id, firstName, lastName, phone, orgId } = signUp;
+    const data = { email, id, firstName, lastName, phone, orgId };
     res.status(201).json({ message: 'Signup Successful', data });
   } catch (error) {
     res.status(500);
@@ -178,9 +178,9 @@ const Login = asyncHandler(async (req, res) => {
       orgId,
       firstName,
       lastName,
-      profilePicture,
+      profilePic,
       email,
-      phoneNumber,
+      phone,
       isAdmin,
       lunchCreditBalance,
       refreshToken,
@@ -197,9 +197,9 @@ const Login = asyncHandler(async (req, res) => {
       orgId,
       firstName,
       lastName,
-      profilePicture,
+      profilePic,
       email,
-      phoneNumber,
+      phone,
       isAdmin,
       lunchCreditBalance,
       refreshToken,

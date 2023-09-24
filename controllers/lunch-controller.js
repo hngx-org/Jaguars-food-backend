@@ -16,7 +16,6 @@ const createLunch = asyncHandler(async (req, res) => {
         org_id: orgId,
       });
     });
-    console.log(lunch);
     return res.json({ status: 'successful', message: 'Lunch(es) sent' });
   } catch (error) {
     throw new Error('Internal Server Error');
