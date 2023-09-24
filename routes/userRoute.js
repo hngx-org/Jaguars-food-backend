@@ -28,7 +28,7 @@ router.get('/search/:nameoremail', authMiddleware, searchUser);
 
 // Create withdrawal request
 router.post('/user/withdrawal', authMiddleware, createWithdrawal);
-
+// redeem lunch
 router.post('/user/redeem', authMiddleware, redeemLunch);
 
 module.exports = router;
