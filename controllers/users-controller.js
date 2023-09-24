@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const db = require('../models');
 const { Op } = require('sequelize');
 const joi = require('joi');
+const { hashPassword } = require('../utils/utils');
 
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -65,11 +66,11 @@ const editUserProfile = asyncHandler(async (req, res) => {
       if (error) throw new Error('lastName must be a string');
       user.lastName = req.body.lastName;
     }
-    if (req.body.email) {
-      const { error } = joi.string().email().validate(req.body.email);
-      if (error) throw new Error(error);
-      user.email = req.body.email;
-    }
+    // if (req.body.email) {
+    //   const { error } = joi.string().email().validate(req.body.email);
+    //   if (error) throw new Error(error);
+    //   user.email = req.body.email;
+    // }
     if (req.body.password) {
       const { error } = joi.string().validate(req.body.password);
       if (error) throw new Error(error);
