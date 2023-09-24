@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const db = require("../models");
 const { Op } = require("sequelize");
 const joi = require("joi");
+const { hashPassword } = require("../utils/utils");
 
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
