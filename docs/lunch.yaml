@@ -1,0 +1,195 @@
+/api/lunch/send:
+  post:
+    summary: Send a Lunch
+    description: Create a new lunch request.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              receivers:
+                type: array
+                items:
+                  type: string
+                minItems: 1
+              quantity:
+                type: integer
+              note:
+                type: string
+            required:
+              - receivers
+              - quantity
+    responses:
+      "200":
+        description: Lunch request created successfully
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Success"
+      "400":
+        description: Bad Request - Invalid request data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "401":
+        description: Unauthorized - Access token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
+/api/lunch/{id}:
+  get:
+    summary: Get a Lunch
+    description: Get details of a specific lunch request by ID.
+    parameters:
+      - in: path
+        name: id
+        description: ID of the lunch request to retrieve.
+        required: true
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Lunch request retrieved successfully
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Lunch"
+      "400":
+        description: Lunch request not found
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "401":
+        description: Unauthorized - Access token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
+/api/lunch/all:
+  get:
+    summary: Get All Lunches
+    description: Get all lunch requests available for the user.
+    responses:
+      "200":
+        description: Lunch requests retrieved successfully
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LunchList"
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
+
+components:
+  schemas:
+    Lunch:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+        data:
+          type: object
+          properties:
+            receiverId:
+              type: string
+            senderId:
+              type: string
+            quantity:
+              type: integer
+            redeemed:
+              type: boolean
+            note:
+              type: string
+            created_at:
+              type: string
+            id:
+              type: string
+    LunchList:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Lunch"
+    Success:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+        data:
+          type: string
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+
+# securitySchemes:
+#   bearerAuth:
+#     type: http
+#     scheme: bearer
+#     bearerFormat: JWT
+
