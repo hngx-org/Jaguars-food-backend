@@ -5,11 +5,12 @@ const {
   getAllLunches,
 } = require('../controllers/lunch-controller.js');
 const authMiddleware = require('../middlewares/authMiddleware');
+const {validateCreateLunch} = require("../middlewares/validation");
 
 const router = Router();
 
 // Send a Lunch
-router.post('/send', authMiddleware, createLunch);
+router.post('/send', validateCreateLunch, authMiddleware, createLunch);
 
 // Get a Lunch
 router.get('/:id', authMiddleware, getLunch);

@@ -10,6 +10,7 @@ const {
 	redeemLunch,
 } = require('../controllers/users-controller.js');
 const authMiddleware = require('../middlewares/authMiddleware');
+const {validateRedeemLunch} = require("../middlewares/validation")
 
 // Get the user profile
 router.get('/user/profile', authMiddleware, getUserProfile);
@@ -29,6 +30,6 @@ router.get('/search/:nameoremail', authMiddleware, searchUser);
 // Create withdrawal request
 router.post('/user/withdrawal', authMiddleware, createWithdrawal);
 // redeem lunch
-router.post('/user/redeem', authMiddleware, redeemLunch);
+router.post('/user/redeem', validateRedeemLunch, authMiddleware, redeemLunch);
 
 module.exports = router;
