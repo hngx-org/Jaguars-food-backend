@@ -1,0 +1,191 @@
+/api/auth/user/signup:
+  post:
+    tags:
+      - Auth
+    summary: User Signup
+    description: Create a new user account for an organization.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                format: password
+              first_name:
+                type: string
+              last_name:
+                type: string
+              phone_number:
+                type: string
+            required:
+              - email
+              - password
+    responses:
+      "201":
+        description: User account created successfully
+
+      "400":
+        description: Bad Request - Invalid request data
+
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+
+/api/auth/login:
+  post:
+    tags:
+      - Auth
+    summary: User Login
+    description: Authenticate a user and obtain an access token.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+                example: mentor@gmail.com
+              password:
+                type: string
+                format: password
+                example: mentorPassw
+            required:
+              - email
+              - password
+    responses:
+      "200":
+        description: User authenticated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  format: text
+                  example: 65ruftqkwjdastcb6739r87gsbas8atgsfuygowquywfg761fwvdhsyxf183gdsuybaosdfasfafdhrtgher3fasdfe
+      "400":
+        description: Bad Request - Invalid request data
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: User does not exist
+      "401":
+        description: Unauthorized - Invalid credentials
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Invalid credentials
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+
+/api/organization/staff/signup:
+  post:
+    tags:
+      - Auth
+    summary: Staff Signup
+    description: Create a new staff account for an organization.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+                format: password
+              first_name:
+                type: string
+              last_name:
+                type: string
+              phone_number:
+                type: string
+              otp_token:
+                type: string
+            required:
+              - email
+              - password
+              - otp_token
+    responses:
+      "201":
+        description: Staff account created successfully
+
+      "400":
+        description: Bad Request - Invalid request data
+
+      "401":
+        description: Unauthorized - Access token is missing or invalid
+
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
