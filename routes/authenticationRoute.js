@@ -20,6 +20,7 @@ const {
   validateAdminRequestBody,
   validateLoginRequestBody,
   validateStaffSignUpRequest,
+  validateCreateInvite
 } = require('../middlewares/validation/');
 
 const authRouter = express.Router();
@@ -35,7 +36,7 @@ authRouter.post('/forgot-password', forgotPassword);
 authRouter.post('/reset-password', resetPassword);
 
 // ORG ACTIVITIES
-orgRouter.post('/invite', authMiddleware, isAdmin, createInvite);
+orgRouter.post('/invite', validateCreateInvite, authMiddleware, isAdmin, createInvite);
 orgRouter.patch(
   '/wallet/update',
   authMiddleware,
