@@ -16,7 +16,7 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
 			next();
 		} else if (
 			req.headers.authorization &&
-			req.headers.authorization.startsWith('Bearer')
+			req.headers.authorization.startsWith('Bearer ')
 		) {
 			const token = req.headers.authorization.split(' ')[1];
 			// console.log(token);

@@ -1,17 +1,17 @@
-const mysql2 = require("mysql2");
-const { Sequelize } = require("sequelize");
-const { HOST, USER, PASSWORD, DB } = require("../utils/constants");
-require("dotenv").config({ path: ".env" });
+const mysql2 = require('mysql2');
+const { Sequelize } = require('sequelize');
+const { HOST, USER, PASSWORD, DB } = require('../utils/constants');
+require('dotenv').config({ path: '.env' });
 
 const dev_dbconfig = {
   HOST,
   USER,
   PASSWORD,
   DB,
-  dialect: "mysql",
+  dialect: 'mysql',
 
   pool: {
-    max: 100,
+    max: 1000,
     min: 0,
     accuire: 30000,
     idle: 10000,

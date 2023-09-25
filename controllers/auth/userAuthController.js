@@ -1,125 +1,218 @@
+const joi = require('joi');
 const asyncHandler = require('express-async-handler');
+const crypto = require('crypto');
 const db = require('../../models');
-const { hashPassword, verifyPassword } = require('../../utils/utils');
+const {
+  hashPassword,
+  verifyPassword,
+  sendPasswordResetOTPEmail,
+} = require('../../utils/utils');
 const { getToken, verifyToken } = require('../../utils/tokens');
 
 const staffSignUp = asyncHandler(async (req, res) => {
-	const sentEmail = req.body.email;
-	const sentPassword = req.body.password;
-	const sentFirstName = req.body.first_name;
-	const sentLastName = req.body.last_name;
-	const sentPhone_number = req.body.phone_number;
-	const otp_token = req.body.otp_token;
+  try {
+    const schema = joi.object({
+      email: joi.string().email({ minDomainSegments: 2 }).required(),
+      password: joi.string().min(6).required(),
+      first_name: joi.string().required(),
+      last_name: joi.string().required(),
+      phone_number: joi.string(),
+      otp_token: joi.string().required(),
+    });
 
-	if (
-		!sentEmail ||
-		!sentPassword ||
-		!sentFirstName ||
-		!sentLastName ||
-		!sentPhone_number
-	) {
-		res.status(400).json({ error: 'All section is required' });
-		return;
-	}
-	const jwtToken = await db.organizationInvites.findOne({
-		where: { email: sentEmail },
-	});
-	// console.log(jwtToken);
-	// console.log(jwtToken.dataValues.token);
-	if (!jwtToken) {
-		return res
-			.status(403)
-			.json({
-				message: 'Impersonation warning!',
-				error: 'Unauthorized Access',
-			});
-	}
+    const { error } = schema.validate(req.body);
+    if (error) {
+      throw new Error(error);
+    }
+    const sentEmail = req.body.email;
+    const sentPassword = req.body.password;
+    const sentFirstName = req.body.first_name;
+    const sentLastName = req.body.last_name;
+    const sentPhone_number = req.body.phone_number;
+    const otp_token = req.body.otp_token;
+    const jwtToken = await db.organizationInvites.findOne({
+      where: { email: sentEmail },
+    });
 
-	const data = await verifyToken(jwtToken.dataValues.token);
-	const { orgId } = data;
+    if (!jwtToken) {
+      return res.status(403).json({
+        message: 'Impersonation warning!',
+        error: 'Unauthorized Access',
+      });
+    }
+    const decodedToken = await verifyToken(jwtToken.dataValues.token);
+    if (decodedToken?.otp?.toString() !== otp_token) {
+      return res.status(400).json({ error: 'Invalid token' });
+    }
+    const hashedPassword = hashPassword(sentPassword);
+    const duplicate = await db.user.findOne({ where: { email: sentEmail } });
+    if (duplicate) {
+      return res.status(409).json({ error: 'Staff already Exist' });
+    }
+    const signUp = await db.user.create({
+      email: sentEmail,
+      passwordHash: hashedPassword,
+      firstName: sentFirstName,
+      lastName: sentLastName,
+      phone: sentPhone_number,
+      orgId: decodedToken?.orgId,
+    });
 
-	const decodedToken = await verifyToken(jwtToken.dataValues.token);
-	// console.log(decodedToken.otp, otp_token);
-	if (decodedToken?.otp?.toString() !== otp_token) {
-		return res.status(400).json({ error: 'Invalid token' });
-	}
+    const { email, id, firstName, lastName, phone, orgId } = signUp;
+    const data = { email, id, firstName, lastName, phone, orgId };
+    res.status(201).json({ message: 'Signup Successful', data });
+  } catch (error) {
+    res.status(500);
+    throw new Error('Server Error');
+  }
+});
 
-	try {
-		const hashedPassword = hashPassword(sentPassword);
-		const newUser = await db.user.findOne({ where: { email: sentEmail } });
-		if (newUser) {
-			return res.status(409).json({ error: 'Staff already Exist' });
-		} else {
-			const signUp = await db.user.create({
-				email: sentEmail,
-				passwordHash: hashedPassword,
-				firstName: sentFirstName,
-				lastName: sentLastName,
-				phoneNumber: sentPhone_number,
-				orgId,
-			});
+const forgotPassword = asyncHandler(async (req, res) => {
+  try {
+    const { error } = joi
+      .string()
+      .email({ minDomainSegments: 2 })
+      .required()
+      .validate(req.body.email);
 
-			res.status(201).json({ message: 'Signup Successful', signUp });
-		}
-	} catch (error) {
-		res.status(500);
-		// console.log(error);
-		throw new Error('Server Error');
-	}
+    if (error) {
+      res.status(400);
+      throw new Error(error);
+    }
+
+    const { email } = req.body;
+
+    const user = await db.user.findOne({ where: { email } });
+    if (!user) {
+      res.status(404);
+      throw new Error('User does not exist');
+    }
+    // generate token
+    const generatedToken = crypto.randomInt(100000, 1000000).toString();
+    const jwt_token = await getToken({ generatedToken, email }, '10m');
+
+    user.refreshToken = jwt_token;
+    await user.save();
+
+    const org = await db.organization.findOne({
+      where: { id: user.org_id },
+    });
+
+    await sendPasswordResetOTPEmail(
+      {
+        email,
+        orgName: org.name,
+      },
+      generatedToken
+    );
+
+    return res.json({ message: 'OTP sent to user email' });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+  try {
+    const schema = joi.object({
+      email: joi.string().email({ minDomainSegments: 2 }).required(),
+      otp: joi.number().required(),
+      password: joi.string().min(6).required(),
+    });
+
+    const { error } = schema.validate(req.body);
+
+    if (error) {
+      throw new Error(error);
+    }
+    const { email, otp, password } = req.body;
+
+    const user = await db.user.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({
+        message: `User with email ${email} not found.`,
+        error: '404 Not found',
+      });
+    }
+    let decodedToken;
+    try {
+      decodedToken = await verifyToken(user.refreshToken);
+    } catch {
+      res.status(400);
+      res.json({ status: 'error', message: 'invalid/expired token' });
+    }
+    // console.log(user.refreshToken);
+
+    if (decodedToken?.generatedToken === otp.toString()) {
+      user.refreshToken = '';
+      const hashedPassword = hashPassword(password);
+      user.passwordHash = hashedPassword;
+      await user.save();
+      res.status(201);
+      return res.json({ status: 'success', message: 'Kindly login' });
+    } else {
+      throw new Error('Invalid OTP');
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
 });
 
 const Login = asyncHandler(async (req, res) => {
-	const { email, password } = req.body;
-	const checkUser = await db.user.findOne({ where: { email } });
-	if (!checkUser) {
-		res.status(400);
-		throw new Error('User does not exist');
-	}
-	const validPassword = verifyPassword(password, checkUser.passwordHash);
-	if (!validPassword) {
-		res.status(400);
-		throw new Error('Invalid password');
-	} else {
-		const {
-			id,
-			orgId,
-			firstName,
-			lastName,
-			profilePicture,
-			email,
-			phoneNumber,
-			isAdmin,
-			launchCreditBalance,
-			refreshToken,
-			bankNumber,
-			bankCode,
-			bankName,
-			bankRegion,
-			currency,
-			currencyCode,
-		} = checkUser;
+  const { email, password } = req.body;
+  const checkUser = await db.user.findOne({ where: { email } });
+  if (!checkUser) {
+    res.status(400);
+    throw new Error('User does not exist');
+  }
+  const validPassword = verifyPassword(password, checkUser.passwordHash);
+  if (!validPassword) {
+    res.status(400);
+    throw new Error('Invalid password');
+  } else {
+    const {
+      id,
+      orgId,
+      firstName,
+      lastName,
+      profilePic,
+      email,
+      phone,
+      isAdmin,
+      lunchCreditBalance,
+      refreshToken,
+      bankNumber,
+      bankCode,
+      bankName,
+      bankRegion,
+      currency,
+      currencyCode,
+    } = checkUser;
 
-		const user = {
-			id,
-			orgId,
-			firstName,
-			lastName,
-			profilePicture,
-			email,
-			phoneNumber,
-			isAdmin,
-			launchCreditBalance,
-			refreshToken,
-			bankNumber,
-			bankCode,
-			bankName,
-			bankRegion,
-			currency,
-			currencyCode,
-		};
-		const token = await getToken(user);
-		return res.json({ token });
-	}
+    const user = {
+      id,
+      orgId,
+      firstName,
+      lastName,
+      profilePic,
+      email,
+      phone,
+      isAdmin,
+      lunchCreditBalance,
+      refreshToken,
+      bankNumber,
+      bankCode,
+      bankName,
+      bankRegion,
+      currency,
+      currencyCode,
+    };
+    const token = await getToken(user);
+    return res.json({ token });
+  }
 });
 
-module.exports = { Login, staffSignUp };
+module.exports = { Login, staffSignUp, forgotPassword, resetPassword };

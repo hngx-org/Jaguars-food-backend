@@ -1,9 +1,8 @@
 const { Router } = require('express');
 const {
-	createLunch,
-	getLunch,
-	redeemUserLunch,
-	getAllLunches
+  createLunch,
+  getLunch,
+  getAllLunches,
 } = require('../controllers/lunch-controller.js');
 const authMiddleware = require('../middlewares/authMiddleware');
 
@@ -17,9 +16,5 @@ router.get('/:id', authMiddleware, getLunch);
 
 // Get all Lunches
 router.get('/', authMiddleware, getAllLunches);
-
-// Redeem a lunch
-router.put('/redeem/:id', authMiddleware, redeemUserLunch);
-//no need for this endpoint again
 
 module.exports = router;

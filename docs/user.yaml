@@ -1,0 +1,557 @@
+# "/":
+#   get:
+#     summary: Get a greeting message
+#     responses:
+#       "200":
+#         description: OK
+#         content:
+#           text/plain:
+#             schema:
+#               type: string
+
+/api/organization/invite:
+  post:
+    tags:
+      - Organizations
+    summary: Create Organization Invite (Admin Only)
+    description: Allows an admin user to send an invitation to join the organization.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+            required:
+              - email
+    responses:
+      "200":
+        description: Invitation sent successfully
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Success"
+      "400":
+        description: Bad Request - Invalid request data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "401":
+        description: Unauthorized - Access token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
+/api/organization/wallet/update:
+  patch:
+    tags:
+      - Organizations
+    summary: Update Organization Launch Wallet Balance (Admin Only)
+    description: Allows an admin user to update the organization's launch wallet balance.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              amount:
+                type: number
+            required:
+              - amount
+    responses:
+      "200":
+        description: Wallet balance updated successfully
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Success"
+      "400":
+        description: Bad Request - Invalid request data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "401":
+        description: Unauthorized - Access token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
+/api/organization/launch/update:
+  patch:
+    tags:
+      - Organizations
+    summary: Update Organization Launch Price (Admin Only)
+    description: Allows an admin user to update the organization's launch price.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              launch_price:
+                type: string
+            required:
+              - launch_price
+    responses:
+      "200":
+        description: Launch price updated successfully
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Success"
+      "400":
+        description: Bad Request - Invalid request data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "401":
+        description: Unauthorized - Access token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
+/api/user/profile:
+  get:
+    summary: Get User Profile
+    description: Retrieve the user's profile data.
+    responses:
+      "200":
+        description: User data fetched successfully
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfile"
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
+/api/user/bank:
+  patch:
+    summary: Add Bank Account
+    description: Allows a user to add a bank account to their profile.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              bank_number:
+                type: string
+              bank_code:
+                type: string
+              bank_name:
+                type: string
+            required:
+              - bank_number
+              - bank_code
+              - bank_name
+    responses:
+      "200":
+        description: Successfully created bank account
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Success"
+      "400":
+        description: Bad Request - Invalid request data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "401":
+        description: Unauthorized - Access token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
+/api/user/all:
+  get:
+    summary: Get All Users
+    description: Retrieve a list of all user profiles.
+    responses:
+      "200":
+        description: Successfully fetched all user profiles
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserList"
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
+/api/user/search/{nameoremail}:
+  get:
+    summary: Search Users
+    description: Search for a user by name or email.
+    parameters:
+      - in: path
+        name: nameoremail
+        description: Name or email to search for.
+        required: true
+        schema:
+          type: string
+    responses:
+      "200":
+        description: User found
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfile"
+      "401":
+        description: Unauthorized - Access token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "400":
+        description: User not found
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
+/api/withdrawal/request:
+  post:
+    summary: Create Withdrawal Request
+    description: Create a withdrawal request for user launch credit and organization launch price.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              bank_name:
+                type: string
+              bank_number:
+                type: string
+              bank_code:
+                type: string
+              amount:
+                type: integer
+            required:
+              - bank_name
+              - bank_number
+              - bank_code
+              - amount
+    responses:
+      "200":
+        description: Withdrawal request created successfully
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WithdrawalRequest"
+      "400":
+        description: Bad Request - Invalid request data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "401":
+        description: Unauthorized - Access token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
+
+/api/user/redeem:
+  post:
+    summary: Redeem Launch (Users)
+    description: Allows a user to add launch credit to their launch credit balance. A token must be redeemed before it can be withdrawn.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ids:
+                type: array
+                items:
+                  type: string
+                minItems: 1
+            required:
+              - ids
+    responses:
+      "200":
+        description: Success - Launch credit redeemed successfully
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Success"
+      "400":
+        description: Bad Request - Invalid request data
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "401":
+        description: Unauthorized - Access token is missing or invalid
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      "500":
+        description: Internal Server Error - An unexpected error occurred
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  format: text
+                  example: error
+                message:
+                  type: string
+                  format: text
+                  example: Internal Server Error - An unexpected error occurred
+    security:
+      - bearerAuth: []
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        access_token:
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        isAdmin:
+          type: boolean
+    UserList:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+              profile_picture:
+                type: string
+              user_id:
+                type: string
+    Organization:
+      type: object
+      properties:
+        org_id:
+          type: string
+        organization_name:
+          type: string
+        lunch_price:
+          type: string
+    WithdrawalRequest:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            user_id:
+              type: string
+            status:
+              type: string
+            amount:
+              type: integer
+            created_at:
+              type: string
+    Success:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+        data:
+          type: string
+    Staff:
+      type: object
+      properties:
+        staff_id:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone_number:
+          type: string
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        profile_picture:
+          type: string
+        isAdmin:
+          type: boolean
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        statusCode:
+          type: integer
+
+# securitySchemes:
+#   bearerAuth:
+#     type: http
+#     scheme: bearer
+#     bearerFormat: JWT
