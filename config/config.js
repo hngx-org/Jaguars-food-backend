@@ -19,6 +19,8 @@ dotenv.config();
 // API Docs
 // Load individual path files and merge them into the main document
 const auth = YAML.load('./docs/auth.yaml');
+const user = YAML.load('./docs/user.yaml');
+const lunch = YAML.load('./docs/lunch.yaml');
 // const farewellPath = YAML.load('./docs/farewell.yaml');
 const components = {
   securitySchemes: {
@@ -38,6 +40,8 @@ swaggerDocument.paths = {
   ...swaggerDocument.paths,
   ...components,
   ...auth,
+  ...user,
+  ...lunch
 };
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));

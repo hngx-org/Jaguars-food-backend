@@ -65,6 +65,7 @@ This guide provides step-by-step instructions to set up Sequelize, a Node.js ORM
   ```bash
   sudo mysql.server start
   ```    
+ 
 ## Run Locally
 Clone the project
 
