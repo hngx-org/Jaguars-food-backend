@@ -18,7 +18,7 @@ dotenv.config();
 
 // API Docs
 // Load individual path files and merge them into the main document
-const auth = YAML.load('./docs/auth.yaml');
+const auth = YAML.load('../docs/auth.yaml');
 // const farewellPath = YAML.load('./docs/farewell.yaml');
 const components = {
   securitySchemes: {
