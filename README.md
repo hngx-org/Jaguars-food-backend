@@ -65,10 +65,7 @@ This guide provides step-by-step instructions to set up Sequelize, a Node.js ORM
   ```bash
   sudo mysql.server start
   ```    
-  ### API spec
-```bash
-https://app.swaggerhub.com/apis-docs/boluwatife010/Jaguarfoodbackend/1.0.0
-```  
+ 
 ## Run Locally
 Clone the project
 
