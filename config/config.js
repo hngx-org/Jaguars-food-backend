@@ -10,15 +10,11 @@ const userRoute = require('../routes/userRoute.js');
 const errHandler = require('../middlewares/errHandler.js');
 const notFound = require('../middlewares/notFound.js');
 const swaggerUI = require('swagger-ui-express');
-const YAML = require('yamljs');
 const { swaggerDocument } = require('../utils/constants.js');
-
+const { auth } = require('../docs');
 const app = express();
 dotenv.config();
 
-// API Docs
-// Load individual path files and merge them into the main document
-const auth = YAML.load('../docs/auth.yaml');
 // const farewellPath = YAML.load('./docs/farewell.yaml');
 const components = {
   securitySchemes: {
