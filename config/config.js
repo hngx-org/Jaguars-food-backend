@@ -33,7 +33,7 @@ const components = {
 swaggerDocument.paths = {
   ...swaggerDocument.paths,
   ...components,
-  ...auth,
+  // ...auth,
 };
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
