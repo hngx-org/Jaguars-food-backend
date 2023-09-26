@@ -212,6 +212,11 @@ const searchUser = asyncHandler(async (req, res) => {
 const createWithdrawal = asyncHandler(async (req, res) => {
   const id = req.user.id;
   // console.log(id);
+  if (!req.body.amount) {
+    return res
+      .status(400)
+      .json({ message: `missing "amount" field in request body` });
+  }
 
   if (id) {
     const user = await db.user.findOne({ where: { id } });
