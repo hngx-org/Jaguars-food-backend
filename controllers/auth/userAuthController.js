@@ -153,6 +153,7 @@ const resetPassword = asyncHandler(async (req, res) => {
       res.status(201);
       return res.json({ status: "success", message: "Kindly login" });
     } else {
+      res.status(400);
       throw new Error("Invalid OTP");
     }
   } catch (error) {
@@ -211,7 +212,7 @@ const Login = asyncHandler(async (req, res) => {
       currencyCode,
     };
     const token = await getToken(user);
-    return res.json({ token });
+    return res.status(200).json({ token });
   }
 });
 

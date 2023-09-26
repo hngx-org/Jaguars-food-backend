@@ -1,8 +1,8 @@
-const asyncHandler = require('express-async-handler');
-const db = require('../models');
-const { Op } = require('sequelize');
-const joi = require('joi');
-const { hashPassword } = require('../utils/utils');
+const asyncHandler = require("express-async-handler");
+const db = require("../models");
+const { Op } = require("sequelize");
+const joi = require("joi");
+const { hashPassword } = require("../utils/utils");
 
 //GET USER PROFILE
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -47,11 +47,11 @@ const getUserProfile = asyncHandler(async (req, res) => {
       });
     } else {
       res.status(404);
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
   } catch {
     res.status(400);
-    throw new Error('Invalid / expired user token. Please login!!!');
+    throw new Error("Invalid / expired user token. Please login!!!");
   }
 });
 
@@ -64,18 +64,18 @@ const editUserProfile = asyncHandler(async (req, res) => {
 
     if (!user) {
       res.status(404);
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     // Update user information based on the request body
     if (req.body.firstName) {
       const { error } = joi.string().validate(req.body.firstName);
-      if (error) throw new Error('firstName must be a string');
+      if (error) throw new Error("firstName must be a string");
       user.firstName = req.body.firstName;
     }
     if (req.body.lastName) {
       const { error } = joi.string().validate(req.body.lastName);
-      if (error) throw new Error('lastName must be a string');
+      if (error) throw new Error("lastName must be a string");
       user.lastName = req.body.lastName;
     }
     if (req.body.password) {
@@ -98,10 +98,10 @@ const editUserProfile = asyncHandler(async (req, res) => {
     await user.save();
     // Respond with the updated user information
     res.json({
-      message: 'User profile updated successfully',
+      message: "User profile updated successfully",
       data: {
         id: user.id,
-        name: user.firstName + ' ' + user.lastName,
+        name: user.firstName + " " + user.lastName,
         email: user.email,
         profilePic: user.profilePic,
         phone: user.phone,
@@ -110,7 +110,7 @@ const editUserProfile = asyncHandler(async (req, res) => {
   } catch (error) {
     // Handle errors and send an error response
     console.error(error);
-    res.status(400).json({ error: 'User not found' });
+    res.status(404).json({ error: "User not found" });
   }
 });
 
@@ -139,7 +139,7 @@ const addUserBank = asyncHandler(async (req, res) => {
     await user.save();
     res.json({
       id: user.id,
-      name: user.firstName + ' ' + user.lastName,
+      name: user.firstName + " " + user.lastName,
       email: user.email,
       bank_number: user.bankNumber,
       bank_name: user.bankName,
@@ -148,7 +148,7 @@ const addUserBank = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -165,7 +165,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
     const users = await db.user.findAll({ where: { orgId: req.user.orgId } });
     // Response data
     const responseData = {
-      message: 'Successfully gotten all users',
+      message: "Successfully gotten all users",
       statusCode: 200,
       data: users.map((user) => ({
         firstName: user.firstName,
@@ -191,16 +191,16 @@ const searchUser = asyncHandler(async (req, res) => {
     where: {
       org_id: req.user.orgId,
       [Op.or]: [
-        { firstName: { [Op.like]: '%' + nameOrEmail + '%' } },
-        { lastName: { [Op.like]: '%' + nameOrEmail + '%' } },
-        { email: { [Op.like]: '%' + nameOrEmail + '%' } },
+        { firstName: { [Op.like]: "%" + nameOrEmail + "%" } },
+        { lastName: { [Op.like]: "%" + nameOrEmail + "%" } },
+        { email: { [Op.like]: "%" + nameOrEmail + "%" } },
         { id: { [Op.like]: nameOrEmail } },
       ],
     },
   });
   res.json({
     users: users.map((user) => ({
-      name: user.firstName + ' ' + user.lastName,
+      name: user.firstName + " " + user.lastName,
       email: user.email,
       profilePic: user.profilePic,
       id: user.id,
@@ -217,7 +217,7 @@ const createWithdrawal = asyncHandler(async (req, res) => {
     const user = await db.user.findOne({ where: { id } });
     if (!user) {
       res.status(404);
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
     if (+user.lunchCreditBalance < +req.body.amount) {
       res.status(400);
@@ -225,7 +225,6 @@ const createWithdrawal = asyncHandler(async (req, res) => {
         `Insufficient fund! Current balance ${user.lunchCreditBalance}`
       );
     }
-
     await db.withdrawals.create({
       amount: req.body.amount,
       user_id: user.id,
@@ -242,7 +241,7 @@ const createWithdrawal = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -255,11 +254,11 @@ const redeemLunch = asyncHandler(async (req, res) => {
       if (findLunch) {
         if (findLunch.receiverId != user.id) {
           res.status(401);
-          throw new Error('invalid lunch id');
+          throw new Error("invalid lunch id");
         }
         if (findLunch.redeemed) {
           res.status(403);
-          throw new Error('lunch already redeemed');
+          throw new Error("lunch already redeemed");
         }
 
         const { quantity } = findLunch;
@@ -274,7 +273,7 @@ const redeemLunch = asyncHandler(async (req, res) => {
         await findLunch.save();
         await findUser.save();
         return res.status(200).json({
-          message: 'success',
+          message: "success",
           statusCode: 200,
           data: {
             user: findUser,
@@ -286,12 +285,12 @@ const redeemLunch = asyncHandler(async (req, res) => {
       }
     } else {
       res.status(400);
-      throw new Error('please enter lunch id');
+      throw new Error("please enter lunch id");
     }
   } else {
     // If user is not found (unauthenticated), return a 404 response with an error message
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
