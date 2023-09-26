@@ -1,0 +1,1033 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "jaguar_food_app",
+    "contact": {},
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000/api",
+      "variables": {}
+    }
+  ],
+  "paths": {
+    "/auth/user/signup": {
+      "post": {
+        "tags": ["authfolder"],
+        "summary": "createAdmin",
+        "description": "this creates an admin user",
+        "operationId": "createAdmin",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/createAdminRequest"
+                  },
+                  {
+                    "example": {
+                      "email": "test99@gmail.com",
+                      "password": "test999",
+                      "first_name": "test4",
+                      "last_name": "test4",
+                      "phone_number": "12345678912",
+                      "organization_name": "test99",
+                      "lunch_price": 300,
+                      "currency": "tetst4",
+                      "currency_code": "NGN"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "email": "test99@gmail.com",
+                "password": "test999",
+                "first_name": "test4",
+                "last_name": "test4",
+                "phone_number": "12345678912",
+                "organization_name": "test99",
+                "lunch_price": 300,
+                "currency": "tetst4",
+                "currency_code": "NGN"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/auth/staff/signup": {
+      "post": {
+        "tags": ["authfolder"],
+        "summary": "createStaff",
+        "description": "this creates a staff account",
+        "operationId": "createStaff",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/createStaffRequest"
+                  },
+                  {
+                    "example": {
+                      "email": "iamgracieey@gmail.com",
+                      "password": "test888",
+                      "first_name": "test888",
+                      "last_name": "test888",
+                      "phone_number": "12345678901",
+                      "otp_token": "293544"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "email": "iamgracieey@gmail.com",
+                "password": "test888",
+                "first_name": "test888",
+                "last_name": "test888",
+                "phone_number": "12345678901",
+                "otp_token": "293544"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["authfolder"],
+        "summary": "login",
+        "description": "logs in user or admin",
+        "operationId": "login",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/loginrequest"
+                  },
+                  {
+                    "example": {
+                      "email": "mhyke.badmus@gmail.com",
+                      "password": "test7777777"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "email": "mhyke.badmus@gmail.com",
+                "password": "test7777777"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/auth/organization/{name}": {
+      "get": {
+        "tags": ["authfolder"],
+        "summary": "searchOrg",
+        "description": "searches the name of an organization",
+        "operationId": "searchOrg",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "test99"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "tags": ["authfolder"],
+        "summary": "forgot-password",
+        "description": "sends  a password reset token to email",
+        "operationId": "forgot-password",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/forgot-password-request"
+                  },
+                  {
+                    "example": {
+                      "email": "mhyke.badmus@gmail.com"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "email": "mhyke.badmus@gmail.com"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "tags": ["authfolder"],
+        "summary": "reset-password",
+        "description": "resets user password to provide password",
+        "operationId": "reset-password",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/reset-password-request"
+                  },
+                  {
+                    "example": {
+                      "email": "mhyke.badmus@gmail.com",
+                      "otp": "913226",
+                      "password": "test70"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "email": "mhyke.badmus@gmail.com",
+                "otp": "913226",
+                "password": "test70"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/lunch/send": {
+      "post": {
+        "tags": ["lunchfolder"],
+        "summary": "createLunch",
+        "description": "sends a lunch to one or multiple user(or receivers) using their id(s)",
+        "operationId": "createLunch",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/createLunchRequest"
+                  },
+                  {
+                    "example": {
+                      "receivers": [3],
+                      "quantity": 2,
+                      "note": "eat well"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "receivers": [3],
+                "quantity": 2,
+                "note": "eat well"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/lunch/{id}": {
+      "get": {
+        "tags": ["lunchfolder"],
+        "summary": "getLunch",
+        "description": "returns a specific lunch sent to the current user using the lunchID",
+        "operationId": "getLunch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/lunch": {
+      "get": {
+        "tags": ["lunchfolder"],
+        "summary": "getAllLunches",
+        "description": "returns a list of all lunches sent to the current user",
+        "operationId": "getAllLunches",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/user/profile": {
+      "get": {
+        "tags": ["userfolder"],
+        "summary": "getUserProfile",
+        "description": "returns the profile data of current user",
+        "operationId": "getUserProfile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      },
+      "put": {
+        "tags": ["userfolder"],
+        "summary": "editUserProfile",
+        "description": "updates the current user's profile",
+        "operationId": "editUserProfile",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/editUserProfileRequest"
+                  },
+                  {
+                    "example": {
+                      "firstName": "updateUser",
+                      "lastName": "updateUser"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "firstName": "updateUser",
+                "lastName": "updateUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["userfolder"],
+        "summary": "getAllUsers",
+        "description": "returns a list of all registered users",
+        "operationId": "getAllUsers",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/search/{nameoremail}": {
+      "get": {
+        "tags": ["userfolder"],
+        "summary": "searchUser",
+        "description": "returns a specific user with the supplied name or email",
+        "operationId": "searchUser",
+        "parameters": [
+          {
+            "name": "nameoremail",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "iamgracieey@gmail.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/user/bank": {
+      "patch": {
+        "tags": ["userfolder"],
+        "summary": "addUserBank",
+        "description": "updates the current user's bank details",
+        "operationId": "addUserBank",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/addUserBankRequest"
+                  },
+                  {
+                    "example": {
+                      "bank_name": "anybank",
+                      "bank_number": "anybank",
+                      "bank_region": "anybank",
+                      "bank_code": "anybank"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "bank_name": "anybank",
+                "bank_number": "anybank",
+                "bank_region": "anybank",
+                "bank_code": "anybank"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/user/redeem": {
+      "post": {
+        "tags": ["userfolder"],
+        "summary": "redeemLunch",
+        "description": "redeems a specific lunch to the current users' lunch-credit-balance",
+        "operationId": "redeemLunch",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/redeemLunchRequest"
+                  },
+                  {
+                    "example": {
+                      "lunchId": 1
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "lunchId": 1
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/orgs/invite": {
+      "post": {
+        "tags": ["adminActivitiesFolder"],
+        "summary": "createInvite",
+        "description": "allows an admin to send an invitation link to specified email",
+        "operationId": "createInvite",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/createInviteRequest"
+                  },
+                  {
+                    "example": {
+                      "email": "mhyke.badmus@gmail.com"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "email": "mhyke.badmus@gmail.com"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/orgs/organization/wallet": {
+      "get": {
+        "tags": ["adminActivitiesFolder"],
+        "summary": "getOrgWalletBalance",
+        "description": "returns the wallet balance of the current wallet balance user(admin) organization",
+        "operationId": "getOrgWalletBalance",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/orgs/wallet/update": {
+      "patch": {
+        "tags": ["adminActivitiesFolder"],
+        "summary": "orgWalletUpdate",
+        "description": "allows an admin to update his/her organization's wallet balance",
+        "operationId": "orgWalletUpdate",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/orgWalletUpdateRequest"
+                  },
+                  {
+                    "example": {
+                      "amount": 30000
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "amount": 30000
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/orgs/lunch/update": {
+      "patch": {
+        "tags": ["adminActivitiesFolder"],
+        "summary": "update0rgFoodPrice",
+        "description": "allows an admin to update his/her organization's food price",
+        "operationId": "update0rgFoodPrice",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/update0rgFoodPriceRequest"
+                  },
+                  {
+                    "example": {
+                      "lunch_price": 300
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "lunch_price": 300
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/withdrawal/request": {
+      "post": {
+        "tags": ["withdrawalFolder"],
+        "summary": "withdrawalRoute",
+        "description": "allows the current user to withdraw from his/her lunchcredit balance",
+        "operationId": "withdrawalRoute",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/withdrawalRouteRequest"
+                  },
+                  {
+                    "example": {
+                      "amount": "30"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "amount": "30"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "createAdminRequest": {
+        "title": "createAdminRequest",
+        "required": [
+          "email",
+          "password",
+          "first_name",
+          "last_name",
+          "phone_number",
+          "organization_name",
+          "lunch_price",
+          "currency",
+          "currency_code"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          },
+          "organization_name": {
+            "type": "string"
+          },
+          "lunch_price": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "currency_code": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "test99@gmail.com",
+          "password": "test999",
+          "first_name": "test4",
+          "last_name": "test4",
+          "phone_number": "12345678912",
+          "organization_name": "test99",
+          "lunch_price": 300,
+          "currency": "tetst4",
+          "currency_code": "NGN"
+        }
+      },
+      "createStaffRequest": {
+        "title": "createStaffRequest",
+        "required": [
+          "email",
+          "password",
+          "first_name",
+          "last_name",
+          "phone_number",
+          "otp_token"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          },
+          "otp_token": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "iamgracieey@gmail.com",
+          "password": "test888",
+          "first_name": "test888",
+          "last_name": "test888",
+          "phone_number": "12345678901",
+          "otp_token": "293544"
+        }
+      },
+      "loginrequest": {
+        "title": "loginrequest",
+        "required": ["email", "password"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "mhyke.badmus@gmail.com",
+          "password": "test7777777"
+        }
+      },
+      "forgot-password-request": {
+        "title": "forgot-password-request",
+        "required": ["email"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "mhyke.badmus@gmail.com"
+        }
+      },
+      "reset-password-request": {
+        "title": "reset-password-request",
+        "required": ["email", "otp", "password"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "otp": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "mhyke.badmus@gmail.com",
+          "otp": "913226",
+          "password": "test70"
+        }
+      },
+      "createLunchRequest": {
+        "title": "createLunchRequest",
+        "required": ["receivers", "quantity", "note"],
+        "type": "object",
+        "properties": {
+          "receivers": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": ""
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "receivers": [3],
+          "quantity": 2,
+          "note": "eat well"
+        }
+      },
+      "editUserProfileRequest": {
+        "title": "editUserProfileRequest",
+        "required": ["firstName", "lastName"],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "firstName": "updateUser",
+          "lastName": "updateUser"
+        }
+      },
+      "addUserBankRequest": {
+        "title": "addUserBankRequest",
+        "required": ["bank_name", "bank_number", "bank_region", "bank_code"],
+        "type": "object",
+        "properties": {
+          "bank_name": {
+            "type": "string"
+          },
+          "bank_number": {
+            "type": "string"
+          },
+          "bank_region": {
+            "type": "string"
+          },
+          "bank_code": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "bank_name": "anybank",
+          "bank_number": "anybank",
+          "bank_region": "anybank",
+          "bank_code": "anybank"
+        }
+      },
+      "redeemLunchRequest": {
+        "title": "redeemLunchRequest",
+        "required": ["lunchId"],
+        "type": "object",
+        "properties": {
+          "lunchId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "example": {
+          "lunchId": 1
+        }
+      },
+      "createInviteRequest": {
+        "title": "createInviteRequest",
+        "required": ["email"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "mhyke.badmus@gmail.com"
+        }
+      },
+      "orgWalletUpdateRequest": {
+        "title": "orgWalletUpdateRequest",
+        "required": ["amount"],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "example": {
+          "amount": 30000
+        }
+      },
+      "update0rgFoodPriceRequest": {
+        "title": "update0rgFoodPriceRequest",
+        "required": ["lunch_price"],
+        "type": "object",
+        "properties": {
+          "lunch_price": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "example": {
+          "lunch_price": 300
+        }
+      },
+      "withdrawalRouteRequest": {
+        "title": "withdrawalRouteRequest",
+        "required": ["amount"],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "amount": "30"
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearer": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "authfolder"
+    },
+    {
+      "name": "lunchfolder"
+    },
+    {
+      "name": "userfolder"
+    },
+    {
+      "name": "adminActivitiesFolder"
+    },
+    {
+      "name": "withdrawalFolder"
+    }
+  ]
+}

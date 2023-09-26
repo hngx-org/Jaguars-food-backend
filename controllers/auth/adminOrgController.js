@@ -58,7 +58,7 @@ const createAdmin = asyncHandler(async (req, res) => {
   const { firstName, lastName, phoneNumber, isAdmin, orgId } = newUser;
   // console.log(newUser);
   const data = { firstName, lastName, phoneNumber, isAdmin, orgId };
-  return res.send({ message: "Account created", data });
+  return res.status(201).send({ message: "Account succesfully created", data });
 });
 
 const createInvite = asyncHandler(async (req, res) => {
