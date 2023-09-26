@@ -59,9 +59,11 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
+          "201": {
+            "description": "Account successfully created"
+          },
+          "400": {
+            "description": "Organization-name or user with supplied email already exists"
           }
         },
         "deprecated": false,
@@ -109,9 +111,17 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
+          "201": {
+            "description": "Signup Successful"
+          },
+          "400": {
+            "description": "Invalid token"
+          },
+          "409": {
+            "description": "user with email already exists"
+          },
+          "500": {
+            "description": "Server Error"
           }
         },
         "deprecated": false,
@@ -152,8 +162,10 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "Successfully signed in"
+          },
+          "400": {
+            "description": "user do not exist or invalid password"
           }
         },
         "deprecated": false,
@@ -183,6 +195,9 @@
           "200": {
             "description": "",
             "headers": {}
+          },
+          "409": {
+            "description": "organization name already taken"
           }
         },
         "deprecated": false
@@ -220,8 +235,11 @@
         },
         "responses": {
           "200": {
-            "description": "",
+            "description": "reset token sent to user email",
             "headers": {}
+          },
+          "404": {
+            "description": "user with email do not exist"
           }
         },
         "deprecated": false,
@@ -263,9 +281,14 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
+          "201": {
+            "description": "suceesful password reset"
+          },
+          "400": {
+            "description": "invalid or expired otp"
+          },
+          "404": {
+            "description": "user with email do not exist"
           }
         },
         "deprecated": false,
@@ -308,8 +331,10 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "lsuccessful Lunch(es) sent"
+          },
+          "500": {
+            "description": "Server Error"
           }
         },
         "deprecated": false
@@ -335,8 +360,13 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "lunch is available"
+          },
+          "400": {
+            "description": "invalid lunch ID"
+          },
+          "404": {
+            "description": "no lunch with the supplied ID"
           }
         },
         "deprecated": false
@@ -351,8 +381,13 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "success"
+          },
+          "400": {
+            "description": "invalid userid"
+          },
+          "404": {
+            "description": "no lunch found for user"
           }
         },
         "deprecated": false
@@ -367,8 +402,13 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "success"
+          },
+          "400": {
+            "description": "invalid or expired token"
+          },
+          "404": {
+            "description": "user not found"
           }
         },
         "deprecated": false
@@ -397,8 +437,9 @@
                 ]
               },
               "example": {
-                "firstName": "updateUser",
-                "lastName": "updateUser"
+                "firstName": "updateUserFirstname",
+                "lastName": "updateUserLastName",
+                "phone": "newphoneNumber"
               }
             }
           },
@@ -406,8 +447,13 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "success update successful"
+          },
+          "400": {
+            "description": "invalid or expired token"
+          },
+          "404": {
+            "description": "user not found"
           }
         },
         "deprecated": false
@@ -422,8 +468,10 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "sucesss, returns list of users"
+          },
+          "400": {
+            "description": "invalid or expired token, please log in"
           }
         },
         "deprecated": false
@@ -450,8 +498,10 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "ssuccess returns matching list of users"
+          },
+          "400": {
+            "description": "invalid or expired token, please log in"
           }
         },
         "deprecated": false
@@ -495,8 +545,10 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "ssuccess updated user bank details"
+          },
+          "400": {
+            "description": "invalid or expired token, please log in"
           }
         },
         "deprecated": false
@@ -534,8 +586,13 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "success"
+          },
+          "400": {
+            "description": "invalid lunch ID"
+          },
+          "403": {
+            "description": "lunch already redeemed"
           }
         },
         "deprecated": false
@@ -573,8 +630,13 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "invitation sent successfully"
+          },
+          "403": {
+            "description": "only admins can invite"
+          },
+          "500": {
+            "description": "server error"
           }
         },
         "deprecated": false
@@ -589,8 +651,13 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "success"
+          },
+          "404": {
+            "description": "Organization not found"
+          },
+          "500": {
+            "description": "server error"
           }
         },
         "deprecated": false
@@ -628,8 +695,10 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "success, balance updated"
+          },
+          "400": {
+            "description": "missing or invalid \"amount\" field inputs"
           }
         },
         "deprecated": false
@@ -667,8 +736,13 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "success, lunch price updated"
+          },
+          "400": {
+            "description": "missing or invalid \"amount\" field inputs"
+          },
+          "404": {
+            "description": "organization not found"
           }
         },
         "deprecated": false
@@ -706,8 +780,10 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "success, withdrawal successful"
+          },
+          "400": {
+            "description": "insufficient funds or missing \"amount\" field in req body"
           }
         },
         "deprecated": false
@@ -892,13 +968,18 @@
       },
       "editUserProfileRequest": {
         "title": "editUserProfileRequest",
-        "required": ["firstName", "lastName"],
         "type": "object",
         "properties": {
           "firstName": {
             "type": "string"
           },
           "lastName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "profilePic": {
             "type": "string"
           }
         },
