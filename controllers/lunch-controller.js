@@ -1,5 +1,5 @@
-const asyncHandler = require('express-async-handler');
-const db = require('../models');
+const asyncHandler = require("express-async-handler");
+const db = require("../models");
 
 //SEND A LUNCH
 // TODO:
@@ -16,9 +16,9 @@ const createLunch = asyncHandler(async (req, res) => {
         org_id: orgId,
       });
     });
-    return res.json({ status: 'successful', message: 'Lunch(es) sent' });
+    return res.json({ status: "successful", message: "Lunch(es) sent" });
   } catch (error) {
-    throw new Error('Internal Server Error');
+    throw new Error("Internal Server Error");
   }
 });
 
@@ -40,11 +40,11 @@ const getLunch = asyncHandler(async (req, res) => {
         created_at: lunch.created_at,
         id: lunch.id,
       };
-      const msg = 'The Lunch is available';
+      const msg = "The Lunch is available";
       res.status(200).json({ message: msg, statusCode: 200, data });
     }
     res.status(400);
-    throw new Error('Please provide an id');
+    throw new Error("Please provide an id");
   }
 });
 
@@ -52,12 +52,13 @@ const getAllLunches = asyncHandler(async (req, res) => {
   const { id, firstName, lastName } = req.user;
   if (!id) {
     res.status(400);
-    throw new Error('Please provide an id.');
+    throw new Error("Please provide an id.");
   }
   try {
     const lunches = await db.lunches.findAll({ where: { receiverId: id } });
+    // you should check for the length of the array returned from findAll this will still return 200 even if the array is empty
     return res.status(200).json({
-      status: 'success',
+      status: "success",
       data: { count: lunches.length, lunches },
     });
     // console.log('I got here');

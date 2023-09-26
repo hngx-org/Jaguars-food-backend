@@ -23,7 +23,7 @@
     "nodemailer": "^6.9.5",
     "sequelize": "^6.33.0",
     "sqlite3": "^5.1.6",
-    "swagger-ui-express": "^5.0.0",
+    "swagger-ui-express": "^4.6.3",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
